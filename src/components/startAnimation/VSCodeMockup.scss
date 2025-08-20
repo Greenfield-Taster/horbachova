@@ -1,0 +1,703 @@
+// VSCodeMockup.scss
+// Переменные для темы VS Code
+$bg-primary: #1e1e1e;
+$bg-secondary: #252526;
+$bg-tertiary: #2d2d30;
+$text-primary: #cccccc;
+$text-secondary: #969696;
+$accent-blue: #007acc;
+$accent-orange: #ce9178;
+$accent-green: #608b4e;
+$accent-purple: #c586c0;
+$accent-yellow: #dcdcaa;
+$border-color: #3e3e42;
+
+// Основной контейнер - полноэкранный
+.vscode-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: $bg-primary;
+  color: $text-primary;
+  font-family: "Cascadia Code", "Fira Code", "SF Mono", "Monaco", "Menlo", "Consolas",
+    monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  opacity: 0;
+  transform: scale(0.95) translateY(20px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 122, 204, 0.02) 0%,
+      transparent 50%,
+      rgba(206, 145, 120, 0.02) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  // Верхняя панель с контролами и табами
+  .vscode-header {
+    background: $bg-tertiary;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    backdrop-filter: blur(10px);
+
+    .window-controls {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 10px;
+
+      .control {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.2);
+          transition: all 0.3s ease;
+          transform: translate(-50%, -50%);
+        }
+
+        &:hover {
+          transform: scale(1.1);
+          &::before {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        &.close {
+          background: linear-gradient(135deg, #ff5f57, #ff3b30);
+        }
+
+        &.minimize {
+          background: linear-gradient(135deg, #ffbd2e, #ff9500);
+        }
+
+        &.maximize {
+          background: linear-gradient(135deg, #28ca42, #30d158);
+        }
+      }
+    }
+
+    .file-tabs {
+      display: flex;
+      height: 100%;
+      flex: 1;
+
+      .tab {
+        background: $bg-secondary;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-right: 1px solid $border-color;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 14px;
+        min-width: 140px;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: $accent-blue;
+          transition: width 0.3s ease;
+        }
+
+        &:hover {
+          background: lighten($bg-secondary, 3%);
+          transform: translateY(-1px);
+          
+          &::before {
+            width: 100%;
+          }
+        }
+
+        &.active {
+          background: $bg-primary;
+          border-bottom: 2px solid $accent-blue;
+          
+          &::before {
+            width: 100%;
+          }
+        }
+
+        .tab-icon {
+          font-size: 18px;
+          animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        .tab-close {
+          margin-left: auto;
+          opacity: 0;
+          transition: all 0.3s ease;
+          font-weight: bold;
+          border-radius: 3px;
+          padding: 2px 4px;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ff6b6b;
+          }
+        }
+
+        &:hover .tab-close {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  // Основная область редактора
+  .vscode-body {
+    flex: 1;
+    display: flex;
+    height: calc(100vh - 40px - 24px); // Вычитаем header и status bar
+
+    // Боковая панель с иконками
+    .sidebar {
+      width: 60px;
+      background: $bg-tertiary;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 0;
+      gap: 6px;
+      border-right: 1px solid $border-color;
+
+      .sidebar-icon {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 24px;
+        border-radius: 8px;
+        margin: 0 6px;
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: -6px;
+          top: 50%;
+          width: 3px;
+          height: 0;
+          background: $accent-blue;
+          transition: height 0.3s ease;
+          transform: translateY(-50%);
+          border-radius: 2px;
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          transform: scale(1.05);
+        }
+
+        &.active {
+          background: rgba(255, 255, 255, 0.1);
+          
+          &::before {
+            height: 20px;
+          }
+        }
+      }
+    }
+
+    // Проводник файлов
+    .file-explorer {
+      width: 280px;
+      background: $bg-secondary;
+      border-right: 1px solid $border-color;
+      display: flex;
+      flex-direction: column;
+
+      .explorer-header {
+        padding: 12px 16px;
+        font-size: 12px;
+        font-weight: bold;
+        color: $text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: linear-gradient(135deg, rgba(0, 122, 204, 0.1) 0%, transparent 100%);
+      }
+
+      .folder-tree {
+        padding: 0 12px;
+        flex: 1;
+        overflow-y: auto;
+
+        .folder,
+        .file {
+          padding: 6px 12px;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          font-size: 14px;
+          position: relative;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(4px);
+          }
+
+          &.active {
+            background: rgba(0, 122, 204, 0.2);
+            color: lighten($text-primary, 10%);
+          }
+        }
+
+        .folder {
+          &.expanded {
+            .folder-content {
+              margin-left: 20px;
+              margin-top: 6px;
+              border-left: 1px solid rgba(255, 255, 255, 0.1);
+              padding-left: 10px;
+            }
+          }
+        }
+      }
+    }
+
+    // Редактор кода
+    .code-editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: $bg-primary;
+
+      .editor-header {
+        height: 40px;
+        background: $bg-secondary;
+        border-bottom: 1px solid $border-color;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+
+        .breadcrumb {
+          font-size: 14px;
+          color: $text-secondary;
+        }
+
+        .animation-controls {
+          display: flex;
+          gap: 12px;
+          
+          .control-btn {
+            background: $accent-blue;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0, 122, 204, 0.2);
+
+            &:hover {
+              background: lighten($accent-blue, 10%);
+              transform: translateY(-2px);
+              box-shadow: 0 4px 16px rgba(0, 122, 204, 0.3);
+            }
+
+            &:active {
+              transform: translateY(-1px);
+            }
+
+            &.sound {
+              background: linear-gradient(135deg, #a55eea, #8854d0);
+              box-shadow: 0 2px 8px rgba(165, 94, 234, 0.2);
+              &:hover {
+                background: linear-gradient(135deg, #b368fc, #9c88ff);
+                box-shadow: 0 4px 16px rgba(165, 94, 234, 0.3);
+              }
+            }
+
+            &.skip {
+              background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+              box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
+              &:hover {
+                background: linear-gradient(135deg, #ff7979, #fd79a8);
+                box-shadow: 0 4px 16px rgba(255, 107, 107, 0.3);
+              }
+            }
+
+            &.reset {
+              background: linear-gradient(135deg, #00d2d3, #54a0ff);
+              box-shadow: 0 2px 8px rgba(0, 210, 211, 0.2);
+              &:hover {
+                background: linear-gradient(135deg, #01a3a4, #2e86de);
+                box-shadow: 0 4px 16px rgba(0, 210, 211, 0.3);
+              }
+            }
+          }
+        }
+      }
+
+      .code-area {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+
+        .line-numbers {
+          width: 60px;
+          background: $bg-primary;
+          padding: 20px 12px;
+          font-size: 14px;
+          color: $text-secondary;
+          text-align: right;
+          user-select: none;
+          border-right: 1px solid $border-color;
+
+          .line-number {
+            height: 25px;
+            transition: all 0.3s ease;
+            
+            &.current {
+              color: $accent-blue;
+              font-weight: 600;
+              position: relative;
+              
+              &::before {
+                content: '';
+                position: absolute;
+                right: -12px;
+                top: 50%;
+                width: 3px;
+                height: 20px;
+                background: $accent-blue;
+                transform: translateY(-50%);
+                border-radius: 2px;
+              }
+            }
+          }
+        }
+
+        .code-content {
+          flex: 1;
+          padding: 20px;
+          overflow: auto;
+          position: relative;
+
+          pre {
+            margin: 0;
+            font-family: inherit;
+            font-size: 16px;
+            line-height: 25px;
+
+            code.javascript {
+              color: $text-primary;
+
+              // Улучшенная подсветка синтаксиса
+              .keyword {
+                color: #569cd6;
+                font-weight: 600;
+                text-shadow: 0 0 10px rgba(86, 156, 214, 0.3);
+              }
+
+              .string {
+                color: #ce9178;
+                font-style: normal;
+              }
+
+              .comment {
+                color: #6a9955;
+                font-style: italic;
+                opacity: 0.8;
+              }
+
+              .component {
+                color: #4ec9b0;
+                font-weight: 600;
+                text-shadow: 0 0 10px rgba(78, 201, 176, 0.2);
+              }
+
+              .number {
+                color: #b5cea8;
+                font-weight: 500;
+              }
+
+              .jsx {
+                color: #92c5f8;
+                font-weight: 500;
+              }
+
+              .punctuation {
+                color: #d4d4d4;
+                font-weight: 400;
+              }
+
+              .operator {
+                color: #d4d4d4;
+                font-weight: 500;
+              }
+
+              .method {
+                color: #dcdcaa;
+                font-weight: 500;
+              }
+
+              .template-literal {
+                color: #4fc1ff;
+                font-weight: 500;
+              }
+            }
+          }
+
+          .cursor {
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            width: 2px;
+            height: 25px;
+            animation: cursorBlink 1s infinite, cursorGlow 2s infinite;
+            margin-left: 1px;
+            border-radius: 1px;
+          }
+        }
+      }
+    }
+  }
+
+  // Статусная строка
+  .status-bar {
+    height: 24px;
+    background: linear-gradient(135deg, $accent-blue, darken($accent-blue, 10%));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    font-size: 13px;
+    font-weight: 500;
+
+    .status-left,
+    .status-right {
+      display: flex;
+      gap: 20px;
+    }
+
+    .branch,
+    .errors,
+    .warnings,
+    .info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    .info {
+      animation: statusPulse 2s ease-in-out infinite;
+    }
+  }
+}
+
+// Анимации
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes cursorBlink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+@keyframes cursorGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px #00d4ff;
+  }
+  50% {
+    box-shadow: 0 0 15px #00d4ff, 0 0 25px #00d4ff;
+  }
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Адаптивность для мобильных устройств
+@media (max-width: 768px) {
+  .vscode-container {
+    font-size: 14px;
+
+    .vscode-body {
+      .file-explorer {
+        width: 240px;
+      }
+
+      .sidebar {
+        width: 50px;
+
+        .sidebar-icon {
+          height: 45px;
+          font-size: 20px;
+        }
+      }
+
+      .code-editor {
+        .code-area {
+          .line-numbers {
+            width: 50px;
+            padding: 20px 8px;
+          }
+
+          .code-content {
+            padding: 20px 16px;
+            
+            pre code {
+              font-size: 14px;
+              line-height: 22px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .vscode-container {
+    font-size: 12px;
+    
+    .vscode-body {
+      .file-explorer {
+        display: none;
+      }
+
+      .sidebar {
+        width: 45px;
+      }
+
+      .code-editor {
+        .editor-header {
+          padding: 0 15px;
+          
+          .animation-controls {
+            gap: 8px;
+            
+            .control-btn {
+              padding: 6px 12px;
+              font-size: 12px;
+            }
+          }
+        }
+
+        .code-area {
+          .line-numbers {
+            width: 45px;
+            padding: 15px 6px;
+          }
+
+          .code-content {
+            padding: 15px 12px;
+            
+            pre code {
+              font-size: 12px;
+              line-height: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Специальные эффекты для стартовой анимации
+.vscode-container {
+  .code-content {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(0, 212, 255, 0.03) 50%,
+        transparent 70%
+      );
+      animation: scanline 4s infinite;
+      pointer-events: none;
+    }
+  }
+}
