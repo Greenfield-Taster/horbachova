@@ -124,30 +124,119 @@ export default App;`,
     return config.normal.min + Math.random() * (config.normal.max - config.normal.min);
   };
 
+  // Полностью переписанная функция подсветки синтаксиса без пересечений
   const colorizeCode = (code) => {
-    return code
-      // Комментарии (должны быть первыми)
-      .replace(/(\/\/.*)/g, '<span class="comment">$1</span>')
-      // Ключевые слова
-      .replace(/\b(import|export|default|const|let|var|function|return|from|async|await|try|catch|if|else|new|Promise|setTimeout|console)\b/g, '<span class="keyword">$1</span>')
-      // Строки
-      .replace(/('.*?'|".*?"|`.*?`)/g, '<span class="string">$1</span>')
+    const tokens = [];
+    let i = 0;
+    
+    while (i < code.length) {
+      let matched = false;
+      
+      // Комментарии (высший приоритет)
+      if (code.slice(i, i + 2) === '//') {
+        const lineEnd = code.indexOf('\n', i);
+        const commentEnd = lineEnd === -1 ? code.length : lineEnd;
+        tokens.push({ type: 'comment', text: code.slice(i, commentEnd) });
+        i = commentEnd;
+        matched = true;
+      }
+      // Строковые литералы
+      else if (['"', "'", '`'].includes(code[i])) {
+        const quote = code[i];
+        let j = i + 1;
+        while (j < code.length && code[j] !== quote) {
+          if (code[j] === '\\\\') j++; // Пропускаем экранированные символы
+          j++;
+        }
+        if (j < code.length) j++; // Включаем закрывающую кавычку
+        tokens.push({ type: 'string', text: code.slice(i, j) });
+        i = j;
+        matched = true;
+      }
       // Числа
-      .replace(/\b(\d+)\b/g, '<span class="number">$1</span>')
-      // React компоненты и хуки
-      .replace(/\b(React|useState|useEffect|App|Router|Routes|Route|BrowserRouter|Header|About|Projects|Contact)\b/g, '<span class="component">$1</span>')
-      // JSX теги
-      .replace(/(<\/?[\w-]+[^>]*>)/g, '<span class="jsx">$1</span>')
-      // Операторы
-      .replace(/(=>|===|!==|&&|\|\||[+][+]|--|[+]=|-=|\*=|\/=)/g, '<span class="operator">$1</span>')
-      // Простые операторы
-      .replace(/([=\+\-\*\/])/g, '<span class="operator">$1</span>')
+      else if (/\d/.test(code[i])) {
+        let j = i;
+        while (j < code.length && /[\d.]/.test(code[j])) j++;
+        tokens.push({ type: 'number', text: code.slice(i, j) });
+        i = j;
+        matched = true;
+      }
+      // Идентификаторы и ключевые слова
+      else if (/[a-zA-Z_$]/.test(code[i])) {
+        let j = i;
+        while (j < code.length && /[a-zA-Z0-9_$]/.test(code[j])) j++;
+        const word = code.slice(i, j);
+        
+        let type = 'identifier';
+        const keywords = ['import', 'export', 'default', 'const', 'let', 'var', 'function', 'return', 'from', 'async', 'await', 'try', 'catch', 'if', 'else', 'new', 'Promise', 'setTimeout', 'console'];
+        const components = ['React', 'useState', 'useEffect', 'App', 'Router', 'Routes', 'Route', 'BrowserRouter', 'Header', 'About', 'Projects', 'Contact'];
+        
+        if (keywords.includes(word)) {
+          type = 'keyword';
+        } else if (components.includes(word)) {
+          type = 'component';
+        }
+        
+        tokens.push({ type, text: word });
+        i = j;
+        matched = true;
+      }
+      // Многосимвольные операторы
+      else if (code.slice(i, i + 3) === '===') {
+        tokens.push({ type: 'operator', text: '===' });
+        i += 3;
+        matched = true;
+      }
+      else if (code.slice(i, i + 2) === '=>') {
+        tokens.push({ type: 'operator', text: '=>' });
+        i += 2;
+        matched = true;
+      }
+      else if (code.slice(i, i + 2) === '&&') {
+        tokens.push({ type: 'operator', text: '&&' });
+        i += 2;
+        matched = true;
+      }
+      else if (code.slice(i, i + 2) === '++') {
+        tokens.push({ type: 'operator', text: '++' });
+        i += 2;
+        matched = true;
+      }
+      // Односимвольные операторы
+      else if (['=', '+', '-', '*', '/', '!', '&', '|'].includes(code[i])) {
+        tokens.push({ type: 'operator', text: code[i] });
+        i++;
+        matched = true;
+      }
       // Пунктуация
-      .replace(/([{}()\[\];,.])/g, '<span class="punctuation">$1</span>')
-      // Методы и свойства
-      .replace(/\.(\w+)/g, '.<span class="method">$1</span>')
-      // Шаблонные литералы
-      .replace(/(\$\{[^}]*\})/g, '<span class="template-literal">$1</span>');
+      else if (['{', '}', '(', ')', '[', ']', ';', ',', '.', ':', '?'].includes(code[i])) {
+        tokens.push({ type: 'punctuation', text: code[i] });
+        i++;
+        matched = true;
+      }
+      
+      // Если ничего не совпало, добавляем как обычный текст
+      if (!matched) {
+        tokens.push({ type: 'text', text: code[i] });
+        i++;
+      }
+    }
+    
+    // Формируем HTML с правильным экранированием
+    return tokens.map(token => {
+      const escapedText = token.text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+      
+      if (token.type === 'text' || token.type === 'identifier') {
+        return escapedText;
+      }
+      
+      return `<span class="${token.type}">${escapedText}</span>`;
+    }).join('');
   };
 
   useEffect(() => {
