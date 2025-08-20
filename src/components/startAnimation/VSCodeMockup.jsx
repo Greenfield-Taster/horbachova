@@ -15,23 +15,21 @@ const VSCodeMockup = () => {
 
   const fullCode = useMemo(
     () => `// Horbachova Portfolio
-import React, { useState } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import React from 'react';
+import './App.css';
 
 const App = () => {
-  const [theme, setTheme] = useState('dark');
+  const skills = ['React', 'JavaScript', 'Design'];
+  const message = 'Hello, World! 👋';
   
   return (
-    <Router>
-      <div className={\`app \${theme}\`}>
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<About />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+    <div className="portfolio-magic">
+      <h1>{message}</h1>
+      <p>Lets create something amazing together! ✨</p>
+      {skills.map(skill => 
+        <span key={skill} className="skill">{skill}</span>
+      )}
+    </div>
   );
 };
 
@@ -50,64 +48,78 @@ export default App;`,
   // Вычисление позиции курсора
   const updateCursorPosition = (charIndex) => {
     const textUpToCursor = fullCode.slice(0, charIndex);
-    const lines = textUpToCursor.split('\n');
+    const lines = textUpToCursor.split("\n");
     setCurrentLine(lines.length);
     setCurrentCol(lines[lines.length - 1].length + 1);
   };
 
   const getTypingSpeed = (char, prevChar) => {
     const config = ANIMATION_CONFIG.CHAR_SPEEDS;
-    
+
     // Быстрее печатаем пробелы
-    if (char === ' ') {
-      return config.space.min + Math.random() * (config.space.max - config.space.min);
+    if (char === " ") {
+      return (
+        config.space.min + Math.random() * (config.space.max - config.space.min)
+      );
     }
-    
+
     // Пунктуация
-    if ([',', ';', '(', ')', '{', '}', '[', ']'].includes(char)) {
-      return config.punctuation.min + Math.random() * (config.punctuation.max - config.punctuation.min);
+    if ([",", ";", "(", ")", "{", "}", "[", "]"].includes(char)) {
+      return (
+        config.punctuation.min +
+        Math.random() * (config.punctuation.max - config.punctuation.min)
+      );
     }
-    
+
     // Медленнее на конце строки
-    if (prevChar === '\n') {
-      return config.newline.min + Math.random() * (config.newline.max - config.newline.min);
+    if (prevChar === "\n") {
+      return (
+        config.newline.min +
+        Math.random() * (config.newline.max - config.newline.min)
+      );
     }
-    
+
     // Пауза после комментариев
-    if (prevChar === '/' && char === '/') {
-      return config.comment.min + Math.random() * (config.comment.max - config.comment.min);
+    if (prevChar === "/" && char === "/") {
+      return (
+        config.comment.min +
+        Math.random() * (config.comment.max - config.comment.min)
+      );
     }
-    
+
     // Обычная скорость
-    return config.normal.min + Math.random() * (config.normal.max - config.normal.min);
+    return (
+      config.normal.min +
+      Math.random() * (config.normal.max - config.normal.min)
+    );
   };
 
   // Полностью переписанная функция подсветки синтаксиса без пересечений
   const colorizeCode = (code) => {
     const tokens = [];
     let i = 0;
-    
+
     while (i < code.length) {
       let matched = false;
-      
+
       // Комментарии (высший приоритет)
-      if (code.slice(i, i + 2) === '//') {
-        const lineEnd = code.indexOf('\n', i);
+      if (code.slice(i, i + 2) === "//") {
+        const lineEnd = code.indexOf("\n", i);
         const commentEnd = lineEnd === -1 ? code.length : lineEnd;
-        tokens.push({ type: 'comment', text: code.slice(i, commentEnd) });
+        tokens.push({ type: "comment", text: code.slice(i, commentEnd) });
         i = commentEnd;
         matched = true;
       }
       // Строковые литералы
-      else if (['"', "'", '`'].includes(code[i])) {
+      else if (['"', "'", "`"].includes(code[i])) {
         const quote = code[i];
         let j = i + 1;
         while (j < code.length && code[j] !== quote) {
-          if (code[j] === '\\\\') j++; // Пропускаем экранированные символы
+          if (code[j] === "\\\\") j++; // Пропускаем экранированные символы
           j++;
         }
         if (j < code.length) j++; // Включаем закрывающую кавычку
-        tokens.push({ type: 'string', text: code.slice(i, j) });
+        tokens.push({ type: "string", text: code.slice(i, j) });
         i = j;
         matched = true;
       }
@@ -115,7 +127,7 @@ export default App;`,
       else if (/\d/.test(code[i])) {
         let j = i;
         while (j < code.length && /[\d.]/.test(code[j])) j++;
-        tokens.push({ type: 'number', text: code.slice(i, j) });
+        tokens.push({ type: "number", text: code.slice(i, j) });
         i = j;
         matched = true;
       }
@@ -124,96 +136,133 @@ export default App;`,
         let j = i;
         while (j < code.length && /[a-zA-Z0-9_$]/.test(code[j])) j++;
         const word = code.slice(i, j);
-        
-        let type = 'identifier';
-        const keywords = ['import', 'export', 'default', 'const', 'let', 'var', 'function', 'return', 'from', 'async', 'await', 'try', 'catch', 'if', 'else', 'new', 'Promise', 'setTimeout', 'console'];
-        const components = ['React', 'useState', 'useEffect', 'App', 'Router', 'Routes', 'Route', 'BrowserRouter', 'Header', 'About', 'Projects', 'Contact'];
-        
+
+        let type = "identifier";
+        const keywords = [
+          "import",
+          "export",
+          "default",
+          "const",
+          "let",
+          "var",
+          "function",
+          "return",
+          "from",
+          "async",
+          "await",
+          "try",
+          "catch",
+          "if",
+          "else",
+          "new",
+          "Promise",
+          "setTimeout",
+          "console",
+        ];
+        const components = [
+          "React",
+          "useState",
+          "useEffect",
+          "App",
+          "Router",
+          "Routes",
+          "Route",
+          "BrowserRouter",
+          "Header",
+          "About",
+          "Projects",
+          "Contact",
+        ];
+
         if (keywords.includes(word)) {
-          type = 'keyword';
+          type = "keyword";
         } else if (components.includes(word)) {
-          type = 'component';
+          type = "component";
         }
-        
+
         tokens.push({ type, text: word });
         i = j;
         matched = true;
       }
       // Многосимвольные операторы
-      else if (code.slice(i, i + 3) === '===') {
-        tokens.push({ type: 'operator', text: '===' });
+      else if (code.slice(i, i + 3) === "===") {
+        tokens.push({ type: "operator", text: "===" });
         i += 3;
         matched = true;
-      }
-      else if (code.slice(i, i + 2) === '=>') {
-        tokens.push({ type: 'operator', text: '=>' });
+      } else if (code.slice(i, i + 2) === "=>") {
+        tokens.push({ type: "operator", text: "=>" });
         i += 2;
         matched = true;
-      }
-      else if (code.slice(i, i + 2) === '&&') {
-        tokens.push({ type: 'operator', text: '&&' });
+      } else if (code.slice(i, i + 2) === "&&") {
+        tokens.push({ type: "operator", text: "&&" });
         i += 2;
         matched = true;
-      }
-      else if (code.slice(i, i + 2) === '++') {
-        tokens.push({ type: 'operator', text: '++' });
+      } else if (code.slice(i, i + 2) === "++") {
+        tokens.push({ type: "operator", text: "++" });
         i += 2;
         matched = true;
       }
       // Односимвольные операторы
-      else if (['=', '+', '-', '*', '/', '!', '&', '|'].includes(code[i])) {
-        tokens.push({ type: 'operator', text: code[i] });
+      else if (["=", "+", "-", "*", "/", "!", "&", "|"].includes(code[i])) {
+        tokens.push({ type: "operator", text: code[i] });
         i++;
         matched = true;
       }
       // Пунктуация
-      else if (['{', '}', '(', ')', '[', ']', ';', ',', '.', ':', '?'].includes(code[i])) {
-        tokens.push({ type: 'punctuation', text: code[i] });
+      else if (
+        ["{", "}", "(", ")", "[", "]", ";", ",", ".", ":", "?"].includes(
+          code[i]
+        )
+      ) {
+        tokens.push({ type: "punctuation", text: code[i] });
         i++;
         matched = true;
       }
-      
+
       // Если ничего не совпало, добавляем как обычный текст
       if (!matched) {
-        tokens.push({ type: 'text', text: code[i] });
+        tokens.push({ type: "text", text: code[i] });
         i++;
       }
     }
-    
+
     // Формируем HTML с правильным экранированием
-    return tokens.map(token => {
-      const escapedText = token.text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-      
-      if (token.type === 'text' || token.type === 'identifier') {
-        return escapedText;
-      }
-      
-      return `<span class="${token.type}">${escapedText}</span>`;
-    }).join('');
+    return tokens
+      .map((token) => {
+        const escapedText = token.text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+        if (token.type === "text" || token.type === "identifier") {
+          return escapedText;
+        }
+
+        return `<span class="${token.type}">${escapedText}</span>`;
+      })
+      .join("");
   };
 
   useEffect(() => {
     if (currentCharIndex < fullCode.length && showAnimation && isVisible) {
       const currentChar = fullCode[currentCharIndex];
-      const prevChar = currentCharIndex > 0 ? fullCode[currentCharIndex - 1] : '';
+      const prevChar =
+        currentCharIndex > 0 ? fullCode[currentCharIndex - 1] : "";
       const speed = getTypingSpeed(currentChar, prevChar);
-      
+
       const timer = setTimeout(() => {
         setTypedCode(fullCode.slice(0, currentCharIndex + 1));
         updateCursorPosition(currentCharIndex + 1);
-        
+
         // Play typing sound if enabled
         if (soundEnabled) {
           const charType = typingSoundRef.current.getCharType(currentChar);
           typingSoundRef.current.playKeystroke(charType);
         }
-        
-        setCurrentCharIndex(prev => prev + 1);
+
+        setCurrentCharIndex((prev) => prev + 1);
       }, speed);
 
       return () => clearTimeout(timer);
@@ -222,10 +271,16 @@ export default App;`,
       const hideTimer = setTimeout(() => {
         setShowAnimation(false);
       }, ANIMATION_CONFIG.TIMINGS.FINAL_SCREEN_DURATION);
-      
+
       return () => clearTimeout(hideTimer);
     }
-  }, [currentCharIndex, fullCode.length, showAnimation, isVisible, soundEnabled]);
+  }, [
+    currentCharIndex,
+    fullCode.length,
+    showAnimation,
+    isVisible,
+    soundEnabled,
+  ]);
 
   const toggleSound = () => {
     if (!soundEnabled) {
@@ -241,7 +296,10 @@ export default App;`,
     setCurrentCol(1);
     setShowAnimation(true);
     setIsVisible(false);
-    setTimeout(() => setIsVisible(true), ANIMATION_CONFIG.TIMINGS.RESET_TRANSITION);
+    setTimeout(
+      () => setIsVisible(true),
+      ANIMATION_CONFIG.TIMINGS.RESET_TRANSITION
+    );
   };
 
   const skipAnimation = () => {
@@ -255,7 +313,7 @@ export default App;`,
   }
 
   return (
-    <div className={`vscode-container ${isVisible ? 'visible' : ''}`}>
+    <div className={`vscode-container ${isVisible ? "visible" : ""}`}>
       {/* Верхняя панель */}
       <div className="vscode-header">
         <div className="window-controls">
@@ -317,12 +375,12 @@ export default App;`,
           <div className="editor-header">
             <div className="breadcrumb">src &gt; App.js</div>
             <div className="animation-controls">
-              <button 
-                className="control-btn sound" 
+              <button
+                className="control-btn sound"
                 onClick={toggleSound}
-                title={soundEnabled ? 'Disable sound' : 'Enable sound'}
+                title={soundEnabled ? "Disable sound" : "Enable sound"}
               >
-                {soundEnabled ? '🔊' : '🔇'} Sound
+                {soundEnabled ? "🔊" : "🔇"} Sound
               </button>
               <button className="control-btn skip" onClick={skipAnimation}>
                 ⏭ Skip
@@ -335,17 +393,26 @@ export default App;`,
           <div className="code-area">
             <div className="line-numbers">
               {typedCode.split("\n").map((_, index) => (
-                <div key={index} className={`line-number ${index + 1 === currentLine ? 'current' : ''}`}>
+                <div
+                  key={index}
+                  className={`line-number ${
+                    index + 1 === currentLine ? "current" : ""
+                  }`}
+                >
                   {index + 1}
                 </div>
               ))}
             </div>
             <div className="code-content">
               <pre>
-                <code 
+                <code
                   className="javascript"
                   dangerouslySetInnerHTML={{
-                    __html: colorizeCode(typedCode) + (currentCharIndex < fullCode.length ? '<span class="cursor">|</span>' : '')
+                    __html:
+                      colorizeCode(typedCode) +
+                      (currentCharIndex < fullCode.length
+                        ? '<span class="cursor">|</span>'
+                        : ""),
                   }}
                 />
               </pre>
@@ -366,7 +433,9 @@ export default App;`,
           <span>JavaScript React</span>
           <span>UTF-8</span>
           <span>LF</span>
-          <span>Ln {currentLine}, Col {currentCol}</span>
+          <span>
+            Ln {currentLine}, Col {currentCol}
+          </span>
         </div>
       </div>
     </div>
