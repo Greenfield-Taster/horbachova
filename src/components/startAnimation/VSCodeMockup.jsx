@@ -19,7 +19,7 @@ import React from 'react';
 import './App.css';
 
 const App = () => {
-  const skills = ['React', 'JavaScript', 'Design'];
+  const skills = ['React', 'Vue', 'Node.js'];
   const message = 'Hello, World! 👋';
   
   return (
