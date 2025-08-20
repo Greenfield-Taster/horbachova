@@ -3,26 +3,26 @@
 export const ANIMATION_CONFIG = {
   // Typing speeds (in milliseconds)
   SPEEDS: {
-    FAST: { min: 15, max: 40 },
-    NORMAL: { min: 25, max: 75 },
-    SLOW: { min: 50, max: 150 },
-    PAUSE: { min: 100, max: 300 },
+    FAST: { min: 8, max: 15 },
+    NORMAL: { min: 10, max: 25 },
+    SLOW: { min: 15, max: 40 },
+    PAUSE: { min: 20, max: 50 },
   },
 
-  // Character-specific timing
+  // Character-specific timing - faster for 2-second animation
   CHAR_SPEEDS: {
-    space: { min: 20, max: 30 },
-    punctuation: { min: 30, max: 40 },
-    newline: { min: 100, max: 200 },
-    comment: { min: 50, max: 100 },
-    normal: { min: 25, max: 75 },
+    space: { min: 8, max: 12 },
+    punctuation: { min: 10, max: 15 },
+    newline: { min: 25, max: 40 },
+    comment: { min: 15, max: 25 },
+    normal: { min: 8, max: 20 },
   },
 
   // Animation timing
   TIMINGS: {
-    APPEAR_DELAY: 300,
-    FINAL_SCREEN_DURATION: 4000,
-    RESET_TRANSITION: 300,
+    APPEAR_DELAY: 200,
+    FINAL_SCREEN_DURATION: 1500,
+    RESET_TRANSITION: 200,
   },
 
   // Sound configuration

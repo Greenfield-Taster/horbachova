@@ -14,64 +14,22 @@ const VSCodeMockup = () => {
   const typingSoundRef = useRef(new TypingSound());
 
   const fullCode = useMemo(
-    () => `// Horbachova Portfolio - Main Application
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
-import Header from './components/Header';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Contact from './pages/Contact';
+    () => `// Horbachova Portfolio
+import React, { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const App = () => {
   const [theme, setTheme] = useState('dark');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Initialize portfolio
-    const initializeApp = async () => {
-      try {
-        await loadUserPreferences();
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Failed to initialize:', error);
-      }
-    };
-
-    initializeApp();
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
-  };
-
-  const loadUserPreferences = async () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        console.log('✨ Portfolio loaded successfully!');
-        resolve();
-      }, 1000);
-    });
-  };
-
-  if (isLoading) {
-    return <div className="loading">Loading portfolio...</div>;
-  }
-
+  
   return (
     <Router>
       <div className={\`app \${theme}\`}>
-        <Header theme={theme} onToggleTheme={toggleTheme} />
-        <main className="main-content">
+        <Header />
+        <main>
           <Routes>
             <Route path="/" element={<About />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
-        <footer className="footer">
-          <p>&copy; 2025 Horbachova. Crafted with ❤️ and React.</p>
-        </footer>
       </div>
     </Router>
   );
