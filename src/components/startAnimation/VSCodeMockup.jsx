@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./VSCodeMockup.scss";
-import TypingSound from "../../utils/typingSound";
 import { ANIMATION_CONFIG } from "../../utils/animationConfig";
 
 const VSCodeMockup = () => {
@@ -10,10 +9,8 @@ const VSCodeMockup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [currentLine, setCurrentLine] = useState(1);
   const [currentCol, setCurrentCol] = useState(1);
-  const [soundEnabled, setSoundEnabled] = useState(false);
   const [buttonStage, setButtonStage] = useState(0);
   const [animationProgress, setAnimationProgress] = useState(0);
-  const typingSoundRef = useRef(new TypingSound());
 
   const fullCode = useMemo(
     () => `// Horbachova Portfolio
@@ -276,12 +273,6 @@ export default App;`,
         setTypedCode(fullCode.slice(0, currentCharIndex + 1));
         updateCursorPosition(currentCharIndex + 1);
 
-        // Play typing sound if enabled
-        if (soundEnabled) {
-          const charType = typingSoundRef.current.getCharType(currentChar);
-          typingSoundRef.current.playKeystroke(charType);
-        }
-
         setCurrentCharIndex((prev) => prev + 1);
       }, speed);
 
@@ -298,43 +289,7 @@ export default App;`,
 
       return () => clearTimeout(hideTimer);
     }
-  }, [
-    currentCharIndex,
-    fullCode.length,
-    showAnimation,
-    isVisible,
-    soundEnabled,
-  ]);
-
-  const toggleSound = () => {
-    if (!soundEnabled) {
-      typingSoundRef.current.enable();
-    }
-    setSoundEnabled(!soundEnabled);
-  };
-
-  const resetAnimation = () => {
-    setTypedCode("");
-    setCurrentCharIndex(0);
-    setCurrentLine(1);
-    setCurrentCol(1);
-    setShowAnimation(true);
-    setIsVisible(false);
-    setButtonStage(0);
-    setAnimationProgress(0);
-    setTimeout(
-      () => setIsVisible(true),
-      ANIMATION_CONFIG.TIMINGS.RESET_TRANSITION
-    );
-  };
-
-  const skipAnimation = () => {
-    setTypedCode(fullCode);
-    setCurrentCharIndex(fullCode.length);
-    updateCursorPosition(fullCode.length);
-    setAnimationProgress(1);
-    setButtonStage(ANIMATION_CONFIG.BUTTON_STAGES.length - 1);
-  };
+  }, [currentCharIndex, fullCode.length, showAnimation, isVisible]);
 
   if (!showAnimation) {
     return null; // Скрываем анимацию после завершения
@@ -346,6 +301,12 @@ export default App;`,
 
   return (
     <div className={`vscode-container ${isVisible ? "visible" : ""}`}>
+      {/* Затемнение по углам для фокуса */}
+      <div className="corner-vignette corner-vignette--top-left"></div>
+      <div className="corner-vignette corner-vignette--top-right"></div>
+      <div className="corner-vignette corner-vignette--bottom-left"></div>
+      <div className="corner-vignette corner-vignette--bottom-right"></div>
+
       {/* Левая половина - VS Code */}
       <div className="left-section">
         {/* Верхняя панель */}
@@ -408,21 +369,6 @@ export default App;`,
           <div className="code-editor">
             <div className="editor-header">
               <div className="breadcrumb">src &gt; App.js</div>
-              <div className="animation-controls">
-                <button
-                  className="control-btn sound"
-                  onClick={toggleSound}
-                  title={soundEnabled ? "Disable sound" : "Enable sound"}
-                >
-                  {soundEnabled ? "🔊" : "🔇"} Sound
-                </button>
-                <button className="control-btn skip" onClick={skipAnimation}>
-                  ⏭ Skip
-                </button>
-                <button className="control-btn reset" onClick={resetAnimation}>
-                  🔄 Reset
-                </button>
-              </div>
             </div>
             <div className="code-area">
               <div className="line-numbers">
@@ -479,21 +425,6 @@ export default App;`,
         <button
           className={`evolving-button ${currentButtonStyle.className}`}
           style={currentButtonStyle.styles}
-          onClick={() => console.log("Кнопка нажата!")}
-          onMouseEnter={(e) => {
-            if (buttonStage >= 4) {
-              // Только на последних стадиях
-              e.target.style.transform = "translateY(-2px)";
-              e.target.style.boxShadow =
-                "0 6px 20px rgba(0, 122, 204, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (buttonStage >= 4) {
-              e.target.style.transform = "translateY(0)";
-              e.target.style.boxShadow = currentButtonStyle.styles.boxShadow;
-            }
-          }}
         >
           Button
         </button>

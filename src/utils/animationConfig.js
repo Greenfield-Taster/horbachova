@@ -87,22 +87,24 @@ export const ANIMATION_CONFIG = {
       }
     },
     {
-      // Stage 5: финальная красивая кнопка
+      // Stage 5: финальная красивая кнопка с улучшенным фокусом
       className: 'btn-stage-5',
       styles: {
         background: 'linear-gradient(135deg, #007acc, #0099ff)',
         border: '2px solid transparent',
         backgroundClip: 'padding-box',
-        padding: '14px 28px',
-        fontSize: '18px',
-        fontWeight: '600',
+        padding: '16px 32px',
+        fontSize: '20px',
+        fontWeight: '700',
         color: '#fff',
         borderRadius: '12px',
         cursor: 'pointer',
         fontFamily: 'system-ui, -apple-system, sans-serif',
-        boxShadow: '0 4px 16px rgba(0, 122, 204, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        boxShadow: '0 8px 32px rgba(0, 122, 204, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3)',
         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        transform: 'translateY(0)'
+        transform: 'translateY(0) scale(1)',
+        textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+        letterSpacing: '0.5px'
       }
     }
   ],
@@ -111,24 +113,7 @@ export const ANIMATION_CONFIG = {
   BUTTON_TIMING: {
     STAGE_DURATION: 600, // каждый стейдж 0.6 секунды
     TRANSITION_DURATION: 300 // переход между стейджами
-  },
-
-  // Sound configuration
-  SOUND: {
-    ENABLED_BY_DEFAULT: true,
-    FREQUENCIES: {
-      normal: { base: 800, variation: 200 },
-      space: { base: 400, variation: 0 },
-      punctuation: { base: 1200, variation: 0 },
-      newline: { base: 600, variation: 0 },
-    },
-    DURATIONS: {
-      normal: 0.08,
-      space: 0.04,
-      punctuation: 0.06,
-      newline: 0.1,
-    },
-  },
+  }
 };
 
 export default ANIMATION_CONFIG;
