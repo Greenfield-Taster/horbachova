@@ -38,6 +38,12 @@ $border-color: #3e3e42;
     opacity: 1;
     transform: scale(1) translateY(0);
   }
+  
+  &.fade-out {
+    opacity: 0;
+    transform: scale(0.98) translateY(-10px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
   &::before {
     content: "";
@@ -677,7 +683,80 @@ $border-color: #3e3e42;
   }
 }
 
+// Анимированный курсор
+.animated-cursor {
+  position: fixed;
+  z-index: 10000;
+  pointer-events: none;
+  transition: all 0.1s ease-out;
+  
+  .cursor-svg {
+    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.6)) drop-shadow(0 0 12px rgba(0, 153, 204, 0.4));
+    animation: cursorPulse 1.5s ease-in-out infinite;
+  }
+  
+  &.moving .cursor-svg {
+    animation: cursorPulse 0.5s ease-in-out infinite, cursorMove 0.1s ease-out;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.8)) drop-shadow(0 0 20px rgba(0, 153, 204, 0.6)) drop-shadow(0 0 30px rgba(0, 102, 204, 0.4));
+  }
+}
+
+.cursor-trail {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.8) 0%, rgba(0, 153, 204, 0.4) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 6px rgba(0, 212, 255, 0.6), 0 0 12px rgba(0, 212, 255, 0.3);
+  transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+}
+
+// Эффект клика на кнопку
+.evolving-button.clicked {
+  animation: buttonClick 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Эффект приближения курсора
+.evolving-button.near-cursor {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 12px 40px rgba(0, 122, 204, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.4) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
 // Анимации
+@keyframes cursorPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes cursorMove {
+  0% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes buttonClick {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+    box-shadow: 0 4px 16px rgba(0, 122, 204, 0.7), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @keyframes iconFloat {
   0%,
   100% {

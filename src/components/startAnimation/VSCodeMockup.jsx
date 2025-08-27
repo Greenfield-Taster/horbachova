@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./VSCodeMockup.scss";
 import { ANIMATION_CONFIG } from "../../utils/animationConfig";
+import CursorSVG from "../../assets/CursorSVG.svg";
 
-const VSCodeMockup = () => {
+const VSCodeMockup = ({ onAnimationComplete }) => {
   const [typedCode, setTypedCode] = useState("");
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [showAnimation, setShowAnimation] = useState(true);
@@ -11,6 +12,15 @@ const VSCodeMockup = () => {
   const [currentCol, setCurrentCol] = useState(1);
   const [buttonStage, setButtonStage] = useState(0);
   const [animationProgress, setAnimationProgress] = useState(0);
+  const [showCursor, setShowCursor] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [isAnimatingCursor, setIsAnimatingCursor] = useState(false);
+  const [cursorTrail, setCursorTrail] = useState([]);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isNearButton, setIsNearButton] = useState(false);
+
+  const buttonRef = useRef(null);
+  const containerRef = useRef(null);
 
   const fullCode = useMemo(
     () => `// Horbachova Portfolio
@@ -244,6 +254,92 @@ export default App;`,
       .join("");
   };
 
+  // Функция анимации курсора к кнопке
+  const animateCursorToButton = () => {
+    if (!buttonRef.current || !containerRef.current) return;
+
+    // const containerRect = containerRef.current.getBoundingClientRect();
+    const buttonRect = buttonRef.current.getBoundingClientRect();
+
+    // Начальная позиция - центр экрана
+    const startX = window.innerWidth / 2;
+    const startY = window.innerHeight / 1.5;
+
+    // Конечная позиция - центр кнопки
+    const endX = buttonRect.left + buttonRect.width / 2;
+    const endY = buttonRect.top + buttonRect.height / 2;
+
+    setShowCursor(true);
+    setIsAnimatingCursor(true);
+
+    setCursorPosition({ x: startX, y: startY });
+
+    // Анимация движения курсора
+    const startTime = Date.now();
+    const duration = ANIMATION_CONFIG.TIMINGS.CURSOR_ANIMATION_DURATION;
+
+    const animateStep = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Используем easing функцию для плавности
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+
+      const currentX = startX + (endX - startX) * easeProgress;
+      const currentY = startY + (endY - startY) * easeProgress;
+
+      setCursorPosition({ x: currentX, y: currentY });
+
+      // Обновляем след курсора
+      setCursorTrail((prev) => {
+        const newTrail = [
+          ...prev,
+          { x: currentX, y: currentY, timestamp: Date.now() },
+        ];
+        // Оставляем только последние элементы следа
+        return newTrail.slice(-ANIMATION_CONFIG.CURSOR.TRAIL_LENGTH);
+      });
+
+      // Проверяем расстояние до кнопки
+      const distanceToButton = Math.sqrt(
+        Math.pow(currentX - endX, 2) + Math.pow(currentY - endY, 2)
+      );
+
+      if (distanceToButton < 100 && !isNearButton) {
+        setIsNearButton(true);
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(animateStep);
+      } else {
+        // Анимация завершена, имитируем клик
+        setIsAnimatingCursor(false);
+
+        // Задержка перед "кликом"
+        setTimeout(() => {
+          // Эффект клика
+          if (buttonRef.current) {
+            buttonRef.current.classList.add("clicked");
+          }
+
+          // Завершаем анимацию
+          setTimeout(() => {
+            setIsFadingOut(true);
+
+            setTimeout(() => {
+              setShowAnimation(false);
+              if (onAnimationComplete) {
+                onAnimationComplete();
+              }
+            }, ANIMATION_CONFIG.TIMINGS.FADE_OUT_DURATION);
+          }, 100);
+        }, ANIMATION_CONFIG.TIMINGS.CURSOR_CLICK_DELAY);
+      }
+    };
+
+    requestAnimationFrame(animateStep);
+  };
+
   // Обновляем прогресс анимации для синхронизации
   useEffect(() => {
     if (currentCharIndex < fullCode.length && showAnimation && isVisible) {
@@ -282,12 +378,12 @@ export default App;`,
       setAnimationProgress(1);
       setButtonStage(ANIMATION_CONFIG.BUTTON_STAGES.length - 1);
 
-      // Анимация завершена, показываем финальный экран
-      const hideTimer = setTimeout(() => {
-        setShowAnimation(false);
+      // Ждём и запускаем анимацию курсора
+      const cursorTimer = setTimeout(() => {
+        animateCursorToButton();
       }, ANIMATION_CONFIG.TIMINGS.FINAL_SCREEN_DURATION);
 
-      return () => clearTimeout(hideTimer);
+      return () => clearTimeout(cursorTimer);
     }
   }, [currentCharIndex, fullCode.length, showAnimation, isVisible]);
 
@@ -300,12 +396,54 @@ export default App;`,
     ANIMATION_CONFIG.BUTTON_STAGES[0];
 
   return (
-    <div className={`vscode-container ${isVisible ? "visible" : ""}`}>
+    <div
+      ref={containerRef}
+      className={`vscode-container ${isVisible ? "visible" : ""} ${
+        isFadingOut ? "fade-out" : ""
+      }`}
+    >
       {/* Затемнение по углам для фокуса */}
       <div className="corner-vignette corner-vignette--top-left"></div>
       <div className="corner-vignette corner-vignette--top-right"></div>
       <div className="corner-vignette corner-vignette--bottom-left"></div>
       <div className="corner-vignette corner-vignette--bottom-right"></div>
+
+      {/* Анимированный курсор */}
+      {showCursor && (
+        <>
+          {/* След курсора */}
+          {cursorTrail.map((point, index) => {
+            const age = Date.now() - point.timestamp;
+            const maxAge = ANIMATION_CONFIG.CURSOR.TRAIL_FADE_TIME;
+            const opacity = Math.max(0, (maxAge - age) / maxAge) * 0.4;
+            const scale = 0.2 + (opacity / 0.4) * 0.6;
+
+            return (
+              <div
+                key={`${point.x}-${point.y}-${point.timestamp}`}
+                className="cursor-trail"
+                style={{
+                  left: point.x - 4,
+                  top: point.y - 4,
+                  opacity,
+                  transform: `scale(${scale})`,
+                }}
+              />
+            );
+          })}
+
+          {/* Основной курсор */}
+          <div
+            className={`animated-cursor ${isAnimatingCursor ? "moving" : ""}`}
+            style={{
+              left: cursorPosition.x - ANIMATION_CONFIG.CURSOR.SIZE / 2,
+              top: cursorPosition.y - ANIMATION_CONFIG.CURSOR.SIZE / 2,
+            }}
+          >
+            <img src={CursorSVG} className="cursor-svg" alt="cursor" />
+          </div>
+        </>
+      )}
 
       {/* Левая половина - VS Code */}
       <div className="left-section">
@@ -423,7 +561,10 @@ export default App;`,
       {/* Правая половина - белый фон с кнопкой */}
       <div className="right-section">
         <button
-          className={`evolving-button ${currentButtonStyle.className}`}
+          ref={buttonRef}
+          className={`evolving-button ${currentButtonStyle.className} ${
+            isNearButton ? "near-cursor" : ""
+          }`}
           style={currentButtonStyle.styles}
         >
           Button
