@@ -11,6 +11,8 @@ const VSCodeMockup = () => {
   const [currentLine, setCurrentLine] = useState(1);
   const [currentCol, setCurrentCol] = useState(1);
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [buttonStage, setButtonStage] = useState(0);
+  const [animationProgress, setAnimationProgress] = useState(0);
   const typingSoundRef = useRef(new TypingSound());
 
   const fullCode = useMemo(
@@ -245,6 +247,24 @@ export default App;`,
       .join("");
   };
 
+  // Обновляем прогресс анимации для синхронизации
+  useEffect(() => {
+    if (currentCharIndex < fullCode.length && showAnimation && isVisible) {
+      const progress = currentCharIndex / fullCode.length;
+      setAnimationProgress(progress);
+
+      // Определяем стадию кнопки на основе прогресса
+      const stageIndex = Math.floor(
+        progress * ANIMATION_CONFIG.BUTTON_STAGES.length
+      );
+      const clampedStageIndex = Math.min(
+        stageIndex,
+        ANIMATION_CONFIG.BUTTON_STAGES.length - 1
+      );
+      setButtonStage(clampedStageIndex);
+    }
+  }, [currentCharIndex, fullCode.length, showAnimation, isVisible]);
+
   useEffect(() => {
     if (currentCharIndex < fullCode.length && showAnimation && isVisible) {
       const currentChar = fullCode[currentCharIndex];
@@ -267,6 +287,10 @@ export default App;`,
 
       return () => clearTimeout(timer);
     } else if (currentCharIndex >= fullCode.length) {
+      // Завершаем анимацию кнопки
+      setAnimationProgress(1);
+      setButtonStage(ANIMATION_CONFIG.BUTTON_STAGES.length - 1);
+
       // Анимация завершена, показываем финальный экран
       const hideTimer = setTimeout(() => {
         setShowAnimation(false);
@@ -296,6 +320,8 @@ export default App;`,
     setCurrentCol(1);
     setShowAnimation(true);
     setIsVisible(false);
+    setButtonStage(0);
+    setAnimationProgress(0);
     setTimeout(
       () => setIsVisible(true),
       ANIMATION_CONFIG.TIMINGS.RESET_TRANSITION
@@ -306,137 +332,171 @@ export default App;`,
     setTypedCode(fullCode);
     setCurrentCharIndex(fullCode.length);
     updateCursorPosition(fullCode.length);
+    setAnimationProgress(1);
+    setButtonStage(ANIMATION_CONFIG.BUTTON_STAGES.length - 1);
   };
 
   if (!showAnimation) {
     return null; // Скрываем анимацию после завершения
   }
 
+  const currentButtonStyle =
+    ANIMATION_CONFIG.BUTTON_STAGES[buttonStage] ||
+    ANIMATION_CONFIG.BUTTON_STAGES[0];
+
   return (
     <div className={`vscode-container ${isVisible ? "visible" : ""}`}>
-      {/* Верхняя панель */}
-      <div className="vscode-header">
-        <div className="window-controls">
-          <div className="control close"></div>
-          <div className="control minimize"></div>
-          <div className="control maximize"></div>
-        </div>
-        <div className="file-tabs">
-          <div className="tab active">
-            <span className="tab-icon">⚛️</span>
-            App.js
-            <span className="tab-close">×</span>
+      {/* Левая половина - VS Code */}
+      <div className="left-section">
+        {/* Верхняя панель */}
+        <div className="vscode-header">
+          <div className="window-controls">
+            <div className="control close"></div>
+            <div className="control minimize"></div>
+            <div className="control maximize"></div>
           </div>
-          <div className="tab">
-            <span className="tab-icon">🎨</span>
-            App.css
+          <div className="file-tabs">
+            <div className="tab active">
+              <span className="tab-icon">⚛️</span>
+              App.js
+              <span className="tab-close">×</span>
+            </div>
+            <div className="tab">
+              <span className="tab-icon">🎨</span>
+              App.css
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* Основная область */}
-      <div className="vscode-body">
-        {/* Боковая панель */}
-        <div className="sidebar">
-          <div className="sidebar-icon active">📁</div>
-          <div className="sidebar-icon">🔍</div>
-          <div className="sidebar-icon">🔀</div>
-          <div className="sidebar-icon">🐛</div>
-          <div className="sidebar-icon">🧩</div>
         </div>
 
-        {/* Проводник файлов */}
-        <div className="file-explorer">
-          <div className="explorer-header">EXPLORER</div>
-          <div className="folder-tree">
-            <div className="folder expanded">
-              📁 horbachova-portfolio
-              <div className="folder-content">
-                <div className="folder">📁 public</div>
-                <div className="folder expanded">
-                  📁 src
-                  <div className="folder-content">
-                    <div className="file active">📄 App.js</div>
-                    <div className="file">📄 App.css</div>
-                    <div className="file">📄 index.js</div>
-                    <div className="folder">📁 components</div>
-                    <div className="folder">📁 pages</div>
+        {/* Основная область */}
+        <div className="vscode-body">
+          {/* Боковая панель */}
+          <div className="sidebar">
+            <div className="sidebar-icon active">📁</div>
+            <div className="sidebar-icon">🔍</div>
+            <div className="sidebar-icon">🔀</div>
+            <div className="sidebar-icon">🐛</div>
+            <div className="sidebar-icon">🧩</div>
+          </div>
+
+          {/* Проводник файлов */}
+          <div className="file-explorer">
+            <div className="explorer-header">EXPLORER</div>
+            <div className="folder-tree">
+              <div className="folder expanded">
+                📁 horbachova-portfolio
+                <div className="folder-content">
+                  <div className="folder">📁 public</div>
+                  <div className="folder expanded">
+                    📁 src
+                    <div className="folder-content">
+                      <div className="file active">📄 App.js</div>
+                      <div className="file">📄 App.css</div>
+                      <div className="file">📄 index.js</div>
+                      <div className="folder">📁 components</div>
+                      <div className="folder">📁 pages</div>
+                    </div>
                   </div>
+                  <div className="file">📄 package.json</div>
+                  <div className="file">📄 README.md</div>
                 </div>
-                <div className="file">📄 package.json</div>
-                <div className="file">📄 README.md</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Редактор кода */}
+          <div className="code-editor">
+            <div className="editor-header">
+              <div className="breadcrumb">src &gt; App.js</div>
+              <div className="animation-controls">
+                <button
+                  className="control-btn sound"
+                  onClick={toggleSound}
+                  title={soundEnabled ? "Disable sound" : "Enable sound"}
+                >
+                  {soundEnabled ? "🔊" : "🔇"} Sound
+                </button>
+                <button className="control-btn skip" onClick={skipAnimation}>
+                  ⏭ Skip
+                </button>
+                <button className="control-btn reset" onClick={resetAnimation}>
+                  🔄 Reset
+                </button>
+              </div>
+            </div>
+            <div className="code-area">
+              <div className="line-numbers">
+                {typedCode.split("\n").map((_, index) => (
+                  <div
+                    key={index}
+                    className={`line-number ${
+                      index + 1 === currentLine ? "current" : ""
+                    }`}
+                  >
+                    {index + 1}
+                  </div>
+                ))}
+              </div>
+              <div className="code-content">
+                <pre>
+                  <code
+                    className="javascript"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        colorizeCode(typedCode) +
+                        (currentCharIndex < fullCode.length
+                          ? '<span class="cursor">|</span>'
+                          : ""),
+                    }}
+                  />
+                </pre>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Редактор кода */}
-        <div className="code-editor">
-          <div className="editor-header">
-            <div className="breadcrumb">src &gt; App.js</div>
-            <div className="animation-controls">
-              <button
-                className="control-btn sound"
-                onClick={toggleSound}
-                title={soundEnabled ? "Disable sound" : "Enable sound"}
-              >
-                {soundEnabled ? "🔊" : "🔇"} Sound
-              </button>
-              <button className="control-btn skip" onClick={skipAnimation}>
-                ⏭ Skip
-              </button>
-              <button className="control-btn reset" onClick={resetAnimation}>
-                🔄 Reset
-              </button>
-            </div>
+        {/* Статусная строка */}
+        <div className="status-bar">
+          <div className="status-left">
+            <span className="branch">🔀 main</span>
+            <span className="errors">❌ 0</span>
+            <span className="warnings">⚠️ 0</span>
+            <span className="info">ℹ️ Portfolio ready</span>
           </div>
-          <div className="code-area">
-            <div className="line-numbers">
-              {typedCode.split("\n").map((_, index) => (
-                <div
-                  key={index}
-                  className={`line-number ${
-                    index + 1 === currentLine ? "current" : ""
-                  }`}
-                >
-                  {index + 1}
-                </div>
-              ))}
-            </div>
-            <div className="code-content">
-              <pre>
-                <code
-                  className="javascript"
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      colorizeCode(typedCode) +
-                      (currentCharIndex < fullCode.length
-                        ? '<span class="cursor">|</span>'
-                        : ""),
-                  }}
-                />
-              </pre>
-            </div>
+          <div className="status-right">
+            <span>JavaScript React</span>
+            <span>UTF-8</span>
+            <span>LF</span>
+            <span>
+              Ln {currentLine}, Col {currentCol}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Статусная строка */}
-      <div className="status-bar">
-        <div className="status-left">
-          <span className="branch">🔀 main</span>
-          <span className="errors">❌ 0</span>
-          <span className="warnings">⚠️ 0</span>
-          <span className="info">ℹ️ Portfolio ready</span>
-        </div>
-        <div className="status-right">
-          <span>JavaScript React</span>
-          <span>UTF-8</span>
-          <span>LF</span>
-          <span>
-            Ln {currentLine}, Col {currentCol}
-          </span>
-        </div>
+      {/* Правая половина - белый фон с кнопкой */}
+      <div className="right-section">
+        <button
+          className={`evolving-button ${currentButtonStyle.className}`}
+          style={currentButtonStyle.styles}
+          onClick={() => console.log("Кнопка нажата!")}
+          onMouseEnter={(e) => {
+            if (buttonStage >= 4) {
+              // Только на последних стадиях
+              e.target.style.transform = "translateY(-2px)";
+              e.target.style.boxShadow =
+                "0 6px 20px rgba(0, 122, 204, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3)";
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (buttonStage >= 4) {
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = currentButtonStyle.styles.boxShadow;
+            }
+          }}
+        >
+          Button
+        </button>
       </div>
     </div>
   );

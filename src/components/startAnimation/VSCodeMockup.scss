@@ -12,7 +12,7 @@ $accent-purple: #c586c0;
 $accent-yellow: #dcdcaa;
 $border-color: #3e3e42;
 
-// Основной контейнер - полноэкранный
+// Основной контейнер - полноэкранный с разделением на две части
 .vscode-container {
   position: fixed;
   top: 0;
@@ -21,26 +21,26 @@ $border-color: #3e3e42;
   height: 100vh;
   background: $bg-primary;
   color: $text-primary;
-  font-family: "Cascadia Code", "Fira Code", "SF Mono", "Monaco", "Menlo", "Consolas",
-    monospace;
+  font-family: "Cascadia Code", "Fira Code", "SF Mono", "Monaco", "Menlo",
+    "Consolas", monospace;
   font-size: 16px;
   line-height: 1.6;
   overflow: hidden;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   z-index: 9999;
   opacity: 0;
   transform: scale(0.95) translateY(20px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
-  
+
   &.visible {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -54,6 +54,85 @@ $border-color: #3e3e42;
     );
     pointer-events: none;
     z-index: -1;
+  }
+
+  // Левая секция - VS Code
+  .left-section {
+    width: 60vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: $bg-primary;
+  }
+
+  // Правая секция - белый фон с кнопкой
+  .right-section {
+    width: 40vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+
+    // Декоративный фон
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(
+          circle at 20% 20%,
+          rgba(0, 122, 204, 0.05) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          circle at 80% 80%,
+          rgba(255, 107, 107, 0.05) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          circle at 40% 60%,
+          rgba(165, 94, 234, 0.05) 0%,
+          transparent 50%
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .evolving-button {
+      border: none;
+      cursor: pointer;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+      z-index: 1;
+      animation: buttonAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.3s, height 0.3s;
+      }
+
+      &:active::before {
+        width: 300px;
+        height: 300px;
+      }
+    }
   }
 
   // Верхняя панель с контролами и табами
@@ -81,7 +160,7 @@ $border-color: #3e3e42;
         overflow: hidden;
 
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 50%;
           left: 50%;
@@ -135,7 +214,7 @@ $border-color: #3e3e42;
         overflow: hidden;
 
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           bottom: 0;
           left: 0;
@@ -148,7 +227,7 @@ $border-color: #3e3e42;
         &:hover {
           background: lighten($bg-secondary, 3%);
           transform: translateY(-1px);
-          
+
           &::before {
             width: 100%;
           }
@@ -157,7 +236,7 @@ $border-color: #3e3e42;
         &.active {
           background: $bg-primary;
           border-bottom: 2px solid $accent-blue;
-          
+
           &::before {
             width: 100%;
           }
@@ -193,8 +272,8 @@ $border-color: #3e3e42;
   .vscode-body {
     flex: 1;
     display: flex;
-    height: calc(100vh - 40px - 24px); // Вычитаем header и status bar
-    max-width: 100vw;
+    height: calc(100vh - 40px - 24px);
+    max-width: 100%;
     overflow: hidden;
 
     // Боковая панель с иконками
@@ -220,7 +299,7 @@ $border-color: #3e3e42;
         position: relative;
 
         &::before {
-          content: '';
+          content: "";
           position: absolute;
           left: -6px;
           top: 50%;
@@ -239,7 +318,7 @@ $border-color: #3e3e42;
 
         &.active {
           background: rgba(255, 255, 255, 0.1);
-          
+
           &::before {
             height: 20px;
           }
@@ -262,7 +341,11 @@ $border-color: #3e3e42;
         color: $text-secondary;
         text-transform: uppercase;
         letter-spacing: 1px;
-        background: linear-gradient(135deg, rgba(0, 122, 204, 0.1) 0%, transparent 100%);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 122, 204, 0.1) 0%,
+          transparent 100%
+        );
       }
 
       .folder-tree {
@@ -309,7 +392,7 @@ $border-color: #3e3e42;
       display: flex;
       flex-direction: column;
       background: $bg-primary;
-      min-width: 0; // Важно для правильного переноса текста
+      min-width: 0;
 
       .editor-header {
         height: 40px;
@@ -328,7 +411,7 @@ $border-color: #3e3e42;
         .animation-controls {
           display: flex;
           gap: 12px;
-          
+
           .control-btn {
             background: $accent-blue;
             color: white;
@@ -405,14 +488,14 @@ $border-color: #3e3e42;
           .line-number {
             height: 25px;
             transition: all 0.3s ease;
-            
+
             &.current {
               color: $accent-blue;
               font-weight: 600;
               position: relative;
-              
+
               &::before {
-                content: '';
+                content: "";
                 position: absolute;
                 right: -12px;
                 top: 50%;
@@ -435,6 +518,23 @@ $border-color: #3e3e42;
           word-wrap: break-word;
           white-space: pre-wrap;
 
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+              45deg,
+              transparent 30%,
+              rgba(0, 212, 255, 0.03) 50%,
+              transparent 70%
+            );
+            animation: scanline 4s infinite;
+            pointer-events: none;
+          }
+
           pre {
             margin: 0;
             font-family: inherit;
@@ -452,7 +552,6 @@ $border-color: #3e3e42;
               word-wrap: break-word;
               white-space: pre-wrap;
 
-              // Улучшенная подсветка синтаксиса
               .keyword {
                 color: #569cd6;
                 font-weight: 600;
@@ -525,7 +624,11 @@ $border-color: #3e3e42;
   // Статусная строка
   .status-bar {
     height: 24px;
-    background: linear-gradient(135deg, $accent-blue, darken($accent-blue, 10%));
+    background: linear-gradient(
+      135deg,
+      $accent-blue,
+      darken($accent-blue, 10%)
+    );
     color: white;
     display: flex;
     align-items: center;
@@ -564,7 +667,8 @@ $border-color: #3e3e42;
 
 // Анимации
 @keyframes iconFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -573,16 +677,19 @@ $border-color: #3e3e42;
 }
 
 @keyframes cursorBlink {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+  51%,
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes cursorGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 5px #00d4ff;
   }
   50% {
@@ -591,7 +698,8 @@ $border-color: #3e3e42;
 }
 
 @keyframes statusPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -608,10 +716,33 @@ $border-color: #3e3e42;
   }
 }
 
-// Адаптивность для мобильных устройств
+@keyframes buttonAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// Адаптивность
 @media (max-width: 768px) {
   .vscode-container {
     font-size: 14px;
+    flex-direction: column;
+
+    .left-section {
+      width: 100vw;
+      height: 60vh;
+    }
+
+    .right-section {
+      width: 100vw;
+      height: 40vh;
+      padding: 20px;
+    }
 
     .vscode-body {
       .file-explorer {
@@ -620,7 +751,6 @@ $border-color: #3e3e42;
 
       .sidebar {
         width: 50px;
-
         .sidebar-icon {
           height: 45px;
           font-size: 20px;
@@ -633,10 +763,8 @@ $border-color: #3e3e42;
             width: 50px;
             padding: 20px 8px;
           }
-
           .code-content {
             padding: 20px 16px;
-            
             pre code {
               font-size: 14px;
               line-height: 22px;
@@ -651,7 +779,16 @@ $border-color: #3e3e42;
 @media (max-width: 640px) {
   .vscode-container {
     font-size: 12px;
-    
+
+    .left-section {
+      height: 55vh;
+    }
+
+    .right-section {
+      height: 45vh;
+      padding: 15px;
+    }
+
     .vscode-body {
       .file-explorer {
         display: none;
@@ -664,10 +801,8 @@ $border-color: #3e3e42;
       .code-editor {
         .editor-header {
           padding: 0 15px;
-          
           .animation-controls {
             gap: 8px;
-            
             .control-btn {
               padding: 6px 12px;
               font-size: 12px;
@@ -680,10 +815,8 @@ $border-color: #3e3e42;
             width: 45px;
             padding: 15px 6px;
           }
-
           .code-content {
             padding: 15px 12px;
-            
             pre code {
               font-size: 12px;
               line-height: 20px;
@@ -691,30 +824,6 @@ $border-color: #3e3e42;
           }
         }
       }
-    }
-  }
-}
-
-// Специальные эффекты для стартовой анимации
-.vscode-container {
-  .code-content {
-    position: relative;
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(
-        45deg,
-        transparent 30%,
-        rgba(0, 212, 255, 0.03) 50%,
-        transparent 70%
-      );
-      animation: scanline 4s infinite;
-      pointer-events: none;
     }
   }
 }
