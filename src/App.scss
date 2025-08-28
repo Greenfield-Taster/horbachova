@@ -28,6 +28,11 @@ a {
   text-decoration: none;
 }
 
+// Блокировка скролла при открытом меню
+body.menu-open {
+  overflow: hidden;
+}
+
 // Utility classes
 .container {
   max-width: 1200px;

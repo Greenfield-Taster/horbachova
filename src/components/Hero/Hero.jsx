@@ -7,7 +7,10 @@ const Hero = () => {
       <div className="hero__container">
         <div className="hero__lamp-container">
           <img src={lampImage} alt="Lamp" className="hero__lamp" />
-          <div className="hero__light-beam"></div>
+          {/* <div className="hero__light-beam"></div> */}
+          <div className="hero__light-glow"></div>
+          <div className="hero__light-soft"></div>
+          <div className="hero__light-ambient"></div>
         </div>
         <div className="hero__content">
           <h1 className="hero__title">HORBACHOVA</h1>
