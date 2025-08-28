@@ -1,0 +1,190 @@
+@use "../../styles/variables" as v;
+
+.hero {
+  min-height: 100vh;
+  background: v.$background;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__container {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 v.$spacing-xl;
+    position: relative;
+    text-align: center;
+  }
+
+  &__lamp-container {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  &__lamp {
+    width: 280px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba($color: v.$primary-content, $alpha: 0.3));
+  }
+
+  // &__light-beam {
+  //   position: absolute;
+  //   top: 80px;
+  //   left: 50%;
+  //   transform: translateX(-50%);
+  //   width: 300px;
+  //   height: 400px;
+  //   background: radial-gradient(
+  //     ellipse at top,
+  //     rgba($color: v.$primary-content, $alpha: 0.15) 0%,
+  //     rgba($color: v.$primary-content, $alpha: 0.08) 30%,
+  //     rgba($color: v.$primary-content, $alpha: 0.03) 60%,
+  //     transparent 100%
+  //   );
+  //   border-radius: 50%;
+  //   animation: light-flicker 3s ease-in-out infinite alternate;
+  //   z-index: 1;
+
+  //   @media (max-width: v.$breakpoint-md) {
+  //     width: 250px;
+  //     height: 350px;
+  //   }
+  // }
+
+  &__content {
+    position: relative;
+    z-index: 3;
+    margin-top: 30rem;
+
+    @media (max-width: v.$breakpoint-md) {
+      margin-top: 120px;
+    }
+  }
+
+  &__title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    margin-bottom: v.$spacing-lg;
+    background: linear-gradient(
+      135deg,
+      v.$copy 0%,
+      v.$primary-content 50%,
+      v.$copy 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba($color: v.$primary-content, $alpha: 0.2);
+    animation: title-glow 2s ease-in-out infinite alternate;
+  }
+
+  &__subtitle {
+    font-size: 1.25rem;
+    color: v.$copy-light;
+    font-weight: 400;
+    margin-bottom: v.$spacing-2xl;
+
+    span {
+      padding: v.$spacing-sm v.$spacing-lg;
+      border: 1px solid v.$border;
+      border-radius: 25px;
+      background: rgba($color: v.$foreground, $alpha: 0.5);
+      backdrop-filter: blur(10px);
+      display: inline-block;
+      transition: all v.$transition-normal;
+
+      &:hover {
+        border-color: v.$primary-content;
+        background: rgba($color: v.$primary, $alpha: 0.2);
+      }
+    }
+  }
+
+  &__scroll-indicator {
+    position: absolute;
+    bottom: v.$spacing-2xl;
+    left: 50%;
+    transform: translateX(-50%);
+    color: v.$copy-lighter;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: v.$spacing-sm;
+    animation: fade-in-up 1s ease-out 1s both;
+
+    span {
+      opacity: 0.7;
+    }
+  }
+
+  &__scroll-arrow {
+    width: 1px;
+    height: 30px;
+    background: v.$copy-lighter;
+    position: relative;
+    animation: scroll-bounce 2s ease-in-out infinite;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: -3px;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 6px solid v.$copy-lighter;
+    }
+  }
+}
+
+@keyframes light-flicker {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes title-glow {
+  0% {
+    text-shadow: 0 0 30px rgba($color: v.$primary-content, $alpha: 0.2);
+  }
+  100% {
+    text-shadow: 0 0 40px rgba($color: v.$primary-content, $alpha: 0.4);
+  }
+}
+
+@keyframes scroll-bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

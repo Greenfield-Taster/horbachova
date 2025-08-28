@@ -1,31 +1,66 @@
-import "./App.css";
+import Navigation from "./components/Navigation/Navigation";
+import Hero from "./components/Hero/Hero";
+import "./App.scss";
 
 function App() {
   return (
     <>
-      <div className="main-content">
-        <div className="welcome-container">
-          <h1 className="welcome-title">🎉 Horbachova Portfolio</h1>
-          <p className="welcome-message">Добро пожаловать в мое портфолио!</p>
-          <div className="features">
-            <div className="feature-card">
-              <span className="feature-icon">⚛️</span>
-              <h3>React Development</h3>
-              <p>Современные веб-приложения</p>
-            </div>
-            <div className="feature-card">
-              <span className="feature-icon">🎨</span>
-              <h3>UI/UX Design</h3>
-              <p>Красивые интерфейсы</p>
-            </div>
-            <div className="feature-card">
-              <span className="feature-icon">🚀</span>
-              <h3>Performance</h3>
-              <p>Быстрые и отзывчивые сайты</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Navigation />
+      <Hero />
+
+      <section
+        id="about"
+        style={{
+          minHeight: "100vh",
+          background: "#1c3123",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2 style={{ color: "#fafcfb", fontSize: "2rem" }}>About Section</h2>
+      </section>
+
+      <section
+        id="experience"
+        style={{
+          minHeight: "100vh",
+          background: "#122118",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2 style={{ color: "#fafcfb", fontSize: "2rem" }}>
+          Experience Section
+        </h2>
+      </section>
+
+      <section
+        id="projects"
+        style={{
+          minHeight: "100vh",
+          background: "#1c3123",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2 style={{ color: "#fafcfb", fontSize: "2rem" }}>Projects Section</h2>
+      </section>
+
+      <section
+        id="contact"
+        style={{
+          minHeight: "100vh",
+          background: "#122118",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2 style={{ color: "#fafcfb", fontSize: "2rem" }}>Contact Section</h2>
+      </section>
     </>
   );
 }

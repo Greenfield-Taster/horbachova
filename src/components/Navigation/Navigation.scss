@@ -1,0 +1,46 @@
+@use "../../styles/variables" as v;
+
+.navigation {
+  position: absolute;
+  top: v.$spacing-xl;
+  right: 20rem;
+  z-index: 1000;
+
+  @media (max-width: v.$breakpoint-md) {
+    right: v.$spacing-lg;
+    top: v.$spacing-lg;
+  }
+
+  &__menu {
+    display: flex;
+    list-style: none;
+    gap: v.$spacing-2xl;
+
+    @media (max-width: v.$breakpoint-md) {
+      gap: v.$spacing-lg;
+    }
+
+    @media (max-width: v.$breakpoint-sm) {
+      gap: v.$spacing-md;
+    }
+
+    li {
+      button {
+        background: none;
+        border: none;
+        color: v.$copy;
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0;
+
+        transition: all v.$transition-fast;
+
+        &:hover {
+          color: v.$primary-content;
+        }
+      }
+    }
+  }
+}

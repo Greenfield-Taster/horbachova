@@ -1,0 +1,40 @@
+@use './styles/variables' as v;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: v.$font-primary;
+  background: v.$background;
+  color: v.$copy;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+// Global styles
+button {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Utility classes
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 v.$spacing-xl;
+
+  @media (max-width: v.$breakpoint-md) {
+    padding: 0 v.$spacing-lg;
+  }
+}
