@@ -7,8 +7,10 @@
   right: 11rem;
   z-index: 1000;
 
-  @media (max-width: v.$breakpoint-lg) {
-    right: v.$spacing-xl;
+  @media (max-width: v.$breakpoint-2xl) and (min-width: (v.$breakpoint-md + 1)) {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
   }
 
   @media (max-width: v.$breakpoint-md) {
