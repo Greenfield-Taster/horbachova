@@ -39,6 +39,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    user-select: none;
   }
 
   &__lamp {
@@ -297,6 +298,7 @@
     background-clip: text;
     position: relative;
     animation: title-illuminate 3s ease-in-out infinite alternate;
+    user-select: none;
 
     @media (max-width: v.$breakpoint-md) {
       letter-spacing: 0.1em;
@@ -313,6 +315,7 @@
     color: v.$copy-light;
     font-weight: 400;
     margin-bottom: v.$spacing-2xl;
+    user-select: none;
 
     span {
       padding: v.$spacing-sm v.$spacing-lg;

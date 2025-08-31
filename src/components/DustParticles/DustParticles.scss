@@ -1,0 +1,187 @@
+@use "../../styles/variables" as v;
+
+.dust-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 8; // Между лампой (10) и светом (2-3)
+}
+
+.dust-particle {
+  position: absolute;
+  background: rgba(v.$primary-content, 0.6);
+  border-radius: 50%;
+  filter: blur(0.5px);
+  box-shadow: 
+    0 0 3px rgba(v.$primary-content, 0.3),
+    0 0 6px rgba(v.$primary-content, 0.1);
+  
+  // Базовая анимация плавания
+  &--type-0 {
+    animation: dust-float-0 linear infinite;
+  }
+  
+  &--type-1 {
+    animation: dust-float-1 linear infinite;
+  }
+  
+  &--type-2 {
+    animation: dust-float-2 linear infinite;
+  }
+  
+  &--type-3 {
+    animation: dust-float-3 linear infinite;
+  }
+}
+
+// Различные типы движения пыли
+@keyframes dust-float-0 {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--opacity, 0.3);
+  }
+  90% {
+    opacity: var(--opacity, 0.3);
+  }
+  100% {
+    transform: translateY(-20px) translateX(var(--drift));
+    opacity: 0;
+  }
+}
+
+@keyframes dust-float-1 {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: var(--opacity, 0.3);
+  }
+  85% {
+    opacity: var(--opacity, 0.3);
+  }
+  100% {
+    transform: translateY(-20px) translateX(var(--drift)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes dust-float-2 {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: var(--opacity, 0.3);
+  }
+  25% {
+    transform: translateY(75vh) translateX(calc(var(--drift) * 0.3));
+  }
+  50% {
+    transform: translateY(50vh) translateX(calc(var(--drift) * 0.6));
+  }
+  75% {
+    transform: translateY(25vh) translateX(calc(var(--drift) * 0.8));
+  }
+  95% {
+    opacity: var(--opacity, 0.3);
+  }
+  100% {
+    transform: translateY(-20px) translateX(var(--drift));
+    opacity: 0;
+  }
+}
+
+@keyframes dust-float-3 {
+  0% {
+    transform: translateY(100vh) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--opacity, 0.3);
+  }
+  20% {
+    transform: translateY(80vh) translateX(calc(var(--drift) * 0.2)) scale(1.2);
+  }
+  40% {
+    transform: translateY(60vh) translateX(calc(var(--drift) * 0.4)) scale(0.8);
+  }
+  60% {
+    transform: translateY(40vh) translateX(calc(var(--drift) * 0.6)) scale(1.1);
+  }
+  80% {
+    transform: translateY(20vh) translateX(calc(var(--drift) * 0.8)) scale(0.9);
+  }
+  90% {
+    opacity: var(--opacity, 0.3);
+  }
+  100% {
+    transform: translateY(-20px) translateX(var(--drift)) scale(1);
+    opacity: 0;
+  }
+}
+
+// Адаптивность
+@media (max-width: v.$breakpoint-md) {
+  .dust-particles {
+    // Уменьшаем количество частиц на мобильных для производительности
+    .dust-particle:nth-child(n+31) {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: v.$breakpoint-sm) {
+  .dust-particles {
+    .dust-particle:nth-child(n+21) {
+      display: none;
+    }
+  }
+}
+
+// Дополнительные эффекты в зависимости от близости к источнику света
+.dust-particle {
+  // Частички ближе к центру (источнику света) ярче
+  &:nth-child(4n+1) {
+    filter: blur(0.3px);
+    box-shadow: 
+      0 0 4px rgba(v.$primary-content, 0.4),
+      0 0 8px rgba(v.$primary-content, 0.2);
+  }
+  
+  // Некоторые частички мерцают
+  &:nth-child(7n+1) {
+    animation-name: dust-float-0, dust-twinkle;
+  }
+  
+  &:nth-child(7n+2) {
+    animation-name: dust-float-1, dust-twinkle;
+  }
+  
+  &:nth-child(7n+3) {
+    animation-name: dust-float-2, dust-twinkle;
+  }
+  
+  &:nth-child(7n+4) {
+    animation-name: dust-float-3, dust-twinkle;
+  }
+}
+
+@keyframes dust-twinkle {
+  0%, 100% { 
+    opacity: var(--opacity, 0.3);
+  }
+  50% { 
+    opacity: calc(var(--opacity, 0.3) * 1.8);
+    box-shadow: 
+      0 0 6px rgba(v.$primary-content, 0.6),
+      0 0 12px rgba(v.$primary-content, 0.3);
+  }
+}

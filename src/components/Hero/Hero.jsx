@@ -1,4 +1,5 @@
 import lampImage from "../../assets/lamp-green.png";
+import DustParticles from "../DustParticles/DustParticles";
 import "./Hero.scss";
 
 const Hero = () => {
@@ -11,6 +12,7 @@ const Hero = () => {
           <div className="hero__light-glow"></div>
           <div className="hero__light-soft"></div>
           <div className="hero__light-ambient"></div>
+          <DustParticles count={60} />
         </div>
         <div className="hero__content">
           <h1 className="hero__title">HORBACHOVA</h1>
