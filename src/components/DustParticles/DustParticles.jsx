@@ -13,7 +13,7 @@ const DustParticles = ({ count }) => {
           id: i,
           // Позиция в области света лампы
           left: Math.random() * 100, // 0-100%
-          animationDelay: Math.random() * 2, // 0-10s задержка
+          animationDelay: Math.random() * 1, // 0-1s задержка
           animationDuration: 8 + Math.random() * 15, // 8-23s длительность
           size: 0.5 + Math.random() * 2, // 0.5-2.5px размер
           opacity: 0.1 + Math.random() * 0.4, // 0.1-0.5 прозрачность
