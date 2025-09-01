@@ -1,62 +1,95 @@
-@use "../../styles/variables";
+@use "../../styles/variables" as v;
 
-.skills-container {
+.component-title {
+  font: 700 32px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: v.$primary-content;
+  margin-bottom: clamp(24px, 6vw, 60px);
+  text-align: center;
+}
+
+.circles-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: clamp(16px, 4vw, 40px);
+  align-items: center;
+  justify-items: center;
+}
+
+.circle-wrapper {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  width: 720px;
+  height: 720px;
+
+  .main-circle {
+    position: absolute;
+    inset: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 450px;
+    border: 2px solid #111;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+
+    .circle-title {
+      margin: 0;
+      font: 600 36px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: v.$primary-content;
+    }
+  }
+
+  .tools-circle {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    .tools-text {
+      font: 700 18px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      dominant-baseline: middle;
+      text-anchor: start;
+      fill: v.$primary-content;
+    }
+  }
 }
 
-.center-circle {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2),
-    inset 0 2px 10px rgba(255, 255, 255, 0.8);
-  z-index: 10;
+.frontend-wrapper {
+  // Здесь можно добавить специфичные стили для frontend круга
 }
 
-.center-text {
-  font-size: 18px;
-  font-weight: 700;
-  color: #333;
-  text-align: center;
-  letter-spacing: 0.5px;
+.backend-wrapper {
+  // Здесь можно добавить специфичные стили для backend круга
 }
 
-.skill-item {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-}
+@media (max-width: 768px) {
+  .circles-container {
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 5vw, 30px);
+  }
 
-.skill-circle {
-  width: 120px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
+  .circle-wrapper {
+    width: min(720px, 90vw);
+    height: min(720px, 90vw);
 
-.skill-text {
-  font-size: 24px;
-  font-weight: 600;
-  color: white;
-  text-align: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  line-height: 1.2;
-  padding: 0 8px;
+    .main-circle {
+      width: min(450px, 60vw);
+      height: min(450px, 60vw);
 
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.1),
-    0 0 10px rgba(255, 255, 255, 0.6), 0 0 15px rgba(255, 255, 255, 0.4),
-    0 0 20px rgba(255, 255, 255, 0.2);
+      .circle-title {
+        font-size: clamp(24px, 5vw, 36px);
+      }
+    }
+
+    .tools-circle {
+      .tools-text {
+        font-size: clamp(12px, 2.5vw, 18px);
+      }
+    }
+  }
 }
