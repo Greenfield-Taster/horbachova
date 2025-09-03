@@ -13,8 +13,8 @@ const frontendTechs = [
     name: "TypeScript",
     position: { orbit: 2, angle: 60 },
   },
-  { id: "gsap", icon: "✨", name: "GSAP", position: { orbit: 2, angle: 120 } },
-  { id: "css", icon: "🎨", name: "CSS", position: { orbit: 3, angle: 30 } },
+  { id: "gsap", icon: "✨", name: "GSAP", position: { orbit: 2, angle: 240 } },
+  { id: "css", icon: "🎨", name: "CSS", position: { orbit: 3, angle: 150 } },
   {
     id: "nextjs",
     icon: "📱",
@@ -25,7 +25,7 @@ const frontendTechs = [
     id: "redux",
     icon: "🔗",
     name: "Redux",
-    position: { orbit: 3, angle: 210 },
+    position: { orbit: 3, angle: 330 },
   },
 ];
 
@@ -34,7 +34,7 @@ const backendTechs = [
     id: "nodejs",
     icon: "🟢",
     name: "Node.js",
-    position: { orbit: 1, angle: 0 },
+    position: { orbit: 1, angle: 10 },
   },
   {
     id: "mongodb",
@@ -52,9 +52,9 @@ const backendTechs = [
     id: "express",
     icon: "🚀",
     name: "Express",
-    position: { orbit: 3, angle: 30 },
+    position: { orbit: 3, angle: 350 },
   },
-  { id: "jwt", icon: "🔐", name: "JWT", position: { orbit: 1, angle: 180 } },
+  { id: "jwt", icon: "🔐", name: "JWT", position: { orbit: 1, angle: 190 } },
   {
     id: "docker",
     icon: "🐳",
@@ -69,7 +69,28 @@ const TechPlanet = ({ tech, type, systemRef }) => {
   useEffect(() => {
     if (!planetRef.current || !systemRef.current) return;
 
-    const radius = 70 + tech.position.orbit * 35;
+    const getRadius = () => {
+      const screenWidth = window.innerWidth;
+      const baseRadius =
+        screenWidth > 1600
+          ? 150
+          : screenWidth > 1200
+          ? 120
+          : screenWidth > 768
+          ? 100
+          : 80;
+      const orbitMultiplier =
+        screenWidth > 1600
+          ? 60
+          : screenWidth > 1200
+          ? 60
+          : screenWidth > 768
+          ? 50
+          : 40;
+      return baseRadius + tech.position.orbit * orbitMultiplier;
+    };
+
+    const radius = getRadius();
     const speed = 15 + tech.position.orbit * 8;
     const direction = type === "frontend" ? 1 : -1;
 
@@ -115,8 +136,26 @@ const TechPlanet = ({ tech, type, systemRef }) => {
       element.addEventListener("mouseleave", handleMouseLeave);
     }
 
+    // Обработчик изменения размера экрана
+    const handleResize = () => {
+      if (!planetRef.current) return;
+      const newRadius = getRadius();
+      const angle = (tech.position.angle * Math.PI) / 180;
+      const x = Math.cos(angle) * newRadius;
+      const y = Math.sin(angle) * newRadius;
+
+      gsap.set(planetRef.current, {
+        x: x,
+        y: y,
+        transformOrigin: `${-x}px ${-y}px`,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
       if (rotationAnimation) rotationAnimation.kill();
+      window.removeEventListener("resize", handleResize);
       if (element) {
         element.removeEventListener("mouseenter", handleMouseEnter);
         element.removeEventListener("mouseleave", handleMouseLeave);
@@ -300,14 +339,16 @@ const UnitySystem = () => {
           });
         }
 
-        // Эффект притяжения
+        // Эффект притяжения (адаптивный)
         const frontendSystem = document.querySelector(".frontend-system");
         const backendSystem = document.querySelector(".backend-system");
+        const attractionDistance = window.innerWidth > 768 ? 20 : 10;
+        const attractionRotation = window.innerWidth > 768 ? 5 : 3;
 
         if (frontendSystem) {
           gsap.to(frontendSystem, {
-            x: 20,
-            rotation: 5,
+            x: attractionDistance,
+            rotation: attractionRotation,
             duration: 2,
             ease: "power2.out",
             delay: 1,
@@ -316,8 +357,8 @@ const UnitySystem = () => {
 
         if (backendSystem) {
           gsap.to(backendSystem, {
-            x: -20,
-            rotation: -5,
+            x: -attractionDistance,
+            rotation: -attractionRotation,
             duration: 2,
             ease: "power2.out",
             delay: 1,

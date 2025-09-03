@@ -59,17 +59,20 @@ $connection-color: #45b7d1;
 
 // Tech Section
 .tech-section {
-  min-height: 100vh;
+  min-height: 150vh;
   position: relative;
-  padding: 100px 50px;
+  padding: 50px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .orbital-container {
-  width: 100%;
-  max-width: 1400px;
-  height: 100vh;
+  width: 100vw;
+  height: 150vh;
   position: relative;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .section-title {
@@ -91,24 +94,24 @@ $connection-color: #45b7d1;
 // Orbital Systems
 .orbital-system {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: min(60vw, 600px);
+  height: min(60vw, 600px);
   top: 50%;
   transform: translateY(-50%);
 
   &.frontend-system {
-    left: 10%;
+    left: 4vw;
   }
 
   &.backend-system {
-    right: 10%;
+    right: 4vw;
   }
 }
 
 .orbit-center {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: min(15vw, 120px);
+  height: min(15vw, 120px);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -116,7 +119,7 @@ $connection-color: #45b7d1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
   font-weight: bold;
   opacity: 0;
   z-index: 10;
@@ -150,30 +153,30 @@ $connection-color: #45b7d1;
   opacity: 0;
 
   &.orbit-1 {
-    width: 200px;
-    height: 200px;
+    width: min(35vw, 340px);
+    height: min(35vw, 340px);
   }
   &.orbit-2 {
-    width: 280px;
-    height: 280px;
+    width: min(45vw, 460px);
+    height: min(45vw, 460px);
   }
   &.orbit-3 {
-    width: 360px;
-    height: 360px;
+    width: min(55vw, 580px);
+    height: min(55vw, 580px);
   }
 }
 
 // Tech Planets
 .tech-planet {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: min(8vw, 80px);
+  height: min(8vw, 80px);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: clamp(0.6rem, 1.2vw, 0.9rem);
   font-weight: bold;
   text-align: center;
   opacity: 0;
@@ -201,19 +204,19 @@ $connection-color: #45b7d1;
 }
 
 .planet-icon {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2vw, 1.5rem);
   margin-bottom: 2px;
 }
 
 .planet-name {
-  font-size: 0.6rem;
+  font-size: clamp(0.5rem, 1vw, 0.7rem);
 }
 
 // Unity System
 .unity-system {
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: min(25vw, 250px);
+  height: min(25vw, 250px);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -223,8 +226,8 @@ $connection-color: #45b7d1;
 
 .unity-core {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: min(20vw, 160px);
+  height: min(20vw, 160px);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -233,14 +236,14 @@ $connection-color: #45b7d1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
   font-weight: bold;
   box-shadow: 0 0 50px rgba($connection-color, 0.8);
 }
 
 .connection-beam {
   position: absolute;
-  height: 4px;
+  height: min(0.5vw, 6px);
   background: linear-gradient(
     90deg,
     transparent,
@@ -253,45 +256,109 @@ $connection-color: #45b7d1;
   border-radius: 2px;
 
   &.beam-left {
-    right: 60px;
-    width: 300px;
+    right: min(10vw, 80px);
+    width: min(40vw, 400px);
     transform-origin: right center;
   }
 
   &.beam-right {
-    left: 60px;
-    width: 300px;
+    left: min(10vw, 80px);
+    width: min(40vw, 400px);
     transform-origin: left center;
   }
 }
 
 .energy-particle {
   position: absolute;
-  width: 6px;
-  height: 6px;
+  width: min(0.8vw, 8px);
+  height: min(0.8vw, 8px);
   background: $connection-color;
   border-radius: 50%;
   opacity: 0;
 }
 
 // Responsive Design
+@media (min-width: 1600px) {
+  .orbital-system {
+    width: min(50vw, 800px);
+    height: min(50vw, 800px);
+  }
+
+  .orbit-ring {
+    &.orbit-1 {
+      width: min(30vw, 450px);
+      height: min(30vw, 450px);
+    }
+    &.orbit-2 {
+      width: min(38vw, 570px);
+      height: min(38vw, 570px);
+    }
+    &.orbit-3 {
+      width: min(46vw, 690px);
+      height: min(46vw, 690px);
+    }
+  }
+
+  .unity-core {
+    width: min(15vw, 200px);
+    height: min(15vw, 200px);
+  }
+
+  .connection-beam {
+    &.beam-left,
+    &.beam-right {
+      width: min(35vw, 500px);
+    }
+  }
+}
+
 @media (max-width: 1200px) {
   .orbital-system {
-    width: 300px;
-    height: 300px;
+    width: min(70vw, 500px);
+    height: min(70vw, 500px);
 
     &.frontend-system {
-      left: 5%;
+      left: 2vw;
     }
 
     &.backend-system {
-      right: 5%;
+      right: 2vw;
     }
   }
 
   .beam-left,
   .beam-right {
-    width: 200px;
+    width: min(35vw, 300px);
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .orbital-system {
+    width: min(75vw, 550px);
+    height: min(75vw, 550px);
+
+    &.frontend-system {
+      left: 3vw;
+    }
+
+    &.backend-system {
+      right: 3vw;
+    }
+  }
+
+  .unity-system {
+    width: min(30vw, 220px);
+    height: min(30vw, 220px);
+  }
+
+  .unity-core {
+    width: min(25vw, 180px);
+    height: min(25vw, 180px);
+  }
+
+  .beam-left,
+  .beam-right {
+    width: min(30vw, 250px);
   }
 }
 
@@ -302,18 +369,26 @@ $connection-color: #45b7d1;
 
   .tech-section {
     min-height: 200vh;
+    padding: 20px 10px;
+  }
+
+  .orbital-container {
+    height: 200vh;
   }
 
   .tech-ecosystem {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 100px;
+    gap: 15vh;
+    height: 100%;
   }
 
   .orbital-system {
     position: relative;
-    margin: 50px auto;
+    width: min(85vw, 400px);
+    height: min(85vw, 400px);
+    margin: 5vh auto;
     left: auto !important;
     right: auto !important;
     top: auto;
@@ -322,7 +397,9 @@ $connection-color: #45b7d1;
 
   .unity-system {
     position: relative;
-    margin: 100px auto;
+    width: min(40vw, 200px);
+    height: min(40vw, 200px);
+    margin: 10vh auto;
     top: auto;
     left: auto;
     transform: none;
@@ -465,19 +542,19 @@ $connection-color: #45b7d1;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    animation: orbit-indicator 4s linear infinite;
+    // animation: orbit-indicator 4s linear infinite;
   }
 }
 
-@keyframes orbit-indicator {
-  0% {
-    transform: translateX(-50%) rotate(0deg) translateY(-100px) rotate(0deg);
-  }
-  100% {
-    transform: translateX(-50%) rotate(360deg) translateY(-100px)
-      rotate(-360deg);
-  }
-}
+// @keyframes orbit-indicator {
+//   0% {
+//     transform: translateX(-50%) rotate(0deg) translateY(-100px) rotate(0deg);
+//   }
+//   100% {
+//     transform: translateX(-50%) rotate(360deg) translateY(-100px)
+//       rotate(-360deg);
+//   }
+// }
 
 // Enhanced visual effects
 .connection-beam {
