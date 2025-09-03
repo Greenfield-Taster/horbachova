@@ -26,10 +26,34 @@ $connection-color: #45b7d1;
 }
 
 .skills-component {
+  position: relative;
   font-family: "Arial", sans-serif;
-  background: $primary-gradient;
+  background: linear-gradient(
+    180deg,
+    #16213e 0%,
+    #1a1a2e 30%,
+    #0f0f23 60%,
+    #16213e 100%
+  );
   color: white;
   overflow-x: hidden;
+
+  // Добавляем тонкий переходный градиент сверху
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(
+      180deg,
+      rgba(#16213e, 0.8) 0%,
+      transparent 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
 }
 
 .scroll-indicator {
@@ -60,7 +84,7 @@ $connection-color: #45b7d1;
 
 // Tech Section
 .tech-section {
-  min-height: 150vh;
+  min-height: 100vh;
   position: relative;
   padding: 50px 20px;
   display: flex;
@@ -76,7 +100,7 @@ $connection-color: #45b7d1;
 
 .orbital-container {
   width: 100vw;
-  height: 150vh;
+  height: 100vh;
   position: relative;
   margin: 0 auto;
   overflow: hidden;

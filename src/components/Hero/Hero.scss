@@ -2,12 +2,34 @@
 
 .hero {
   min-height: 100vh;
-  background: v.$background;
+  background: linear-gradient(
+    180deg,
+    v.$background 0%,
+    v.$background 85%,
+    #0e1f15 100%
+  );
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(#0e1f15, 0.3) 50%,
+      rgba(#0e1f15, 0.7) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
 
   &__container {
     max-width: 1200px;
