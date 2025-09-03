@@ -1,5 +1,4 @@
-@use "./UniverseStars.scss";
-
+// Variables
 $primary-gradient: linear-gradient(
   135deg,
   #0f0f23 0%,
@@ -25,7 +24,7 @@ $connection-color: #45b7d1;
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-.skills-component {
+.app {
   font-family: "Arial", sans-serif;
   background: $primary-gradient;
   color: white;
@@ -66,12 +65,6 @@ $connection-color: #45b7d1;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  // Universe stars background
-  .skills-universe-bg {
-    z-index: 1;
-    opacity: 0.8;
-  }
 }
 
 .orbital-container {
@@ -80,7 +73,16 @@ $connection-color: #45b7d1;
   position: relative;
   margin: 0 auto;
   overflow: hidden;
-  z-index: 2;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 100px;
+  opacity: 0;
+  @include gradient-text(
+    linear-gradient(45deg, $frontend-color, $backend-color)
+  );
 }
 
 .tech-ecosystem {
@@ -120,7 +122,7 @@ $connection-color: #45b7d1;
   font-size: clamp(0.8rem, 2vw, 1.2rem);
   font-weight: bold;
   opacity: 0;
-  z-index: 15;
+  z-index: 10;
 
   &.frontend-center {
     background: linear-gradient(
@@ -184,7 +186,6 @@ $connection-color: #45b7d1;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 10;
 
   &:hover {
     transform: translate(-50%, -50%) scale(1.2);
@@ -220,7 +221,7 @@ $connection-color: #45b7d1;
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
-  z-index: 25;
+  z-index: 20;
 }
 
 .unity-core {
@@ -265,6 +266,15 @@ $connection-color: #45b7d1;
     width: min(40vw, 400px);
     transform-origin: left center;
   }
+}
+
+.energy-particle {
+  position: absolute;
+  width: min(0.8vw, 8px);
+  height: min(0.8vw, 8px);
+  background: $connection-color;
+  border-radius: 50%;
+  opacity: 0;
 }
 
 // Responsive Design
@@ -519,6 +529,32 @@ $connection-color: #45b7d1;
     transform: translateY(-5px);
   }
 }
+
+// Loading states
+.orbit-ring {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    // animation: orbit-indicator 4s linear infinite;
+  }
+}
+
+// @keyframes orbit-indicator {
+//   0% {
+//     transform: translateX(-50%) rotate(0deg) translateY(-100px) rotate(0deg);
+//   }
+//   100% {
+//     transform: translateX(-50%) rotate(360deg) translateY(-100px)
+//       rotate(-360deg);
+//   }
+// }
 
 // Enhanced visual effects
 .connection-beam {

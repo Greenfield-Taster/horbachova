@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import UniverseStars from "./UniverseStars";
 import "./SkillsComponent.scss";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -318,6 +317,28 @@ const UnitySystem = () => {
           });
         }
 
+        // Движение энергетических частиц
+        const particles = unityRef.current.querySelectorAll(".energy-particle");
+        if (particles.length) {
+          gsap.to(particles, {
+            opacity: 1,
+            duration: 0.5,
+            delay: 1,
+          });
+
+          // Анимация перетекания энергии
+          gsap.to(particles, {
+            x: "random(-50, 50)",
+            y: "random(-30, 30)",
+            duration: "random(2, 4)",
+            ease: "sine.inOut",
+            stagger: 0.3,
+            repeat: -1,
+            yoyo: true,
+            delay: 1.5,
+          });
+        }
+
         // Эффект притяжения (адаптивный)
         const frontendSystem = document.querySelector(".frontend-system");
         const backendSystem = document.querySelector(".backend-system");
@@ -344,6 +365,14 @@ const UnitySystem = () => {
           });
         }
       },
+    });
+
+    // Постоянное вращение центрального ядра
+    gsap.to(coreRef.current, {
+      rotation: 360,
+      duration: 20,
+      ease: "none",
+      repeat: -1,
     });
 
     // Постоянное вращение центрального ядра
@@ -382,6 +411,23 @@ const UnitySystem = () => {
 
       <div className="connection-beam beam-left"></div>
       <div className="connection-beam beam-right"></div>
+
+      <div
+        className="energy-particle"
+        style={{ top: "45%", left: "-200px" }}
+      ></div>
+      <div
+        className="energy-particle"
+        style={{ top: "55%", left: "-150px" }}
+      ></div>
+      <div
+        className="energy-particle"
+        style={{ top: "45%", right: "-200px" }}
+      ></div>
+      <div
+        className="energy-particle"
+        style={{ top: "55%", right: "-150px" }}
+      ></div>
     </div>
   );
 };
@@ -390,9 +436,8 @@ const TechEcosystem = () => {
   const sectionRef = useRef(null);
 
   return (
-    <div className="skills-component">
+    <div className="app">
       <section ref={sectionRef} className="tech-section">
-        <UniverseStars starCount={200} className="skills-universe-bg" />
         <div className="orbital-container">
           <div className="tech-ecosystem">
             <OrbitalSystem
