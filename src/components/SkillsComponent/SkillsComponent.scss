@@ -24,33 +24,11 @@ $connection-color: #45b7d1;
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-// Base styles
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .app {
   font-family: "Arial", sans-serif;
   background: $primary-gradient;
   color: white;
   overflow-x: hidden;
-}
-
-// Hero Section
-.hero {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  position: relative;
-
-  h1 {
-    font-size: 4rem;
-    @include gradient-text();
-  }
 }
 
 .scroll-indicator {
@@ -81,7 +59,7 @@ $connection-color: #45b7d1;
 
 // Tech Section
 .tech-section {
-  min-height: 150vh;
+  min-height: 100vh;
   position: relative;
   padding: 100px 50px;
 }
@@ -296,19 +274,6 @@ $connection-color: #45b7d1;
   opacity: 0;
 }
 
-// Next Section
-.next-section {
-  height: 50vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  h2 {
-    font-size: 2rem;
-    opacity: 0.7;
-  }
-}
-
 // Responsive Design
 @media (max-width: 1200px) {
   .orbital-system {
@@ -331,10 +296,6 @@ $connection-color: #45b7d1;
 }
 
 @media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
   .section-title {
     font-size: 2rem;
   }
