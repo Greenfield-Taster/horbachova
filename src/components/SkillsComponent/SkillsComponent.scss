@@ -1,95 +1,596 @@
-@use "../../styles/variables" as v;
+// Variables
+$primary-gradient: linear-gradient(
+  135deg,
+  #0f0f23 0%,
+  #1a1a2e 50%,
+  #16213e 100%
+);
+$text-gradient: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
+$frontend-color: #ff6b6b;
+$backend-color: #4ecdc4;
+$connection-color: #45b7d1;
 
-.component-title {
-  font: 700 32px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: v.$primary-content;
-  margin-bottom: clamp(24px, 6vw, 60px);
-  text-align: center;
+// Mixins
+@mixin gradient-text($gradient: $text-gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.circles-container {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
-  gap: clamp(16px, 4vw, 40px);
+@mixin glass-effect($opacity: 0.1) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  font-family: "Arial", sans-serif;
+  background: $primary-gradient;
+  color: white;
+  overflow-x: hidden;
+}
+
+// Hero Section
+.hero {
+  height: 100vh;
+  display: flex;
   align-items: center;
-  justify-items: center;
-}
-
-.circle-wrapper {
+  justify-content: center;
+  text-align: center;
   position: relative;
-  width: 720px;
-  height: 720px;
 
-  .main-circle {
-    position: absolute;
-    inset: 50%;
-    transform: translate(-50%, -50%);
-    width: 450px;
-    height: 450px;
-    border: 2px solid #111;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-
-    .circle-title {
-      margin: 0;
-      font: 600 36px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: v.$primary-content;
-    }
-  }
-
-  .tools-circle {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-
-    .tools-text {
-      font: 700 18px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      dominant-baseline: middle;
-      text-anchor: start;
-      fill: v.$primary-content;
-    }
+  h1 {
+    font-size: 4rem;
+    @include gradient-text();
   }
 }
 
-.frontend-wrapper {
-  // Здесь можно добавить специфичные стили для frontend круга
+.scroll-indicator {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  animation: bounce 2s infinite;
 }
 
-.backend-wrapper {
-  // Здесь можно добавить специфичные стили для backend круга
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+// Tech Section
+.tech-section {
+  min-height: 150vh;
+  position: relative;
+  padding: 100px 50px;
+}
+
+.orbital-container {
+  width: 100%;
+  max-width: 1400px;
+  height: 100vh;
+  position: relative;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 100px;
+  opacity: 0;
+  @include gradient-text(
+    linear-gradient(45deg, $frontend-color, $backend-color)
+  );
+}
+
+.tech-ecosystem {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+// Orbital Systems
+.orbital-system {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &.frontend-system {
+    left: 10%;
+  }
+
+  &.backend-system {
+    right: 10%;
+  }
+}
+
+.orbit-center {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  opacity: 0;
+  z-index: 10;
+
+  &.frontend-center {
+    background: linear-gradient(
+      45deg,
+      $frontend-color,
+      lighten($frontend-color, 10%)
+    );
+    box-shadow: 0 0 30px rgba($frontend-color, 0.5);
+  }
+
+  &.backend-center {
+    background: linear-gradient(
+      45deg,
+      $backend-color,
+      lighten($backend-color, 10%)
+    );
+    box-shadow: 0 0 30px rgba($backend-color, 0.5);
+  }
+}
+
+.orbit-ring {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+
+  &.orbit-1 {
+    width: 200px;
+    height: 200px;
+  }
+  &.orbit-2 {
+    width: 280px;
+    height: 280px;
+  }
+  &.orbit-3 {
+    width: 360px;
+    height: 360px;
+  }
+}
+
+// Tech Planets
+.tech-planet {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0;
+  cursor: pointer;
+  @include glass-effect(0.05);
+  transition: all 0.3s ease;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 100;
+  }
+
+  &.frontend-planet {
+    background: rgba($frontend-color, 0.2);
+    border-color: $frontend-color;
+  }
+
+  &.backend-planet {
+    background: rgba($backend-color, 0.2);
+    border-color: $backend-color;
+  }
+}
+
+.planet-icon {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
+
+.planet-name {
+  font-size: 0.6rem;
+}
+
+// Unity System
+.unity-system {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 20;
+}
+
+.unity-core {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: linear-gradient(45deg, $frontend-color, $backend-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 0 0 50px rgba($connection-color, 0.8);
+}
+
+.connection-beam {
+  position: absolute;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    $connection-color,
+    transparent
+  );
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  border-radius: 2px;
+
+  &.beam-left {
+    right: 60px;
+    width: 300px;
+    transform-origin: right center;
+  }
+
+  &.beam-right {
+    left: 60px;
+    width: 300px;
+    transform-origin: left center;
+  }
+}
+
+.energy-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: $connection-color;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+// Next Section
+.next-section {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h2 {
+    font-size: 2rem;
+    opacity: 0.7;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .orbital-system {
+    width: 300px;
+    height: 300px;
+
+    &.frontend-system {
+      left: 5%;
+    }
+
+    &.backend-system {
+      right: 5%;
+    }
+  }
+
+  .beam-left,
+  .beam-right {
+    width: 200px;
+  }
 }
 
 @media (max-width: 768px) {
-  .circles-container {
-    grid-template-columns: 1fr;
-    gap: clamp(20px, 5vw, 30px);
+  .hero h1 {
+    font-size: 2.5rem;
   }
 
-  .circle-wrapper {
-    width: min(720px, 90vw);
-    height: min(720px, 90vw);
+  .section-title {
+    font-size: 2rem;
+  }
 
-    .main-circle {
-      width: min(450px, 60vw);
-      height: min(450px, 60vw);
+  .tech-section {
+    min-height: 200vh;
+  }
 
-      .circle-title {
-        font-size: clamp(24px, 5vw, 36px);
-      }
+  .tech-ecosystem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+
+  .orbital-system {
+    position: relative;
+    margin: 50px auto;
+    left: auto !important;
+    right: auto !important;
+    top: auto;
+    transform: none;
+  }
+
+  .unity-system {
+    position: relative;
+    margin: 100px auto;
+    top: auto;
+    left: auto;
+    transform: none;
+  }
+
+  .beam-left,
+  .beam-right {
+    display: none;
+  }
+}
+
+// Animations
+@keyframes orbit-rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes reverse-orbit-rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes energy-flow-left {
+  0% {
+    left: 10%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 50%;
+    opacity: 0;
+  }
+}
+
+@keyframes energy-flow-right {
+  0% {
+    right: 10%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    right: 50%;
+    opacity: 0;
+  }
+}
+
+// Pulse rings for unity core
+.unity-core::before,
+.unity-core::after {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 2px solid $backend-color;
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulse-ring 2s infinite;
+}
+
+.unity-core::after {
+  animation-delay: 1s;
+}
+
+// Glow effects
+.orbit-center {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(20px);
+    opacity: 0.3;
+    z-index: -1;
+  }
+}
+
+// Interactive states
+.tech-planet {
+  &:hover {
+    .planet-icon {
+      animation: planet-bounce 0.6s ease-in-out;
     }
+  }
 
-    .tools-circle {
-      .tools-text {
-        font-size: clamp(12px, 2.5vw, 18px);
-      }
-    }
+  &:active {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
+@keyframes planet-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+// Loading states
+.orbit-ring {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: orbit-indicator 4s linear infinite;
+  }
+}
+
+@keyframes orbit-indicator {
+  0% {
+    transform: translateX(-50%) rotate(0deg) translateY(-100px) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(360deg) translateY(-100px)
+      rotate(-360deg);
+  }
+}
+
+// Enhanced visual effects
+.connection-beam {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    border-radius: inherit;
+    animation: beam-pulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes beam-pulse {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+// Floating particles effect
+.orbital-system {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    top: 20%;
+    left: 30%;
+    animation: float-particle 6s ease-in-out infinite;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba($connection-color, 0.5);
+    border-radius: 50%;
+    bottom: 25%;
+    right: 35%;
+    animation: float-particle 8s ease-in-out infinite reverse;
+  }
+}
+
+@keyframes float-particle {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-10px) translateX(-15px);
+    opacity: 0.7;
+  }
+  75% {
+    transform: translateY(-25px) translateX(5px);
+    opacity: 1;
   }
 }

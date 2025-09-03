@@ -1,5 +1,6 @@
 import Navigation from "./components/Navigation/Navigation";
 import Hero from "./components/Hero/Hero";
+import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
 import "./App.scss";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <>
       <Navigation />
       <Hero />
+      <SkillsComponent />
 
       <section
         id="about"
