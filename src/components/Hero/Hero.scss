@@ -66,54 +66,6 @@
     }
   }
 
-  // &__light-beam {
-  //   position: absolute;
-  //   top: 438px; // Опускаем ниже, чтобы свет шел из лампы
-  //   left: 50%;
-  //   transform: translateX(-50%);
-  //   width: 800px;
-  //   height: 290px;
-  //   background: radial-gradient(
-  //     ellipse 70% 100% at center top,
-  //     rgba(v.$primary-content, 0.08) 0%,
-  //     rgba(v.$primary-content, 0.25) 15%,
-  //     rgba(v.$primary-content, 0.15) 35%,
-  //     rgba(v.$primary-content, 0.08) 55%,
-  //     rgba(v.$primary-content, 0.03) 75%,
-  //     transparent 100%
-  //   );
-  //   // Убираем анимацию для более стабильного света
-  //   // animation: light-flicker 3s ease-in-out infinite alternate;
-  //   z-index: 1;
-  //   pointer-events: none;
-  //   border-radius: 50%;
-  //   filter: blur(2px);
-
-  //   @media (max-width: v.$breakpoint-lg) {
-  //     width: 500px;
-  //     height: 600px;
-  //     top: 190px;
-  //   }
-
-  //   @media (max-width: v.$breakpoint-md) {
-  //     width: 450px;
-  //     height: 550px;
-  //     top: 160px;
-  //   }
-
-  //   @media (max-width: v.$breakpoint-sm) {
-  //     width: 400px;
-  //     height: 500px;
-  //     top: 140px;
-  //   }
-
-  //   @media (max-width: v.$breakpoint-xs) {
-  //     width: 350px;
-  //     height: 450px;
-  //     top: 120px;
-  //   }
-  // }
-
   &__light-glow {
     position: absolute;
     top: 270px; // Опускаем чтобы свет шел из лампы
@@ -334,39 +286,20 @@
       }
     }
   }
+
+  &__veil {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 50% 18%,
+      rgba(#000, 0.85),
+      rgba(#000, 0.95) 65%,
+      #000 100%
+    );
+    z-index: 6; // выше контента в начале
+    pointer-events: none;
+  }
 }
-
-// Анимации (удалены анимации лампы и света для статичного эффекта)
-// @keyframes lamp-sway {
-//   0% {
-//     transform: rotate(-1deg);
-//   }
-//   100% {
-//     transform: rotate(1deg);
-//   }
-// }
-
-// @keyframes light-flicker {
-//   0% {
-//     opacity: 0.6;
-//     transform: translateX(-50%) scaleY(0.95);
-//   }
-//   100% {
-//     opacity: 0.9;
-//     transform: translateX(-50%) scaleY(1.05);
-//   }
-// }
-
-// @keyframes glow-pulse {
-//   0% {
-//     opacity: 0.4;
-//     transform: translateX(-50%) scale(0.95);
-//   }
-//   100% {
-//     opacity: 0.7;
-//     transform: translateX(-50%) scale(1.05);
-//   }
-// }
 
 @keyframes title-illuminate {
   0% {
@@ -379,16 +312,5 @@
       0 0 60px rgba(v.$primary-content, 0.2),
       0 0 80px rgba(v.$primary-content, 0.1);
     filter: brightness(1.2);
-  }
-}
-
-@keyframes text-highlight {
-  0% {
-    opacity: 0.2;
-    transform: scaleX(0.8);
-  }
-  100% {
-    opacity: 0.4;
-    transform: scaleX(1.2);
   }
 }
