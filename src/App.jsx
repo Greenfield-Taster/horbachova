@@ -1,7 +1,5 @@
 import Navigation from "./components/Navigation/Navigation";
 import Hero from "./components/Hero/Hero";
-import TitleSection from "./components/TitleSection/TitleSection";
-import SkillsComponent from "./components/SkillsComponent/SkillsComponent";
 import "./App.scss";
 
 function App() {
@@ -9,8 +7,6 @@ function App() {
     <>
       <Navigation />
       <Hero />
-      <TitleSection />
-      <SkillsComponent />
 
       <section
         id="about"
