@@ -1,6 +1,7 @@
 import Navigation from "./components/Navigation/Navigation";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
+import Experience from "./components/Experience/Experience";
 import "./App.scss";
 
 function App() {
@@ -11,20 +12,7 @@ function App() {
 
       <About />
 
-      <section
-        id="experience"
-        style={{
-          minHeight: "100vh",
-          background: "#122118",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <h2 style={{ color: "#fafcfb", fontSize: "2rem" }}>
-          Experience Section
-        </h2>
-      </section>
+      <Experience />
 
       <section
         id="projects"
