@@ -25,17 +25,15 @@ const CodeParticle = ({ index }) => {
     "JS",
   ];
   const symbol = symbols[index % symbols.length];
-  const particleRef = useRef(null);
 
   // Случайная начальная позиция для каждой частицы
   const [initialPos] = useState({
-    x: Math.random() * 100, // 0-100%
-    y: Math.random() * 100, // 0-100%
+    x: Math.random() * 100,
+    y: Math.random() * 100,
   });
 
   return (
     <div
-      ref={particleRef}
       className="code-particle"
       style={{
         "--delay": `${Math.random() * 3}s`,
@@ -51,7 +49,6 @@ const CodeParticle = ({ index }) => {
 
 const About = () => {
   const sectionRef = useRef(null);
-  const cardsRef = useRef([]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -64,7 +61,6 @@ const About = () => {
         scale: 0.8,
       });
 
-      // Анимация появления при скролле
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -80,7 +76,7 @@ const About = () => {
         z: 0,
         opacity: 1,
         scale: 1,
-        stagger: 0.2,
+        stagger: 0,
         ease: "power2.out",
       });
 
@@ -121,18 +117,18 @@ const About = () => {
 
   const skills = [
     {
-      title: "Frontend Interfaces",
-      subtitle: "современные и креативные интерфейсы",
+      title: "Frontend Development",
+      subtitle: "современные и интуитивные интерфейсы",
       description:
-        "React, Vue, TypeScript, GSAP анимации, адаптивный дизайн, UI/UX",
+        "React, Next.js, TypeScript, SCSS, анимации GSAP, адаптивный дизайн",
       icon: "🎨",
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     },
     {
-      title: "Backend Systems",
-      subtitle: "быстрые и надёжные бэкенды",
+      title: "Backend Development",
+      subtitle: "быстрые и надёжные серверные решения",
       description:
-        "Node.js, Python, PostgreSQL, Redis, микросервисы, API разработка",
+        "Node.js, Express, PostgreSQL, Redis, REST API, микросервисы",
       icon: "⚡",
       gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
     },
@@ -142,7 +138,7 @@ const About = () => {
     <section id="about" className="about" ref={sectionRef}>
       {/* Код частицы в фоне */}
       <div className="code-particles">
-        {Array.from({ length: 30 }, (_, i) => (
+        {Array.from({ length: 25 }, (_, i) => (
           <CodeParticle key={i} index={i} />
         ))}
       </div>
@@ -154,11 +150,10 @@ const About = () => {
         </h2>
 
         <div className="about-grid">
-          {skills.map((skill, index) => (
+          {skills.map((skill) => (
             <div
-              key={index}
+              key={skill.title}
               className="about-card"
-              ref={(el) => (cardsRef.current[index] = el)}
               style={{ "--gradient": skill.gradient }}
             >
               <div className="about-card__inner">
@@ -167,7 +162,6 @@ const About = () => {
                 <p className="about-card__subtitle">{skill.subtitle}</p>
                 <p className="about-card__description">{skill.description}</p>
 
-                {/* Световые эффекты */}
                 <div className="about-card__glow"></div>
                 <div className="about-card__border"></div>
               </div>
