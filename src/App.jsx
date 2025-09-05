@@ -1,5 +1,6 @@
 import Navigation from "./components/Navigation/Navigation";
 import Hero from "./components/Hero/Hero";
+import About from "./components/About/About";
 import "./App.scss";
 
 function App() {
@@ -8,18 +9,7 @@ function App() {
       <Navigation />
       <Hero />
 
-      <section
-        id="about"
-        style={{
-          minHeight: "100vh",
-          background: "#1c3123",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <h2 style={{ color: "#fafcfb", fontSize: "2rem" }}>About Section</h2>
-      </section>
+      <About />
 
       <section
         id="experience"

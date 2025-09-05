@@ -1,0 +1,365 @@
+@use "../../styles/variables" as v;
+
+.about {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #0e1f15 0%,
+    v.$background 30%,
+    #0a1a0f 80%,
+    v.$foreground 100%
+  );
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: v.$spacing-2xl 0;
+  perspective: 1000px;
+
+  &__container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 v.$spacing-xl;
+    position: relative;
+    z-index: 10;
+
+    @media (max-width: v.$breakpoint-md) {
+      padding: 0 v.$spacing-lg;
+    }
+  }
+}
+
+.about-title {
+  text-align: center;
+  margin-bottom: v.$spacing-2xl * 2;
+  perspective: 500px;
+
+  &__main {
+    display: block;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    background: linear-gradient(
+      135deg,
+      v.$copy 0%,
+      v.$primary-content 50%,
+      v.$copy-light 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: v.$spacing-sm;
+    transform-style: preserve-3d;
+  }
+
+  &__sub {
+    display: block;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: v.$copy-lighter;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    opacity: 0.8;
+  }
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: v.$spacing-2xl * 1.5;
+  margin-bottom: v.$spacing-2xl * 2;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (max-width: v.$breakpoint-lg) {
+    gap: v.$spacing-2xl;
+    max-width: 800px;
+  }
+
+  @media (max-width: v.$breakpoint-md) {
+    grid-template-columns: 1fr;
+    gap: v.$spacing-xl;
+    max-width: 500px;
+  }
+}
+
+.about-card {
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  height: 320px;
+
+  &__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(v.$foreground, 0.4);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: v.$spacing-2xl;
+    border: 1px solid rgba(v.$primary-content, 0.1);
+    transition: all v.$transition-normal;
+    overflow: hidden;
+
+    &:hover {
+      border-color: rgba(v.$primary-content, 0.3);
+      transform: translateZ(15px) scale(1.02);
+      box-shadow: 
+        0 20px 40px rgba(v.$primary-content, 0.1),
+        0 10px 20px rgba(v.$primary-content, 0.05);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient);
+      opacity: 0.03;
+      border-radius: 20px;
+      transition: opacity v.$transition-normal;
+    }
+
+    &:hover::before {
+      opacity: 0.08;
+    }
+  }
+
+  &__icon {
+    font-size: 3rem;
+    margin-bottom: v.$spacing-lg;
+    filter: drop-shadow(0 0 20px rgba(v.$primary-content, 0.3));
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: v.$copy;
+    margin-bottom: v.$spacing-sm;
+    letter-spacing: 0.02em;
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: v.$primary-content;
+    margin-bottom: v.$spacing-lg;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  &__description {
+    font-size: 0.9rem;
+    color: v.$copy-light;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  &__glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at center,
+      rgba(v.$primary-content, 0.1) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity v.$transition-slow;
+    pointer-events: none;
+  }
+
+  &__border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(v.$primary-content, 0.2),
+      transparent 30%,
+      transparent 70%,
+      rgba(v.$primary-content, 0.2)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: subtract;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: subtract;
+    opacity: 0;
+    transition: opacity v.$transition-normal;
+  }
+
+  &:hover &__glow {
+    opacity: 1;
+  }
+
+  &:hover &__border {
+    opacity: 1;
+  }
+}
+
+// Код частицы в фоне
+.code-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.code-particle {
+  position: absolute;
+  font-family: v.$font-mono;
+  font-size: 0.9rem;
+  color: rgba(v.$primary-content, 0.4);
+  text-shadow: 0 0 15px rgba(v.$primary-content, 0.3);
+  font-weight: 500;
+  animation: particle-glow 4s ease-in-out infinite alternate;
+  user-select: none;
+  pointer-events: none;
+  transition: all 0.3s ease-out;
+
+  @media (max-width: v.$breakpoint-md) {
+    font-size: 0.8rem;
+    &:nth-child(n+21) {
+      display: none;
+    }
+  }
+
+  @media (max-width: v.$breakpoint-sm) {
+    &:nth-child(n+16) {
+      display: none;
+    }
+  }
+}
+
+@keyframes particle-glow {
+  0% {
+    opacity: 0.3;
+    text-shadow: 0 0 10px rgba(v.$primary-content, 0.2);
+  }
+  100% {
+    opacity: 0.7;
+    text-shadow: 0 0 20px rgba(v.$primary-content, 0.4),
+                 0 0 30px rgba(v.$primary-content, 0.2);
+  }
+}
+
+// Декоративные элементы
+.about-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.about-decoration {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+
+  &--1 {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    right: 10%;
+    background: radial-gradient(
+      circle,
+      rgba(v.$primary-content, 0.05) 0%,
+      transparent 70%
+    );
+    animation: decoration-pulse 8s ease-in-out infinite;
+  }
+
+  &--2 {
+    width: 150px;
+    height: 150px;
+    bottom: 20%;
+    left: 5%;
+    background: radial-gradient(
+      circle,
+      rgba(v.$copy-lighter, 0.04) 0%,
+      transparent 70%
+    );
+    animation: decoration-pulse 6s ease-in-out infinite reverse;
+  }
+
+  &--3 {
+    width: 100px;
+    height: 100px;
+    top: 60%;
+    right: 20%;
+    background: radial-gradient(
+      circle,
+      rgba(v.$primary-content, 0.03) 0%,
+      transparent 70%
+    );
+    animation: decoration-pulse 10s ease-in-out infinite;
+  }
+}
+
+@keyframes decoration-pulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.6;
+  }
+}
+
+// Адаптивность
+@media (max-width: v.$breakpoint-sm) {
+  .about-card {
+    height: 300px;
+    
+    &__inner {
+      padding: v.$spacing-xl;
+    }
+    
+    &__icon {
+      font-size: 2.5rem;
+      margin-bottom: v.$spacing-md;
+    }
+    
+    &__title {
+      font-size: 1.3rem;
+    }
+
+    &__description {
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@media (max-width: v.$breakpoint-xs) {
+  .about-card {
+    height: 280px;
+    
+    &__inner {
+      padding: v.$spacing-lg;
+    }
+
+    &__icon {
+      font-size: 2.2rem;
+    }
+
+    &__title {
+      font-size: 1.2rem;
+    }
+  }
+}
