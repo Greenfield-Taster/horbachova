@@ -10,20 +10,13 @@ const Experience = () => {
   const cardsRef = useRef([]);
 
   useLayoutEffect(() => {
+    const mm = gsap.matchMedia();
     const ctx = gsap.context(() => {
-      // Начальное состояние карточек
-      gsap.set(".experience-card", {
-        opacity: 0,
-        y: 60,
-        scale: 0.9,
-      });
+      const cards = gsap.utils.toArray(".experience-card");
 
-      gsap.set(".experience-title", {
-        opacity: 0,
-        y: 30,
-      });
+      gsap.set(cards, { opacity: 0, y: 60, scale: 0.96 });
+      gsap.set(".experience-title", { opacity: 0, y: 30 });
 
-      // Анимация появления при скролле
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -33,39 +26,40 @@ const Experience = () => {
         },
       });
 
-      // Заголовок
       tl.to(".experience-title", {
-        duration: 0.8,
+        duration: 0.6,
         opacity: 1,
         y: 0,
         ease: "power2.out",
-      })
-        // Карточки
-        .to(
-          ".experience-card",
-          {
-            duration: 0.6,
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            stagger: 0.1,
-            ease: "power2.out",
-          },
-          "-=0.3"
-        );
+      }).to(
+        cards,
+        {
+          duration: 0.5,
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.08,
+          ease: "power2.out",
+        },
+        "-=0.2"
+      );
 
-      // Луч сверху вниз
-      gsap.to(".experience__light-beam", {
-        duration: 4,
-        y: "100vh",
-        opacity: 0.7,
-        repeat: -1,
-        ease: "power2.inOut",
-        delay: 1,
+      mm.add("(min-width: 768px)", () => {
+        gsap.to(".experience__light-beam", {
+          duration: 4,
+          y: "80vh",
+          opacity: 0.7,
+          repeat: -1,
+          ease: "power2.inOut",
+          delay: 0.6,
+        });
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      mm.revert();
+    };
   }, []);
 
   const projects = [
@@ -109,9 +103,23 @@ const Experience = () => {
     },
   ];
 
+  const hexToRgb = (hex) => {
+    const s = hex.replace("#", "");
+    const n =
+      s.length === 3
+        ? s
+            .split("")
+            .map((c) => c + c)
+            .join("")
+        : s;
+    const v = [n.slice(0, 2), n.slice(2, 4), n.slice(4, 6)].map((h) =>
+      parseInt(h, 16)
+    );
+    return `${v[0]} ${v[1]} ${v[2]}`;
+  };
+
   return (
     <section id="experience" className="experience" ref={sectionRef}>
-      {/* Луч света сверху вниз */}
       <div className="experience__light-beam"></div>
 
       <div className="experience__container">
@@ -126,7 +134,7 @@ const Experience = () => {
               key={index}
               className="experience-card"
               ref={(el) => (cardsRef.current[index] = el)}
-              style={{ "--project-color": project.color }}
+              style={{ "--project-rgb": hexToRgb(project.color) }}
             >
               <div className="experience-card__inner">
                 <div className="experience-card__header">
