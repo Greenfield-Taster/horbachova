@@ -13,15 +13,19 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: v.$spacing-2xl 0;
-  perspective: 1000px;
 
   &__container {
-    max-width: 1200px;
+    max-width: 1400px;
     width: 100%;
     margin: 0 auto;
     padding: 0 v.$spacing-xl;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     z-index: 10;
 
     @media (max-width: v.$breakpoint-md) {
@@ -33,7 +37,6 @@
 .about-title {
   text-align: center;
   margin-bottom: v.$spacing-2xl * 2;
-  perspective: 500px;
 
   &__main {
     display: block;
@@ -50,7 +53,6 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: v.$spacing-sm;
-    transform-style: preserve-3d;
   }
 
   &__sub {
@@ -64,31 +66,47 @@
 }
 
 .about-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: v.$spacing-2xl * 1.5;
-  margin-bottom: v.$spacing-2xl * 2;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: v.$spacing-2xl * 2;
+  max-width: 1200px;
+  width: 100%;
 
   @media (max-width: v.$breakpoint-lg) {
     gap: v.$spacing-2xl;
-    max-width: 800px;
   }
 
   @media (max-width: v.$breakpoint-md) {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: v.$spacing-xl;
-    max-width: 500px;
   }
 }
 
 .about-card {
   position: relative;
-  transform-style: preserve-3d;
-  cursor: pointer;
-  height: 320px;
+  width: 100%;
+  max-width: 550px;
+  height: 450px;
+  transition: all v.$transition-normal;
+
+  @media (max-width: v.$breakpoint-lg) {
+    max-width: 500px;
+    height: 420px;
+  }
+
+  @media (max-width: v.$breakpoint-md) {
+    max-width: 600px;
+    height: 400px;
+  }
+
+  @media (max-width: v.$breakpoint-sm) {
+    height: 350px;
+  }
+
+  &:hover {
+    transform: translateY(-10px) scale(1.02);
+  }
 
   &__inner {
     position: relative;
@@ -96,116 +114,111 @@
     height: 100%;
     background: rgba(v.$foreground, 0.4);
     backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: v.$spacing-2xl;
+    border-radius: 24px;
+    padding: v.$spacing-2xl * 1.5;
     border: 1px solid rgba(v.$primary-content, 0.1);
     transition: all v.$transition-normal;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     &:hover {
       border-color: rgba(v.$primary-content, 0.3);
-      transform: translateZ(15px) scale(1.02);
-      box-shadow: 
-        0 20px 40px rgba(v.$primary-content, 0.1),
+      box-shadow: 0 20px 40px rgba(v.$primary-content, 0.1),
         0 10px 20px rgba(v.$primary-content, 0.05);
     }
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: var(--gradient);
-      opacity: 0.03;
-      border-radius: 20px;
+      background: linear-gradient(
+        135deg,
+        rgba(v.$primary-content, 0.05) 0%,
+        rgba(v.$copy-lighter, 0.03) 100%
+      );
+      border-radius: 24px;
       transition: opacity v.$transition-normal;
     }
 
     &:hover::before {
-      opacity: 0.08;
+      background: linear-gradient(
+        135deg,
+        rgba(v.$primary-content, 0.1) 0%,
+        rgba(v.$copy-lighter, 0.06) 100%
+      );
+    }
+
+    @media (max-width: v.$breakpoint-sm) {
+      padding: v.$spacing-xl;
     }
   }
 
   &__icon {
-    font-size: 3rem;
-    margin-bottom: v.$spacing-lg;
+    font-size: 4rem;
+    margin-bottom: v.$spacing-xl;
     filter: drop-shadow(0 0 20px rgba(v.$primary-content, 0.3));
+
+    @media (max-width: v.$breakpoint-sm) {
+      font-size: 3.5rem;
+      margin-bottom: v.$spacing-lg;
+    }
   }
 
   &__title {
-    font-size: 1.5rem;
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
     font-weight: 600;
     color: v.$copy;
-    margin-bottom: v.$spacing-sm;
+    margin-bottom: v.$spacing-md;
     letter-spacing: 0.02em;
+    line-height: 1.2;
   }
 
   &__subtitle {
-    font-size: 1rem;
+    font-size: clamp(1rem, 2vw, 1.1rem);
     color: v.$primary-content;
-    margin-bottom: v.$spacing-lg;
+    margin-bottom: v.$spacing-xl;
     font-weight: 400;
     line-height: 1.4;
   }
 
   &__description {
-    font-size: 0.9rem;
-    color: v.$copy-light;
-    line-height: 1.6;
-    opacity: 0.9;
-  }
-
-  &__glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(
-      circle at center,
-      rgba(v.$primary-content, 0.1) 0%,
-      transparent 50%
-    );
-    opacity: 0;
-    transition: opacity v.$transition-slow;
-    pointer-events: none;
-  }
-
-  &__border {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 20px;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      rgba(v.$primary-content, 0.2),
-      transparent 30%,
-      transparent 70%,
-      rgba(v.$primary-content, 0.2)
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: subtract;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: subtract;
-    opacity: 0;
-    transition: opacity v.$transition-normal;
-  }
-
-  &:hover &__glow {
-    opacity: 1;
-  }
-
-  &:hover &__border {
-    opacity: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: v.$spacing-sm;
+    margin-top: auto;
   }
 }
 
-// Код частицы в фоне
+.description-tag {
+  font-size: 0.9rem;
+  color: v.$copy-light;
+  background: rgba(v.$primary-content, 0.1);
+  padding: v.$spacing-sm v.$spacing-md;
+  border-radius: 14px;
+  border: 1px solid rgba(v.$primary-content, 0.2);
+  font-family: v.$font-mono;
+  font-weight: 500;
+  transition: all v.$transition-fast;
+
+  &:hover {
+    background: rgba(v.$primary-content, 0.2);
+    border-color: rgba(v.$primary-content, 0.4);
+    color: v.$copy;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: v.$breakpoint-sm) {
+    font-size: 0.8rem;
+    padding: v.$spacing-xs v.$spacing-sm;
+  }
+}
+
 .code-particles {
   position: absolute;
   top: 0;
@@ -231,13 +244,13 @@
 
   @media (max-width: v.$breakpoint-md) {
     font-size: 0.8rem;
-    &:nth-child(n+21) {
+    &:nth-child(n + 21) {
       display: none;
     }
   }
 
   @media (max-width: v.$breakpoint-sm) {
-    &:nth-child(n+16) {
+    &:nth-child(n + 16) {
       display: none;
     }
   }
@@ -251,115 +264,6 @@
   100% {
     opacity: 0.7;
     text-shadow: 0 0 20px rgba(v.$primary-content, 0.4),
-                 0 0 30px rgba(v.$primary-content, 0.2);
-  }
-}
-
-// Декоративные элементы
-.about-decorations {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.about-decoration {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(1px);
-
-  &--1 {
-    width: 200px;
-    height: 200px;
-    top: 10%;
-    right: 10%;
-    background: radial-gradient(
-      circle,
-      rgba(v.$primary-content, 0.05) 0%,
-      transparent 70%
-    );
-    animation: decoration-pulse 8s ease-in-out infinite;
-  }
-
-  &--2 {
-    width: 150px;
-    height: 150px;
-    bottom: 20%;
-    left: 5%;
-    background: radial-gradient(
-      circle,
-      rgba(v.$copy-lighter, 0.04) 0%,
-      transparent 70%
-    );
-    animation: decoration-pulse 6s ease-in-out infinite reverse;
-  }
-
-  &--3 {
-    width: 100px;
-    height: 100px;
-    top: 60%;
-    right: 20%;
-    background: radial-gradient(
-      circle,
-      rgba(v.$primary-content, 0.03) 0%,
-      transparent 70%
-    );
-    animation: decoration-pulse 10s ease-in-out infinite;
-  }
-}
-
-@keyframes decoration-pulse {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1.2) rotate(180deg);
-    opacity: 0.6;
-  }
-}
-
-// Адаптивность
-@media (max-width: v.$breakpoint-sm) {
-  .about-card {
-    height: 300px;
-    
-    &__inner {
-      padding: v.$spacing-xl;
-    }
-    
-    &__icon {
-      font-size: 2.5rem;
-      margin-bottom: v.$spacing-md;
-    }
-    
-    &__title {
-      font-size: 1.3rem;
-    }
-
-    &__description {
-      font-size: 0.85rem;
-    }
-  }
-}
-
-@media (max-width: v.$breakpoint-xs) {
-  .about-card {
-    height: 280px;
-    
-    &__inner {
-      padding: v.$spacing-lg;
-    }
-
-    &__icon {
-      font-size: 2.2rem;
-    }
-
-    &__title {
-      font-size: 1.2rem;
-    }
+      0 0 30px rgba(v.$primary-content, 0.2);
   }
 }

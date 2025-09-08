@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./About.scss";
@@ -26,20 +26,19 @@ const CodeParticle = ({ index }) => {
   ];
   const symbol = symbols[index % symbols.length];
 
-  // Случайная начальная позиция для каждой частицы
-  const [initialPos] = useState({
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-  });
+  const randomX = Math.random() * 100;
+  const randomY = Math.random() * 100;
+  const randomDelay = Math.random() * 3;
+  const randomDuration = 12 + Math.random() * 8;
 
   return (
     <div
       className="code-particle"
       style={{
-        "--delay": `${Math.random() * 3}s`,
-        "--duration": `${12 + Math.random() * 8}s`,
-        left: `${initialPos.x}%`,
-        top: `${initialPos.y}%`,
+        "--delay": `${randomDelay}s`,
+        "--duration": `${randomDuration}s`,
+        left: `${randomX}%`,
+        top: `${randomY}%`,
       }}
     >
       {symbol}
@@ -119,18 +118,28 @@ const About = () => {
     {
       title: "Frontend Development",
       subtitle: "современные и интуитивные интерфейсы",
-      description:
-        "React, Next.js, TypeScript, SCSS, анимации GSAP, адаптивный дизайн",
+      description: [
+        "React",
+        "JavaScript",
+        "TypeScript",
+        "SCSS",
+        "GSAP",
+        "адаптивный дизайн",
+      ],
       icon: "🎨",
-      gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
     },
     {
       title: "Backend Development",
       subtitle: "быстрые и надёжные серверные решения",
-      description:
-        "Node.js, Express, PostgreSQL, Redis, REST API, микросервисы",
+      description: [
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "Redis",
+        "REST API",
+        "микросервисы",
+      ],
       icon: "⚡",
-      gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
     },
   ];
 
@@ -160,19 +169,16 @@ const About = () => {
                 <div className="about-card__icon">{skill.icon}</div>
                 <h3 className="about-card__title">{skill.title}</h3>
                 <p className="about-card__subtitle">{skill.subtitle}</p>
-                <p className="about-card__description">{skill.description}</p>
-
-                <div className="about-card__glow"></div>
-                <div className="about-card__border"></div>
+                <div className="about-card__description">
+                  {skill.description.map((desc, descIndex) => (
+                    <span key={descIndex} className="description-tag">
+                      {desc}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="about-decorations">
-          <div className="about-decoration about-decoration--1"></div>
-          <div className="about-decoration about-decoration--2"></div>
-          <div className="about-decoration about-decoration--3"></div>
         </div>
       </div>
     </section>
