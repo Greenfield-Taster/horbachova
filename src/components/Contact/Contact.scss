@@ -1,0 +1,154 @@
+@import "../../styles/variables";
+
+.contact {
+  min-height: 100vh;
+  background: $background;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  &__container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+// Анимация фона
+.contact-bg-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-symbol {
+  position: absolute;
+  font-family: $font-mono;
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  color: $copy-lighter;
+  pointer-events: none;
+  user-select: none;
+  filter: blur(0.5px);
+  will-change: transform, opacity;
+}
+
+// Заголовок
+.contact-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 300;
+  color: $copy;
+  margin: 0 0 3rem 0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  position: relative;
+  z-index: 3;
+}
+
+// Email
+.contact-email {
+  display: inline-block;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: $copy-light;
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  padding: 0.75rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all $transition-normal;
+  position: relative;
+  z-index: 3;
+  font-weight: 400;
+  
+  &:hover {
+    color: $copy;
+    border-bottom-color: $copy-lighter;
+    transform: translateY(-2px);
+  }
+}
+
+// Ссылки
+.contact-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 3;
+
+  a {
+    color: $copy-lighter;
+    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 400;
+    transition: all $transition-fast;
+    padding: 0.5rem 0;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: $copy;
+      transition: all $transition-fast;
+      transform: translateX(-50%);
+    }
+    
+    &:hover {
+      color: $copy;
+      transform: translateY(-2px);
+
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.contact-divider {
+  color: $copy-lighter;
+  opacity: 0.6;
+  font-size: 1rem;
+}
+
+// Responsive
+@media (max-width: $breakpoint-sm) {
+  .contact {
+    padding: 4rem 0;
+    
+    &__container {
+      padding: 0 1rem;
+    }
+  }
+
+  .contact-links {
+    gap: 1rem;
+  }
+
+  .contact-divider {
+    display: none;
+  }
+
+  .contact-links {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .floating-symbol {
+    font-size: 0.9rem;
+  }
+}
