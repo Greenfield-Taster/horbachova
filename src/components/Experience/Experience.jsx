@@ -95,6 +95,14 @@ const Experience = () => {
       icon: "🔧",
     },
     {
+      category: "DATABASES",
+      title: "Data Management",
+      description:
+        "Проектирование и оптимизация баз данных (SQL/NoSQL), настройка репликации, бэкапов и масштабирования.",
+      color: "#8B5CF6",
+      icon: "🗄️",
+    },
+    {
       category: "Backend Systems",
       title: "High-Load Solutions",
       description: "Разработка надёжного backend под высокую нагрузку.",
