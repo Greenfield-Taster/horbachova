@@ -1,10 +1,11 @@
-@import "../../styles/variables";
+@use "../../styles/variables" as v;
+@use "sass:color";
 
 .footer {
   background: linear-gradient(
     180deg,
-    $background 0%,
-    lighten($background, 5%) 100%
+    v.$background 0%,
+    color.scale(v.$background, $lightness: 5.5555555556%) 100%
   );
   padding: 3rem 0 2rem;
   text-align: center;
@@ -35,11 +36,11 @@
   button {
     background: none;
     border: none;
-    color: $copy;
+    color: v.$copy;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all $transition-fast;
+    transition: all v.$transition-fast;
     padding: 0.75rem 0.5rem;
     position: relative;
     opacity: 1;
@@ -52,13 +53,13 @@
       left: 50%;
       width: 0;
       height: 2px;
-      background: $primary-light;
-      transition: all $transition-fast;
+      background: v.$primary-light;
+      transition: all v.$transition-fast;
       transform: translateX(-50%);
     }
 
     &:hover {
-      color: $primary-light;
+      color: v.$primary-light;
       transform: translateY(-2px);
 
       &::after {
@@ -69,7 +70,7 @@
 }
 
 .footer-copyright {
-  color: $copy;
+  color: v.$copy;
   font-size: 1rem;
   margin: 0;
   opacity: 1;
@@ -79,7 +80,7 @@
 }
 
 // Responsive
-@media (max-width: $breakpoint-md) {
+@media (max-width: v.$breakpoint-md) {
   .footer {
     padding: 2.5rem 0 2rem;
 
@@ -98,7 +99,7 @@
   }
 }
 
-@media (max-width: $breakpoint-sm) {
+@media (max-width: v.$breakpoint-sm) {
   .footer {
     padding: 2rem 0 1.5rem;
 
@@ -116,7 +117,7 @@
   }
 }
 
-@media (max-width: $breakpoint-xs) {
+@media (max-width: v.$breakpoint-xs) {
   .footer {
     padding: 0.1rem 0 2rem;
   }
