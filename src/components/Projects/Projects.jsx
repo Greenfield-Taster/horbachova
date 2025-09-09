@@ -24,7 +24,7 @@ const FloatingCode = ({ index }) => {
     "NODE_ENV",
     "express()",
   ];
-  
+
   const snippet = codeSnippets[index % codeSnippets.length];
   const randomX = Math.random() * 100;
   const randomY = Math.random() * 100;
@@ -50,14 +50,14 @@ const ProjectCard = ({ project, index }) => {
   const cardRef = useRef(null);
 
   return (
-    <div 
+    <div
       ref={cardRef}
       className={`project-card project-card--${project.type}`}
       data-index={index}
     >
       <div className="project-card__inner">
         <div className="project-card__glow"></div>
-        
+
         <div className="project-card__header">
           <div className="project-card__icon">{project.icon}</div>
           <div className="project-card__type">{project.type}</div>
@@ -71,17 +71,21 @@ const ProjectCard = ({ project, index }) => {
             <span className="tech-label">Frontend:</span>
             <div className="tech-tags">
               {project.frontend.map((tech, i) => (
-                <span key={i} className="tech-tag tech-tag--frontend">{tech}</span>
+                <span key={i} className="tech-tag tech-tag--frontend">
+                  {tech}
+                </span>
               ))}
             </div>
           </div>
-          
+
           {project.backend && (
             <div className="tech-section">
               <span className="tech-label">Backend:</span>
               <div className="tech-tags">
                 {project.backend.map((tech, i) => (
-                  <span key={i} className="tech-tag tech-tag--backend">{tech}</span>
+                  <span key={i} className="tech-tag tech-tag--backend">
+                    {tech}
+                  </span>
                 ))}
               </div>
             </div>
@@ -95,13 +99,6 @@ const ProjectCard = ({ project, index }) => {
               {feature}
             </div>
           ))}
-        </div>
-
-        <div className="project-card__footer">
-          <div className="project-status">
-            <span className="status-dot"></span>
-            {project.status}
-          </div>
         </div>
       </div>
     </div>
@@ -117,14 +114,15 @@ const Projects = () => {
     {
       title: "Biosafe",
       type: "healthcare",
-      description: "Платформа для медицинской диагностики и онлайн консультаций с врачами",
+      description:
+        "Платформа для медицинской диагностики и онлайн консультаций с врачами",
       icon: "🏥",
       frontend: ["React.js", "CSS3", "Responsive Design"],
       features: [
         "Система записи к врачам",
         "Онлайн консультации",
         "История болезней",
-        "Интеграция с мед. базами"
+        "Интеграция с мед. базами",
       ],
       status: "Production",
     },
@@ -139,14 +137,15 @@ const Projects = () => {
         "Реал-тайм торговля",
         "Безопасные транзакции",
         "Аналитика рынка",
-        "API интеграция"
+        "API интеграция",
       ],
       status: "Production",
     },
     {
       title: "TeleAdmin Bot",
       type: "automation",
-      description: "Телеграм бот для автоматизации общения администратора с пользователями",
+      description:
+        "Телеграм бот для автоматизации общения администратора с пользователями",
       icon: "🤖",
       frontend: ["Telegram Bot API", "Node.js"],
       backend: ["Node.js", "Express.js", "MongoDB"],
@@ -154,7 +153,7 @@ const Projects = () => {
         "Автоответы",
         "Система тикетов",
         "Статистика обращений",
-        "Интеграция с CRM"
+        "Интеграция с CRM",
       ],
       status: "Active",
     },
@@ -197,27 +196,36 @@ const Projects = () => {
 
       // Анимация карточек с чередующимся появлением
       const cards = gsap.utils.toArray(".project-card");
-      
+
       cards.forEach((card, index) => {
         ScrollTrigger.create({
           trigger: card,
           start: "top 90%",
-          end: "bottom 10%",
-          scrub: 1.5,
+          end: "bottom 30%", // Увеличиваем зону анимации
+          scrub: 1, // Уменьшаем scrub для более быстрой реакции
           onUpdate: (self) => {
             const progress = self.progress;
-            
+
             // Каждая карточка появляется с небольшой задержкой
-            const startProgress = index * 0.1;
-            const adjustedProgress = Math.max(0, (progress - startProgress) / (1 - startProgress));
-            
+            const startProgress = index * 0.05; // Уменьшаем задержку между карточками
+            const adjustedProgress = Math.max(
+              0,
+              (progress - startProgress) / (1 - startProgress)
+            );
+
             gsap.to(card, {
-              duration: 0.4,
-              rotateY: adjustedProgress < 0.3 ? -45 * (1 - adjustedProgress * 3.33) : 0,
-              rotateX: adjustedProgress < 0.3 ? 25 * (1 - adjustedProgress * 3.33) : 0,
-              z: adjustedProgress < 0.3 ? -200 * (1 - adjustedProgress * 3.33) : 0,
-              opacity: adjustedProgress < 0.1 ? 0 : Math.min(1, adjustedProgress * 2),
-              scale: adjustedProgress < 0.4 ? 0.7 + 0.3 * (adjustedProgress / 0.4) : 1,
+              duration: 0.3, // Быстрее анимация
+              rotateY:
+                adjustedProgress < 0.2 ? -45 * (1 - adjustedProgress * 5) : 0, // Быстрее поворот
+              rotateX:
+                adjustedProgress < 0.2 ? 25 * (1 - adjustedProgress * 5) : 0,
+              z: adjustedProgress < 0.2 ? -200 * (1 - adjustedProgress * 5) : 0,
+              opacity:
+                adjustedProgress < 0.05 ? 0 : Math.min(1, adjustedProgress * 3), // Быстрее появление
+              scale:
+                adjustedProgress < 0.25
+                  ? 0.7 + 0.3 * (adjustedProgress / 0.25)
+                  : 1,
               overwrite: "auto",
             });
           },
@@ -262,7 +270,7 @@ const Projects = () => {
       cards.forEach((card) => {
         const techTags = card.querySelectorAll(".tech-tag");
         const tl = gsap.timeline({ paused: true });
-        
+
         tl.to(techTags, {
           duration: 0.3,
           scale: 1.1,
@@ -274,7 +282,6 @@ const Projects = () => {
         card.addEventListener("mouseenter", () => tl.play());
         card.addEventListener("mouseleave", () => tl.reverse());
       });
-
     }, sectionRef);
 
     return () => ctx.revert();
@@ -297,11 +304,7 @@ const Projects = () => {
 
         <div className="projects-grid" ref={cardsContainerRef}>
           {projects.map((project, index) => (
-            <ProjectCard 
-              key={project.title} 
-              project={project} 
-              index={index}
-            />
+            <ProjectCard key={project.title} project={project} index={index} />
           ))}
         </div>
       </div>
