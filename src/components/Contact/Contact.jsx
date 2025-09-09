@@ -38,7 +38,6 @@ const FloatingSymbol = ({ children, delay = 0, index }) => {
         yoyo: true,
         ease: "power2.inOut",
       });
-
     }, symbolRef);
 
     return () => ctx.revert();
@@ -80,7 +79,7 @@ const Contact = () => {
         scrub: 1,
         onUpdate: (self) => {
           const progress = self.progress;
-          
+
           // Заголовок
           gsap.to(".contact-title", {
             duration: 0.3,
@@ -109,7 +108,9 @@ const Contact = () => {
       });
 
       // Hover эффекты для ссылок
-      const links = sectionRef.current.querySelectorAll(".contact-links a, .contact-email");
+      const links = sectionRef.current.querySelectorAll(
+        ".contact-links a, .contact-email"
+      );
       links.forEach((link) => {
         link.addEventListener("mouseenter", () => {
           gsap.to(link, {
@@ -127,7 +128,6 @@ const Contact = () => {
           });
         });
       });
-
     }, sectionRef);
 
     return () => ctx.revert();
@@ -135,36 +135,48 @@ const Contact = () => {
 
   // Символы для анимации
   const symbols = [
-    "{ }", "< >", "[ ]", "( )", "/>", "=>", 
-    "&&", "||", "++", "--", "===", "!==", 
-    "fn()", "API", "CSS", "JS", "HTML", "React",
-    "💻", "⚡", "✨", "🚀", "💡", "🎯"
+    "{ }",
+    "< >",
+    "[ ]",
+    "( )",
+    "/>",
+    "=>",
+    "&&",
+    "||",
+    "++",
+    "--",
+    "===",
+    "!==",
+    "fn()",
+    "API",
+    "CSS",
+    "JS",
+    "HTML",
+    "React",
+    "💻",
+    "⚡",
+    "✨",
+    "🚀",
+    "💡",
+    "🎯",
   ];
 
   return (
     <section id="contact" className="contact" ref={sectionRef}>
-      
       {/* Плавающие символы на заднем фоне */}
       <div className="contact-bg-animation">
         {symbols.map((symbol, index) => (
-          <FloatingSymbol 
-            key={index} 
-            delay={index * 0.2} 
-            index={index}
-          >
+          <FloatingSymbol key={index} delay={index * 0.2} index={index}>
             {symbol}
           </FloatingSymbol>
         ))}
       </div>
 
       <div className="contact__container">
-        
-        <h2 className="contact-title">
-          Get In Touch
-        </h2>
+        <h2 className="contact-title">Get In Touch</h2>
 
-        <a 
-          href="mailto:horbachova@gmail.com" 
+        <a
+          href="mailto:gorbatchovaasa123@gmail.com"
           className="contact-email"
           aria-label="Send email to horbachova@gmail.com"
         >
@@ -172,25 +184,24 @@ const Contact = () => {
         </a>
 
         <div className="contact-links">
-          <a 
-            href="https://linkedin.com/in/horbachova" 
-            target="_blank" 
+          <a
+            href="https://www.linkedin.com/in/anastasiia-horbachova/"
+            target="_blank"
             rel="noopener noreferrer"
             aria-label="Visit LinkedIn profile"
           >
             LinkedIn
           </a>
           <span className="contact-divider">•</span>
-          <a 
-            href="https://github.com/horbachova" 
-            target="_blank" 
+          <a
+            href="https://github.com/Greenfield-Taster"
+            target="_blank"
             rel="noopener noreferrer"
             aria-label="Visit GitHub profile"
           >
             GitHub
           </a>
         </div>
-
       </div>
     </section>
   );

@@ -1,0 +1,127 @@
+@import "../../styles/variables";
+
+.footer {
+  background: linear-gradient(
+    180deg,
+    $background 0%,
+    lighten($background, 5%) 100%
+  );
+  padding: 3rem 0 2rem;
+  text-align: center;
+  min-height: auto;
+  overflow: visible;
+  position: relative;
+  z-index: 100;
+  width: 100%;
+
+  &__container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 101;
+  }
+}
+
+.footer-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+
+  button {
+    background: none;
+    border: none;
+    color: $copy;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all $transition-fast;
+    padding: 0.75rem 0.5rem;
+    position: relative;
+    opacity: 1;
+    z-index: 10;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: $primary-light;
+      transition: all $transition-fast;
+      transform: translateX(-50%);
+    }
+
+    &:hover {
+      color: $primary-light;
+      transform: translateY(-2px);
+
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.footer-copyright {
+  color: $copy;
+  font-size: 1rem;
+  margin: 0;
+  opacity: 1;
+  font-weight: 500;
+  z-index: 10;
+  position: relative;
+}
+
+// Responsive
+@media (max-width: $breakpoint-md) {
+  .footer {
+    padding: 2.5rem 0 2rem;
+
+    &__container {
+      padding: 0 1.5rem;
+    }
+  }
+
+  .footer-nav {
+    gap: 1.5rem;
+
+    button {
+      font-size: 1rem;
+      padding: 0.5rem 0.25rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .footer {
+    padding: 2rem 0 1.5rem;
+
+    &__container {
+      padding: 0 1rem;
+    }
+  }
+
+  .footer-nav {
+    display: none;
+  }
+
+  .footer-copyright {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: $breakpoint-xs) {
+  .footer {
+    padding: 0.1rem 0 2rem;
+  }
+
+  .footer-copyright {
+    font-size: 0.85rem;
+  }
+}
