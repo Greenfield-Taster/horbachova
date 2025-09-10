@@ -14,15 +14,10 @@ function App() {
       <LanguageSwitcher />
       <Navigation />
       <Hero />
-
       <About />
-
       <Experience />
-
       <Projects />
-
       <Contact />
-      
       <Footer />
     </>
   );

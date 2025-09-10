@@ -7,18 +7,32 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMenuOpen(false);
-    }
+    setIsMenuOpen(false);
+
+    requestAnimationFrame(() => {
+      const element = document.getElementById(sectionId);
+
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const absoluteTop = window.pageYOffset + rect.top;
+
+        window.scrollTo({
+          top: absoluteTop - 50,
+          behavior: "smooth",
+        });
+      } else {
+        const allIds = Array.from(document.querySelectorAll("[id]")).map(
+          (el) => el.id
+        );
+        console.log("Available IDs:", allIds);
+      }
+    });
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Блокируем прокрутку страницы когда меню открыто
   useEffect(() => {
     if (isMenuOpen) {
       document.body.classList.add("menu-open");
@@ -51,18 +65,24 @@ const Navigation = () => {
         }`}
       >
         <li>
-          <button onClick={() => scrollToSection("about")}>{t('navigation.about')}</button>
-        </li>
-        <li>
-          <button onClick={() => scrollToSection("experience")}>
-            {t('navigation.experience')}
+          <button onClick={() => scrollToSection("about")}>
+            {t("navigation.about")}
           </button>
         </li>
         <li>
-          <button onClick={() => scrollToSection("projects")}>{t('navigation.projects')}</button>
+          <button onClick={() => scrollToSection("experience")}>
+            {t("navigation.experience")}
+          </button>
         </li>
         <li>
-          <button onClick={() => scrollToSection("contact")}>{t('navigation.contact')}</button>
+          <button onClick={() => scrollToSection("projects")}>
+            {t("navigation.projects")}
+          </button>
+        </li>
+        <li>
+          <button onClick={() => scrollToSection("contact")}>
+            {t("navigation.contact")}
+          </button>
         </li>
       </ul>
 

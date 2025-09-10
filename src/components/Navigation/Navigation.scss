@@ -3,7 +3,6 @@
 .navigation {
   position: absolute;
   top: v.$spacing-xl;
-  // right: v.$spacing-2xl;
   right: 11rem;
   z-index: 1000;
 
@@ -140,7 +139,6 @@
         font-weight: 500;
         cursor: pointer;
         padding: v.$spacing-sm v.$spacing-md;
-        // border-radius: 8px;
         transition: all v.$transition-fast;
         position: relative;
 
