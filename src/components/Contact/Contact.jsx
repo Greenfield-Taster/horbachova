@@ -11,11 +11,16 @@ const FloatingSymbol = ({ children, delay = 0, index }) => {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // Случайная позиция и движение
+      const isMobile = window.innerWidth <= 768;
+      const opacity = isMobile
+        ? Math.random() * 0.15 + 0.05
+        : Math.random() * 0.25 + 0.08;
+
       gsap.set(symbolRef.current, {
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
         rotation: Math.random() * 360,
-        opacity: Math.random() * 0.3 + 0.1,
+        opacity: opacity,
       });
 
       // Плавающая анимация
@@ -30,10 +35,13 @@ const FloatingSymbol = ({ children, delay = 0, index }) => {
         ease: "sine.inOut",
       });
 
-      // Случайное мерцание
+      // Случайное мерцание (более тонкое)
+      const flickerOpacity = isMobile
+        ? Math.random() * 0.2 + 0.03
+        : Math.random() * 0.3 + 0.05;
       gsap.to(symbolRef.current, {
-        opacity: Math.random() * 0.4 + 0.05,
-        duration: Math.random() * 3 + 2,
+        opacity: flickerOpacity,
+        duration: Math.random() * 4 + 3,
         repeat: -1,
         yoyo: true,
         ease: "power2.inOut",
@@ -61,14 +69,14 @@ const Contact = () => {
         y: 40,
       });
 
+      gsap.set(".contact-text", {
+        opacity: 0,
+        y: 25,
+      });
+
       gsap.set(".contact-email", {
         opacity: 0,
         y: 30,
-      });
-
-      gsap.set(".contact-links a", {
-        opacity: 0,
-        y: 20,
       });
 
       // Анимация при скролле
@@ -88,52 +96,50 @@ const Contact = () => {
             overwrite: "auto",
           });
 
-          // Email
-          gsap.to(".contact-email", {
-            duration: 0.3,
-            opacity: progress < 0.2 ? 0 : Math.min(1, (progress - 0.1) * 2),
-            y: progress < 0.4 ? 30 * (1 - progress * 2.5) : 0,
+          // Текст описания (с мягкой анимацией)
+          gsap.to(".contact-text", {
+            duration: 0.4,
+            opacity:
+              progress < 0.15 ? 0 : Math.min(0.7, (progress - 0.1) * 1.5),
+            y: progress < 0.35 ? 25 * (1 - progress * 2.8) : 0,
             overwrite: "auto",
           });
 
-          // Ссылки
-          gsap.to(".contact-links a", {
+          // Email
+          gsap.to(".contact-email", {
             duration: 0.3,
-            opacity: progress < 0.3 ? 0 : Math.min(1, (progress - 0.2) * 1.5),
-            y: progress < 0.5 ? 20 * (1 - progress * 2) : 0,
-            stagger: 0.05,
+            opacity: progress < 0.25 ? 0 : Math.min(1, (progress - 0.2) * 2),
+            y: progress < 0.4 ? 30 * (1 - progress * 2.5) : 0,
             overwrite: "auto",
           });
         },
       });
 
-      // Hover эффекты для ссылок
-      const links = sectionRef.current.querySelectorAll(
-        ".contact-links a, .contact-email"
-      );
-      links.forEach((link) => {
-        link.addEventListener("mouseenter", () => {
-          gsap.to(link, {
-            y: -3,
-            duration: 0.2,
+      // Hover эффекты для email
+      const emailLink = sectionRef.current.querySelector(".contact-email");
+      if (emailLink) {
+        emailLink.addEventListener("mouseenter", () => {
+          gsap.to(emailLink, {
+            y: -4,
+            duration: 0.25,
             ease: "power2.out",
           });
         });
 
-        link.addEventListener("mouseleave", () => {
-          gsap.to(link, {
+        emailLink.addEventListener("mouseleave", () => {
+          gsap.to(emailLink, {
             y: 0,
-            duration: 0.2,
+            duration: 0.25,
             ease: "power2.out",
           });
         });
-      });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Символы для анимации
+  // Символы для анимации - значительно меньше на мобильных устройствах
   const symbols = [
     "{ }",
     "< >",
@@ -161,11 +167,15 @@ const Contact = () => {
     "🎯",
   ];
 
+  // Значительно уменьшаем количество символов на мобильных устройствах
+  const isMobile = window.innerWidth <= 768;
+  const displaySymbols = isMobile ? symbols.slice(0, 4) : symbols.slice(0, 12);
+
   return (
     <section id="contact" className="contact" ref={sectionRef}>
       {/* Плавающие символы на заднем фоне */}
       <div className="contact-bg-animation">
-        {symbols.map((symbol, index) => (
+        {displaySymbols.map((symbol, index) => (
           <FloatingSymbol key={index} delay={index * 0.2} index={index}>
             {symbol}
           </FloatingSymbol>
@@ -175,33 +185,15 @@ const Contact = () => {
       <div className="contact__container">
         <h2 className="contact-title">Get In Touch</h2>
 
-        <a
-          href="mailto:gorbatchovaasa123@gmail.com"
-          className="contact-email"
-          aria-label="Send email to horbachova@gmail.com"
-        >
-          horbachova@gmail.com
-        </a>
+        <p className="contact-text">interested in working together?</p>
 
-        <div className="contact-links">
-          <a
-            href="https://www.linkedin.com/in/anastasiia-horbachova/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Visit LinkedIn profile"
-          >
-            LinkedIn
-          </a>
-          <span className="contact-divider">•</span>
-          <a
-            href="https://github.com/Greenfield-Taster"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Visit GitHub profile"
-          >
-            GitHub
-          </a>
-        </div>
+        <a
+          href="mailto:horbachova.site@gmail.com"
+          className="contact-email"
+          aria-label="Send email to horbachova.site@gmail.com"
+        >
+          horbachova.site@gmail.com
+        </a>
       </div>
     </section>
   );
