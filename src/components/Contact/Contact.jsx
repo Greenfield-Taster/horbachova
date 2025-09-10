@@ -182,16 +182,16 @@ const Contact = () => {
       </div>
 
       <div className="contact__container">
-        <h2 className="contact-title">{t('contact.title')}</h2>
+        <h2 className="contact-title">{t("contact.subtitle")}</h2>
 
-        <p className="contact-text">{t('contact.subtitle')}</p>
+        <p className="contact-text">{t("contact.title")}</p>
 
         <a
-          href={`mailto:${t('contact.email')}`}
+          href={`mailto:${t("contact.email")}`}
           className="contact-email"
-          aria-label={`Send email to ${t('contact.email')}`}
+          aria-label={`Send email to ${t("contact.email")}`}
         >
-          {t('contact.email')}
+          {t("contact.email")}
         </a>
       </div>
     </section>

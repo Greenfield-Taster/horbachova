@@ -1,6 +1,6 @@
 {
   "navigation": {
-    "about": "About",
+    "about": "Tech",
     "experience": "Experience",
     "projects": "Projects",
     "contact": "Contact"
@@ -10,7 +10,7 @@
     "subtitle": "Full-stack developer"
   },
   "about": {
-    "title": "What I Create",
+    "title": "Technologies involved",
     "subtitle": "digital experiences",
     "frontend": {
       "title": "Frontend Development",
@@ -74,8 +74,8 @@
     }
   },
   "contact": {
-    "title": "Get In Touch",
-    "subtitle": "interested in working together?",
+    "title": "get in touch",
+    "subtitle": "Interested in working together?",
     "email": "horbachova.site@gmail.com"
   },
   "projects": {

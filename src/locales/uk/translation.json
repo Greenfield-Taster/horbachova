@@ -1,6 +1,6 @@
 {
   "navigation": {
-    "about": "Про мене",
+    "about": "Технології",
     "experience": "Досвід",
     "projects": "Проекти",
     "contact": "Контакти"
@@ -10,7 +10,7 @@
     "subtitle": "Full-stack розробник"
   },
   "about": {
-    "title": "Що я створюю",
+    "title": "Задіяні технології",
     "subtitle": "цифрові рішення",
     "frontend": {
       "title": "Frontend розробка",
@@ -74,8 +74,8 @@
     }
   },
   "contact": {
-    "title": "Зв'яжіться зі мною",
-    "subtitle": "зацікавлені в співпраці?",
+    "title": "зв'яжіться зі мною",
+    "subtitle": "Зацікавлені в співпраці?",
     "email": "horbachova.site@gmail.com"
   },
   "projects": {

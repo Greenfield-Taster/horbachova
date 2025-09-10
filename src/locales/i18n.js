@@ -1,10 +1,10 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 // Импорты переводов
-import enTranslation from './en/translation.json';
-import ukTranslation from './uk/translation.json';
+import enTranslation from "./en/translation.json";
+import ukTranslation from "./uk/translation.json";
 
 const resources = {
   en: {
@@ -20,18 +20,18 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en', // язык по умолчанию
-    fallbackLng: 'en',
-    
+    lng: "uk", // язык по умолчанию
+    fallbackLng: "en",
+
     interpolation: {
       escapeValue: false, // React уже экранирует значения
     },
-    
+
     // Настройки для сохранения выбранного языка
     detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'i18nextLng',
+      order: ["localStorage", "navigator"],
+      caches: ["localStorage"],
+      lookupLocalStorage: "i18nextLng",
     },
   });
 

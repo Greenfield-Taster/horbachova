@@ -23,19 +23,19 @@
     top: 0;
     right: -8rem;
     z-index: 1002;
-    
+
     @media (max-width: v.$breakpoint-2xl) {
       right: -6rem;
     }
-    
+
     @media (max-width: v.$breakpoint-xl) {
       right: -5rem;
     }
-    
+
     @media (max-width: v.$breakpoint-lg) {
       right: -4rem;
     }
-    
+
     @media (max-width: v.$breakpoint-md) {
       display: none;
     }
