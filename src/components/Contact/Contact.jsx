@@ -146,30 +146,27 @@ const Contact = () => {
     "[ ]",
     "( )",
     "/>",
-    "=>",
-    "&&",
-    "||",
-    "++",
-    "--",
-    "===",
-    "!==",
-    "fn()",
-    "API",
-    "CSS",
-    "JS",
-    "HTML",
-    "React",
     "💻",
     "⚡",
     "✨",
     "🚀",
     "💡",
     "🎯",
+    "=>",
+    "&&",
+    "||",
+    "++",
+    "--",
+    "API",
+    "CSS",
+    "JS",
+    "HTML",
+    "React",
   ];
 
   // Значительно уменьшаем количество символов на мобильных устройствах
   const isMobile = window.innerWidth <= 768;
-  const displaySymbols = isMobile ? symbols.slice(0, 4) : symbols.slice(0, 12);
+  const displaySymbols = isMobile ? symbols.slice(0, 10) : symbols.slice(0, 22);
 
   return (
     <section id="contact" className="contact" ref={sectionRef}>
