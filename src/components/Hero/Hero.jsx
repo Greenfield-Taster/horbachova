@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import lampImage from "../../assets/lamp-green.png";
 import DustParticles from "../DustParticles/DustParticles";
@@ -16,6 +17,7 @@ const splitToSpans = (el) => {
 };
 
 const Hero = () => {
+  const { t } = useTranslation();
   const root = useRef(null);
   const titleRef = useRef(null);
 
@@ -111,10 +113,10 @@ const Hero = () => {
         </div>
         <div className="hero__content">
           <h1 className="hero__title" ref={titleRef}>
-            HORBACHOVA
+            {t('hero.name')}
           </h1>
           <div className="hero__subtitle">
-            <span>Full-stack developer</span>
+            <span>{t('hero.subtitle')}</span>
           </div>
         </div>
       </div>

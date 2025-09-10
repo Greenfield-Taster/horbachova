@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./About.scss";
@@ -47,6 +48,7 @@ const CodeParticle = ({ index }) => {
 };
 
 const About = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const cardsRef = useRef(null);
@@ -141,30 +143,16 @@ const About = () => {
 
   const skills = [
     {
-      title: "Frontend Development",
-      subtitle: "современные и интуитивные интерфейсы",
-      description: [
-        "React",
-        "JavaScript",
-        "TypeScript",
-        "SCSS",
-        "GSAP",
-        "адаптивный дизайн",
-      ],
+      title: t('about.frontend.title'),
+      subtitle: t('about.frontend.subtitle'),
+      description: t('about.frontend.skills', { returnObjects: true }),
       icon: "🎨",
       gradient: "frontend",
     },
     {
-      title: "Backend Development",
-      subtitle: "быстрые и надёжные серверные решения",
-      description: [
-        "Node.js",
-        "Express",
-        "PostgreSQL",
-        "Redis",
-        "REST API",
-        "микросервисы",
-      ],
+      title: t('about.backend.title'),
+      subtitle: t('about.backend.subtitle'),
+      description: t('about.backend.skills', { returnObjects: true }),
       icon: "⚡",
       gradient: "backend",
     },
@@ -181,8 +169,8 @@ const About = () => {
 
       <div className="about__container">
         <h2 className="about-title" ref={titleRef}>
-          <span className="about-title__main">What I Create</span>
-          <span className="about-title__sub">digital experiences</span>
+          <span className="about-title__main">{t('about.title')}</span>
+          <span className="about-title__sub">{t('about.subtitle')}</span>
         </h2>
 
         <div className="about-grid" ref={cardsRef}>

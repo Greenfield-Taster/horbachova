@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import "./Navigation.scss";
 
 const Navigation = () => {
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId) => {
@@ -49,18 +51,18 @@ const Navigation = () => {
         }`}
       >
         <li>
-          <button onClick={() => scrollToSection("about")}>About</button>
+          <button onClick={() => scrollToSection("about")}>{t('navigation.about')}</button>
         </li>
         <li>
           <button onClick={() => scrollToSection("experience")}>
-            Experience
+            {t('navigation.experience')}
           </button>
         </li>
         <li>
-          <button onClick={() => scrollToSection("projects")}>Projects</button>
+          <button onClick={() => scrollToSection("projects")}>{t('navigation.projects')}</button>
         </li>
         <li>
-          <button onClick={() => scrollToSection("contact")}>Contact</button>
+          <button onClick={() => scrollToSection("contact")}>{t('navigation.contact')}</button>
         </li>
       </ul>
 

@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Projects.scss";
@@ -106,55 +107,39 @@ const ProjectCard = ({ project, index }) => {
 };
 
 const Projects = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const cardsContainerRef = useRef(null);
 
   const projects = [
     {
-      title: "Biosafe",
+      title: t('projects.biosafe.title'),
       type: "healthcare",
-      description:
-        "Платформа для медицинской диагностики и онлайн консультаций с врачами",
+      description: t('projects.biosafe.description'),
       icon: "🏥",
       frontend: ["React.js", "CSS3", "Responsive Design"],
-      features: [
-        "Система записи к врачам",
-        "Онлайн консультации",
-        "История болезней",
-        "Интеграция с мед. базами",
-      ],
+      features: t('projects.biosafe.features', { returnObjects: true }),
       status: "Production",
     },
     {
-      title: "Cryptobit",
+      title: t('projects.cryptobit.title'),
       type: "fintech",
-      description: "Криптовалютная биржа для обмена и вывода цифровых активов",
+      description: t('projects.cryptobit.description'),
       icon: "₿",
       frontend: ["React.js", "Redux", "SCSS"],
       backend: ["Node.js", "Express.js", "WebSocket", "PostgreSQL"],
-      features: [
-        "Реал-тайм торговля",
-        "Безопасные транзакции",
-        "Аналитика рынка",
-        "API интеграция",
-      ],
+      features: t('projects.cryptobit.features', { returnObjects: true }),
       status: "Production",
     },
     {
-      title: "TeleAdmin Bot",
+      title: t('projects.teleadmin.title'),
       type: "automation",
-      description:
-        "Телеграм бот для автоматизации общения администратора с пользователями",
+      description: t('projects.teleadmin.description'),
       icon: "🤖",
       frontend: ["Telegram Bot API", "Node.js"],
       backend: ["Node.js", "Express.js", "MongoDB"],
-      features: [
-        "Автоответы",
-        "Система тикетов",
-        "Статистика обращений",
-        "Интеграция с CRM",
-      ],
+      features: t('projects.teleadmin.features', { returnObjects: true }),
       status: "Active",
     },
   ];
@@ -298,8 +283,8 @@ const Projects = () => {
 
       <div className="projects__container">
         <h2 className="projects-title" ref={titleRef}>
-          <span className="projects-title__main">My Projects</span>
-          <span className="projects-title__sub">building the future</span>
+          <span className="projects-title__main">{t('projects.title')}</span>
+          <span className="projects-title__sub">{t('projects.subtitle')}</span>
         </h2>
 
         <div className="projects-grid" ref={cardsContainerRef}>

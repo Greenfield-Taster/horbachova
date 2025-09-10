@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Contact.scss";
@@ -59,6 +60,7 @@ const FloatingSymbol = ({ children, delay = 0, index }) => {
 };
 
 const Contact = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -180,16 +182,16 @@ const Contact = () => {
       </div>
 
       <div className="contact__container">
-        <h2 className="contact-title">Get In Touch</h2>
+        <h2 className="contact-title">{t('contact.title')}</h2>
 
-        <p className="contact-text">interested in working together?</p>
+        <p className="contact-text">{t('contact.subtitle')}</p>
 
         <a
-          href="mailto:horbachova.site@gmail.com"
+          href={`mailto:${t('contact.email')}`}
           className="contact-email"
-          aria-label="Send email to horbachova.site@gmail.com"
+          aria-label={`Send email to ${t('contact.email')}`}
         >
-          horbachova.site@gmail.com
+          {t('contact.email')}
         </a>
       </div>
     </section>

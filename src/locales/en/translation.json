@@ -1,0 +1,119 @@
+{
+  "navigation": {
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "name": "HORBACHOVA",
+    "subtitle": "Full-stack developer"
+  },
+  "about": {
+    "title": "What I Create",
+    "subtitle": "digital experiences",
+    "frontend": {
+      "title": "Frontend Development",
+      "subtitle": "modern and intuitive interfaces",
+      "skills": [
+        "React",
+        "JavaScript",
+        "TypeScript",
+        "SCSS",
+        "GSAP",
+        "responsive design"
+      ]
+    },
+    "backend": {
+      "title": "Backend Development",
+      "subtitle": "fast and reliable server solutions",
+      "skills": [
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "Redis",
+        "REST API",
+        "microservices"
+      ]
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "subtitle": "digital solutions portfolio",
+    "projects": {
+      "landing": {
+        "category": "Landing Pages",
+        "title": "Product Showcases",
+        "description": "Single-page websites for products, events, or companies. Focus on design, animation, and loading speed."
+      },
+      "webapp": {
+        "category": "Web Applications",
+        "title": "Full-Stack Solutions",
+        "description": "Quick product launch \"from scratch\": authentication, personal accounts, admin panels."
+      },
+      "ecommerce": {
+        "category": "E-Commerce",
+        "title": "Online Stores",
+        "description": "Online stores with cart, payments (Stripe, PayPal) and product management."
+      },
+      "integrations": {
+        "category": "Integrations",
+        "title": "API & Automations",
+        "description": "API integration, data migration, automation setup."
+      },
+      "databases": {
+        "category": "DATABASES",
+        "title": "Data Management",
+        "description": "Database design and optimization (SQL/NoSQL), replication setup, backups and scaling."
+      },
+      "backend": {
+        "category": "Backend Systems",
+        "title": "High-Load Solutions",
+        "description": "Development of reliable backend for high load."
+      }
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "interested in working together?",
+    "email": "horbachova.site@gmail.com"
+  },
+  "projects": {
+    "title": "My Projects",
+    "subtitle": "building the future",
+    "biosafe": {
+      "title": "Biosafe",
+      "description": "Platform for medical diagnostics and online consultations with doctors",
+      "features": [
+        "Doctor appointment system",
+        "Online consultations",
+        "Medical history",
+        "Medical database integration"
+      ]
+    },
+    "cryptobit": {
+      "title": "Cryptobit",
+      "description": "Cryptocurrency exchange for trading and withdrawing digital assets",
+      "features": [
+        "Real-time trading",
+        "Secure transactions",
+        "Market analytics",
+        "API integration"
+      ]
+    },
+    "teleadmin": {
+      "title": "TeleAdmin Bot",
+      "description": "Telegram bot for automating administrator communication with users",
+      "features": [
+        "Auto replies",
+        "Ticket system",
+        "Request statistics",
+        "CRM integration"
+      ]
+    }
+  },
+  "footer": {
+    "home": "Home",
+    "copyright": "© 2025 Horbachova. All rights reserved."
+  }
+}

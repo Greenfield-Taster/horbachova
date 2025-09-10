@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Experience.scss";
@@ -6,6 +7,7 @@ import "./Experience.scss";
 gsap.registerPlugin(ScrollTrigger);
 
 const Experience = () => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
 
@@ -64,48 +66,44 @@ const Experience = () => {
 
   const projects = [
     {
-      category: "Landing Pages",
-      title: "Product Showcases",
-      description:
-        "Одностраничные сайты для продуктов, мероприятий или компаний. Фокус на дизайн, анимацию и скорость загрузки.",
+      category: t('experience.projects.landing.category'),
+      title: t('experience.projects.landing.title'),
+      description: t('experience.projects.landing.description'),
       color: "#4F46E5",
       icon: "🎯",
     },
     {
-      category: "Web Applications",
-      title: "Full-Stack Solutions",
-      description:
-        'Быстрый запуск продукта "с нуля": авторизация, личные кабинеты, панели администрирования.',
+      category: t('experience.projects.webapp.category'),
+      title: t('experience.projects.webapp.title'),
+      description: t('experience.projects.webapp.description'),
       color: "#06B6D4",
       icon: "⚡",
     },
     {
-      category: "E-Commerce",
-      title: "Online Stores",
-      description:
-        "Интернет-магазины с корзиной, оплатами (Stripe, PayPal) и управлением товарами.",
+      category: t('experience.projects.ecommerce.category'),
+      title: t('experience.projects.ecommerce.title'),
+      description: t('experience.projects.ecommerce.description'),
       color: "#10B981",
       icon: "🛒",
     },
     {
-      category: "Integrations",
-      title: "API & Automations",
-      description: "Интеграция API, миграция данных, настройка автоматизаций.",
+      category: t('experience.projects.integrations.category'),
+      title: t('experience.projects.integrations.title'),
+      description: t('experience.projects.integrations.description'),
       color: "#F59E0B",
       icon: "🔧",
     },
     {
-      category: "DATABASES",
-      title: "Data Management",
-      description:
-        "Проектирование и оптимизация баз данных (SQL/NoSQL), настройка репликации, бэкапов и масштабирования.",
+      category: t('experience.projects.databases.category'),
+      title: t('experience.projects.databases.title'),
+      description: t('experience.projects.databases.description'),
       color: "#8B5CF6",
       icon: "🗄️",
     },
     {
-      category: "Backend Systems",
-      title: "High-Load Solutions",
-      description: "Разработка надёжного backend под высокую нагрузку.",
+      category: t('experience.projects.backend.category'),
+      title: t('experience.projects.backend.title'),
+      description: t('experience.projects.backend.description'),
       color: "#EF4444",
       icon: "🚀",
     },
@@ -132,8 +130,8 @@ const Experience = () => {
 
       <div className="experience__container">
         <div className="experience-title">
-          <h2 className="experience-title__main">Experience</h2>
-          <p className="experience-title__sub">digital solutions portfolio</p>
+          <h2 className="experience-title__main">{t('experience.title')}</h2>
+          <p className="experience-title__sub">{t('experience.subtitle')}</p>
         </div>
 
         <div className="experience-grid">
