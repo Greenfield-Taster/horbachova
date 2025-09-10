@@ -1,38 +1,77 @@
+@use "../../styles/variables" as v;
+
 .language-switcher {
-  position: fixed;
-  top: 2rem;
-  right: 2rem;
-  z-index: 1000;
+  background: rgba(v.$copy, 0.08);
+  border: 1px solid rgba(v.$primary-content, 0.2);
+  backdrop-filter: blur(15px);
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
   
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  
-  font-family: 'Courier New', monospace;
+  font-family: v.$font-mono;
   font-size: 0.9rem;
   font-weight: 600;
-  color: #ffffff;
+  color: v.$copy;
   
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all v.$transition-normal;
+  box-shadow: 0 2px 10px rgba(v.$background, 0.2);
   
   &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(v.$copy, 0.12);
+    border-color: rgba(v.$primary-content, 0.4);
     transform: translateY(-2px);
+    color: v.$primary-content;
+    box-shadow: 0 4px 15px rgba(v.$background, 0.3);
   }
   
   &:active {
-    transform: translateY(0);
+    transform: translateY(-1px);
   }
   
-  @media (max-width: 768px) {
-    top: 1rem;
-    right: 1rem;
+  // Десктопные стили
+  @media (min-width: (v.$breakpoint-md + 1)) {
+    &:hover {
+      background: rgba(v.$primary, 0.2);
+      border-color: rgba(v.$primary-content, 0.5);
+    }
+  }
+  
+  @media (max-width: v.$breakpoint-md) {
+    padding: 0.8rem 1.6rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: 2px solid v.$primary-content;
+    background: linear-gradient(135deg, rgba(v.$primary, 0.8), rgba(v.$primary-light, 0.6));
+    border-radius: 16px;
+    min-width: 100px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(v.$primary-content, 0.2);
+    color: v.$copy;
+    letter-spacing: 1px;
+    
+    &:hover {
+      background: linear-gradient(135deg, rgba(v.$primary-content, 0.9), rgba(v.$primary-content, 0.7));
+      border-color: v.$copy;
+      color: v.$background;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(v.$primary-content, 0.4);
+    }
+    
+    &:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+  }
+  
+  @media (max-width: v.$breakpoint-sm) {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    min-width: 70px;
+  }
+  
+  @media (max-width: v.$breakpoint-xs) {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
+    min-width: 60px;
   }
 }
 

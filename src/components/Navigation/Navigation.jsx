@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 import "./Navigation.scss";
 
 const Navigation = () => {
@@ -21,10 +22,7 @@ const Navigation = () => {
           behavior: "smooth",
         });
       } else {
-        const allIds = Array.from(document.querySelectorAll("[id]")).map(
-          (el) => el.id
-        );
-        console.log("Available IDs:", allIds);
+        console.error(`Element ${sectionId} not found!`);
       }
     });
   };
@@ -47,6 +45,10 @@ const Navigation = () => {
 
   return (
     <nav className="navigation">
+      <div className="navigation__desktop-lang">
+        <LanguageSwitcher />
+      </div>
+
       <button
         className={`navigation__burger ${
           isMenuOpen ? "navigation__burger--open" : ""
@@ -83,6 +85,10 @@ const Navigation = () => {
           <button onClick={() => scrollToSection("contact")}>
             {t("navigation.contact")}
           </button>
+        </li>
+
+        <li className="navigation__mobile-lang">
+          <LanguageSwitcher />
         </li>
       </ul>
 

@@ -17,6 +17,63 @@
     top: v.$spacing-lg;
   }
 
+  // Десктопная версия переключателя языков
+  &__desktop-lang {
+    position: absolute;
+    top: 0;
+    right: -8rem;
+    z-index: 1002;
+    
+    @media (max-width: v.$breakpoint-2xl) {
+      right: -6rem;
+    }
+    
+    @media (max-width: v.$breakpoint-xl) {
+      right: -5rem;
+    }
+    
+    @media (max-width: v.$breakpoint-lg) {
+      right: -4rem;
+    }
+    
+    @media (max-width: v.$breakpoint-md) {
+      display: none;
+    }
+  }
+
+  // Мобильная версия переключателя языков
+  &__mobile-lang {
+    display: none;
+
+    @media (max-width: v.$breakpoint-md) {
+      display: block;
+      margin-top: v.$spacing-2xl;
+      padding-top: v.$spacing-xl;
+      border-top: 2px solid rgba(v.$primary-content, 0.3);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          v.$primary-content,
+          transparent
+        );
+        border-radius: 1px;
+      }
+    }
+  }
+
   // Бургер кнопка (скрыта на десктопе)
   &__burger {
     display: none;
@@ -101,15 +158,17 @@
       position: fixed;
       top: 0;
       right: 0;
-      width: 250px;
+      width: 280px;
       height: 100vh;
-      background: rgba(v.$background, 0.95);
-      backdrop-filter: blur(20px);
-      border-left: 1px solid rgba(v.$border, 0.3);
+      background: rgba(v.$background, 0.96);
+      backdrop-filter: blur(25px);
+      border-left: 1px solid rgba(v.$border, 0.4);
+      box-shadow: -5px 0 25px rgba(v.$background, 0.5);
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: v.$spacing-2xl;
+      padding: v.$spacing-2xl v.$spacing-lg;
       transform: translateX(100%);
       transition: transform v.$transition-normal;
       z-index: 999;
@@ -141,13 +200,15 @@
         padding: v.$spacing-sm v.$spacing-md;
         transition: all v.$transition-fast;
         position: relative;
+        align-items: center;
 
         @media (max-width: v.$breakpoint-md) {
           font-size: 1.2rem;
-          padding: v.$spacing-md v.$spacing-lg;
+          padding: v.$spacing-md v.$spacing-xs;
           width: 150px;
           text-align: center;
           border: 1px solid transparent;
+          border-radius: 8px;
 
           &:hover {
             border-color: rgba(v.$primary-content, 0.3);
@@ -163,7 +224,7 @@
         @media (max-width: v.$breakpoint-xs) {
           font-size: 1rem;
           width: 100px;
-          padding: v.$spacing-sm v.$spacing-md;
+          padding: v.$spacing-sm v.$spacing-xs;
         }
 
         &:hover {
