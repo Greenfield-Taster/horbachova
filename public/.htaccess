@@ -58,5 +58,5 @@ RewriteRule . /index.html [L]
     Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
 </IfModule>
 
-# Скрываем версию сервера
-ServerTokens Prod
+# Скрываем версию сервера (эта директива не поддерживается в .htaccess)
+# ServerTokens Prod
