@@ -58,62 +58,6 @@
         ]
       }
     </script>
-
-    <!-- Блокировка рекламных скриптов -->
-    <script>
-      // Подавляем ошибки от рекламных скриптов
-      window.addEventListener('error', function(e) {
-        // Игнорируем ошибки от рекламных доменов
-        if (e.filename && (
-          e.filename.includes('google.com/adsense') ||
-          e.filename.includes('googlesyndication') ||
-          e.filename.includes('doubleclick') ||
-          e.filename.includes('caf.js') ||
-          e.message.includes('AdSense') ||
-          e.message.includes('ads')
-        )) {
-          e.preventDefault();
-          return false;
-        }
-        
-        // Логируем только реальные ошибки нашего приложения
-        if (e.filename && e.filename.includes(window.location.hostname)) {
-          console.warn('App error:', e.error);
-        }
-      });
-      
-      window.addEventListener('unhandledrejection', function(e) {
-        // Игнорируем рекламные промисы
-        if (e.reason && e.reason.toString().includes('ads')) {
-          e.preventDefault();
-          return false;
-        }
-        console.warn('Unhandled promise rejection:', e.reason);
-      });
-
-      // Блокируем внедрение рекламных iframes
-      const originalCreateElement = document.createElement;
-      document.createElement = function(tagName) {
-        const element = originalCreateElement.call(this, tagName);
-        
-        if (tagName.toLowerCase() === 'iframe') {
-          // Блокируем рекламные iframe
-          const originalSetAttribute = element.setAttribute;
-          element.setAttribute = function(name, value) {
-            if (name === 'src' && (
-              value.includes('google.com/adsense') ||
-              value.includes('doubleclick') ||
-              value.includes('googlesyndication')
-            )) {
-              return; // Не устанавливаем src для рекламных iframe
-            }
-            return originalSetAttribute.call(this, name, value);
-          };
-        }
-        
-        return element;
-      };
-    </script>
   </head>
   <body>
     <div id="root"></div>
