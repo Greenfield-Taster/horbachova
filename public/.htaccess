@@ -1,10 +1,6 @@
-# Простой .htaccess для диагностики
-RewriteEngine On
-
-# Главная страница
+# Простой .htaccess
 DirectoryIndex index.html
-
-# SPA routing
+RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.html [L]

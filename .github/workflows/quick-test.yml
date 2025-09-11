@@ -1,0 +1,53 @@
+name: Quick Test - Upload Simple Files
+
+on:
+  workflow_dispatch: # Ручной запуск
+
+jobs:
+  quick-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Create simple test files
+      run: |
+        echo "<!DOCTYPE html><html><head><title>TEST</title></head><body><h1>SIMPLE TEST PAGE</h1><p>Current time: $(date)</p><p>If you see this, the server is working!</p></body></html>" > simple-test.html
+        
+    - name: Build project
+      run: |
+        npm ci
+        npm run build
+        
+    - name: Upload both test and real files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: tzk302.nic.ua
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        protocol: ftp
+        local-dir: ./dist/
+        server-dir: /public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.DS_Store
+          **/Thumbs.db
+        timeout: 300000
+        security: loose
+        log-level: verbose
+        
+    - name: Also upload simple test
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: tzk302.nic.ua
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        protocol: ftp
+        local-dir: ./
+        server-dir: /public_html/
+        include: ["simple-test.html"]
