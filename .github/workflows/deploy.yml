@@ -24,12 +24,40 @@ jobs:
     - name: Build
       run: npm run build
       
-    - name: List build files
+    - name: Clean default hosting files
+      env:
+        FTP_SERVER: tzk302.nic.ua
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       run: |
-        echo "Contents of dist folder:"
-        ls -la dist/
-        echo "Current directory:"
-        pwd
+        sudo apt-get update
+        sudo apt-get install -y lftp
+        
+        echo "=== Cleaning default hosting files ==="
+        
+        lftp -c "
+        set ssl:verify-certificate false;
+        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
+        cd /public_html/;
+        
+        echo 'Current files:';
+        ls -la;
+        
+        echo 'Removing potential default files...';
+        rm -f index.php 2>/dev/null || true;
+        rm -f default.html 2>/dev/null || true;
+        rm -f default.htm 2>/dev/null || true;
+        rm -f welcome.html 2>/dev/null || true;
+        rm -f home.html 2>/dev/null || true;
+        rm -f placeholder.html 2>/dev/null || true;
+        rm -f coming-soon.html 2>/dev/null || true;
+        rm -f park.html 2>/dev/null || true;
+        
+        echo 'Files after cleanup:';
+        ls -la;
+        
+        quit;
+        "
       
     - name: Deploy to HIC.UA via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
