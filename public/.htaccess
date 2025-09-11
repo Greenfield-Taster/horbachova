@@ -1,6 +1,10 @@
 # Включаем модуль перезаписи
 RewriteEngine On
 
+# Блокируем внедрение рекламных скриптов
+RewriteCond %{QUERY_STRING} (^|&)(abp=1|bodis=true) [NC]
+RewriteRule ^.*$ - [F,L]
+
 # Перенаправляем все запросы на index.html для SPA
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -54,11 +58,11 @@ RewriteRule . /index.html [L]
     Header always set X-Frame-Options DENY
     Header always set X-XSS-Protection "1; mode=block"
     
-    # CSP для блокировки нежелательных скриптов
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;"
+    # Строгая CSP для блокировки внешних скриптов
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none';"
     
-    # Указываем браузеру использовать HTTPS (только если у вас есть SSL)
-    # Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+    # Блокируем рекламные домены
+    Header always set X-Frame-Options "DENY"
 </IfModule>
 
 # Блокируем доступ к системным файлам
@@ -69,6 +73,12 @@ RewriteRule . /index.html [L]
 
 # Блокируем доступ к конфигурационным файлам
 <FilesMatch "\.(json|lock|md|yml|yaml|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Блокируем рекламные скрипты по имени файла
+<FilesMatch "(ads|adsense|doubleclick|googlesyndication|googleadservices)">
     Order allow,deny
     Deny from all
 </FilesMatch>
