@@ -1,0 +1,56 @@
+name: Diagnostic Upload Test
+
+on:
+  workflow_dispatch: # Ручной запуск
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Create diagnostic files
+      run: |
+        echo "<h1>DIAGNOSTIC TEST</h1>" > diagnostic.html
+        echo "<h2>Time: $(date)</h2>" >> diagnostic.html
+        echo "<p>If you see this - files are uploading correctly!</p>" >> diagnostic.html
+        
+        mkdir test-assets
+        echo "/* Test CSS $(date) */" > test-assets/test.css
+        
+    - name: Upload to different potential paths
+      env:
+        FTP_SERVER: tzk302.nic.ua
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lftp
+        
+        lftp -c "
+        set ssl:verify-certificate false;
+        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
+        
+        echo '=== Testing path /public_html/ ===';
+        cd /public_html/ 2>/dev/null && echo 'SUCCESS: /public_html/ exists' && ls -la || echo 'FAIL: /public_html/ not found';
+        
+        echo '=== Testing path /domains/horbachova.com/public_html/ ===';
+        cd / && cd domains/horbachova.com/public_html/ 2>/dev/null && echo 'SUCCESS: /domains/horbachova.com/public_html/ exists' && ls -la || echo 'FAIL: /domains/horbachova.com/public_html/ not found';
+        
+        echo '=== Uploading diagnostic file to /public_html/ ===';
+        cd /public_html/ 2>/dev/null && put diagnostic.html && echo 'Uploaded to /public_html/diagnostic.html';
+        
+        quit;
+        "
+        
+    - name: Upload diagnostic via FTP Action
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: tzk302.nic.ua
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        protocol: ftp
+        local-dir: ./
+        server-dir: /public_html/
+        include: ["diagnostic.html", "test-assets/**"]
+        log-level: verbose

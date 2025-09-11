@@ -1,0 +1,118 @@
+name: Full Server Scan - Find The Problem
+
+on:
+  workflow_dispatch: # Ручной запуск
+
+jobs:
+  scan-server:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Complete server directory scan
+      env:
+        FTP_SERVER: tzk302.nic.ua
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lftp
+        
+        echo "🔍 FULL SERVER SCAN STARTING..."
+        
+        lftp -c "
+        set ssl:verify-certificate false;
+        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
+        
+        echo '==========================================';
+        echo '🏠 ROOT DIRECTORY (/) CONTENTS:';
+        echo '==========================================';
+        cd /;
+        ls -la;
+        
+        echo '';
+        echo '==========================================';
+        echo '📁 SCANNING ALL SUBDIRECTORIES:';
+        echo '==========================================';
+        
+        echo '';
+        echo '🔍 Checking /domains/ directory:';
+        cd /domains/ 2>/dev/null && ls -la || echo 'No /domains/ directory';
+        
+        echo '';
+        echo '🔍 Checking /domains/horbachova.com/ directory:';
+        cd /domains/horbachova.com/ 2>/dev/null && ls -la || echo 'No /domains/horbachova.com/ directory';
+        
+        echo '';
+        echo '🔍 Checking /domains/horbachova.com/public_html/ directory:';
+        cd /domains/horbachova.com/public_html/ 2>/dev/null && ls -la || echo 'No /domains/horbachova.com/public_html/ directory';
+        
+        echo '';
+        echo '🔍 Checking /public_html/ directory:';
+        cd /public_html/ 2>/dev/null && ls -la || echo 'No /public_html/ directory';
+        
+        echo '';
+        echo '🔍 Checking /www/ directory:';
+        cd /www/ 2>/dev/null && ls -la || echo 'No /www/ directory';
+        
+        echo '';
+        echo '🔍 Checking /htdocs/ directory:';
+        cd /htdocs/ 2>/dev/null && ls -la || echo 'No /htdocs/ directory';
+        
+        echo '';
+        echo '🔍 Checking /html/ directory:';
+        cd /html/ 2>/dev/null && ls -la || echo 'No /html/ directory';
+        
+        echo '';
+        echo '==========================================';
+        echo '🔎 SEARCHING FOR INDEX FILES:';
+        echo '==========================================';
+        
+        echo '';
+        echo '🔍 Looking for index.php files:';
+        find / -name 'index.php' -type f 2>/dev/null | head -10;
+        
+        echo '';
+        echo '🔍 Looking for index.html files:';
+        find / -name 'index.html' -type f 2>/dev/null | head -10;
+        
+        echo '';
+        echo '🔍 Looking for default.html files:';
+        find / -name 'default.html' -type f 2>/dev/null | head -10;
+        
+        echo '';
+        echo '==========================================';
+        echo '📄 CHECKING CONTENT OF FOUND INDEX FILES:';
+        echo '==========================================';
+        
+        echo '';
+        echo '📄 Content of /public_html/index.html (if exists):';
+        cd /public_html/ 2>/dev/null && head -20 index.html 2>/dev/null || echo 'No index.html in /public_html/';
+        
+        echo '';
+        echo '📄 Content of /domains/horbachova.com/public_html/index.html (if exists):';
+        cd /domains/horbachova.com/public_html/ 2>/dev/null && head -20 index.html 2>/dev/null || echo 'No index.html in /domains/horbachova.com/public_html/';
+        
+        echo '';
+        echo '📄 Content of /index.html (if exists):';
+        cd / && head -20 index.html 2>/dev/null || echo 'No index.html in root';
+        
+        echo '';
+        echo '==========================================';
+        echo '🌐 LOOKING FOR DOMAIN-SPECIFIC CONFIGS:';
+        echo '==========================================';
+        
+        echo '';
+        echo '🔍 Looking for .htaccess files:';
+        find / -name '.htaccess' -type f 2>/dev/null | head -10;
+        
+        echo '';
+        echo '🔍 Looking for domain config files:';
+        find / -name '*horbachova*' 2>/dev/null | head -10;
+        
+        echo '';
+        echo '==========================================';
+        echo '✅ SCAN COMPLETE';
+        echo '==========================================';
+        
+        quit;
+        "
