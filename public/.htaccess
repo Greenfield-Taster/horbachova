@@ -54,9 +54,24 @@ RewriteRule . /index.html [L]
     Header always set X-Frame-Options DENY
     Header always set X-XSS-Protection "1; mode=block"
     
-    # Указываем браузеру использовать HTTPS
-    Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+    # CSP для блокировки нежелательных скриптов
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;"
+    
+    # Указываем браузеру использовать HTTPS (только если у вас есть SSL)
+    # Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
 </IfModule>
+
+# Блокируем доступ к системным файлам
+<Files ~ "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Блокируем доступ к конфигурационным файлам
+<FilesMatch "\.(json|lock|md|yml|yaml|log)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
 
 # Скрываем версию сервера
 ServerTokens Prod

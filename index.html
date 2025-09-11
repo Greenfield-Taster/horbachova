@@ -39,7 +39,7 @@
         "name": "Horbachova",
         "jobTitle": "Full-Stack Developer",
         "url": "https://horbachova.com/",
-        "image": "https://horbachova.dev/logo.jpg",
+        "image": "https://horbachova.com/logo.jpg",
         "knowsAbout": [
           "React",
           "Node.js",
@@ -57,6 +57,19 @@
           "https://www.linkedin.com/in/anastasiia-horbachova/"
         ]
       }
+    </script>
+
+    <!-- Error handling for development -->
+    <script>
+      // Глобальная обработка ошибок
+      window.addEventListener('error', function(e) {
+        console.warn('Global error caught:', e.error);
+      });
+      
+      window.addEventListener('unhandledrejection', function(e) {
+        console.warn('Unhandled promise rejection:', e.reason);
+        e.preventDefault();
+      });
     </script>
   </head>
   <body>
