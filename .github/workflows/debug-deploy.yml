@@ -1,0 +1,58 @@
+name: Debug Deploy - Find Correct Path
+
+on:
+  workflow_dispatch: # Ручной запуск
+
+jobs:
+  debug-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build
+      run: npm run build
+      
+    - name: Debug FTP connection and find correct path
+      env:
+        FTP_SERVER: tzk302.nic.ua
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lftp
+        
+        echo "=== Connecting to FTP and exploring directory structure ==="
+        
+        lftp -c "
+        set ssl:verify-certificate false;
+        set ftp:passive-mode true;
+        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
+        
+        echo '=== Root directory contents ===';
+        ls -la;
+        
+        echo '=== Looking for public_html ===';
+        ls -la | grep public;
+        
+        echo '=== Looking for domains folder ===';
+        ls -la | grep domains;
+        
+        echo '=== Trying to access different paths ===';
+        cd public_html 2>/dev/null && echo 'Found /public_html/' && ls -la;
+        cd / && cd domains/horbachova.com/public_html 2>/dev/null && echo 'Found /domains/horbachova.com/public_html/' && ls -la;
+        cd / && cd www 2>/dev/null && echo 'Found /www/' && ls -la;
+        cd / && cd htdocs 2>/dev/null && echo 'Found /htdocs/' && ls -la;
+        
+        quit;
+        "
