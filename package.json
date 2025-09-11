@@ -1,14 +1,16 @@
 {
   "name": "horbachova",
   "private": true,
-  "version": "0.0.0",
-  "homepage": "https:///Greenfield-Taster.github.io/horbachova",
+  "version": "1.0.0",
+  "homepage": "https://horbachova.com",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
+    "deploy:ftp": "npm run build && echo 'Build completed. Deploy via GitHub Actions or manual FTP'",
     "lint": "eslint .",
     "preview": "vite preview"
   },
