@@ -12,29 +12,33 @@
   "about": {
     "title": "Technologies involved",
     "subtitle": "digital experiences",
+    "languages": {
+      "title": "Languages",
+      "skills": ["JavaScript", "TypeScript"]
+    },
     "frontend": {
-      "title": "Frontend Development",
-      "subtitle": "modern and intuitive interfaces",
-      "skills": [
-        "React",
-        "JavaScript",
-        "TypeScript",
-        "SCSS",
-        "GSAP",
-        "responsive design"
-      ]
+      "title": "Frontend",
+      "skills": ["React 19", "Vue.js", "Tailwind CSS", "SCSS", "Material UI", "Radix UI", "Framer Motion", "GSAP", "Three.js"]
     },
     "backend": {
-      "title": "Backend Development",
-      "subtitle": "fast and reliable server solutions",
-      "skills": [
-        "Node.js",
-        "Express",
-        "PostgreSQL",
-        "Redis",
-        "REST API",
-        "microservices"
-      ]
+      "title": "Backend",
+      "skills": ["Node.js", "Express.js", "MedusaJS"]
+    },
+    "databases": {
+      "title": "Databases",
+      "skills": ["PostgreSQL", "MongoDB", "MySQL", "SQLite", "Firebase"]
+    },
+    "tools": {
+      "title": "Tools & DevOps",
+      "skills": ["Git", "GitHub Actions", "Docker", "Vite", "Webpack", "Postman", "ESLint"]
+    },
+    "cloud": {
+      "title": "Cloud",
+      "skills": ["Azure", "Google Cloud", "Firebase", "Cloudflare", "Netlify"]
+    },
+    "design": {
+      "title": "Design",
+      "skills": ["Figma", "Adobe Photoshop", "Adobe Illustrator"]
     }
   },
   "experience": {
@@ -81,6 +85,39 @@
   "projects": {
     "title": "My Projects",
     "subtitle": "building the future",
+    "viewOnGithub": "GitHub",
+    "viewOnNpm": "npm",
+    "inProgress": "In Progress",
+    "launchkit": {
+      "title": "LaunchKit",
+      "description": "Open-source npm CLI tools for scaffolding e-commerce and landing page projects with 170+ auto-generated SCSS design tokens",
+      "features": [
+        "E-commerce scaffolder",
+        "Landing page generator",
+        "Auto design tokens",
+        "Auth, cart, i18n built-in"
+      ]
+    },
+    "mattressShop": {
+      "title": "Mattress Shop",
+      "description": "Full-stack e-commerce platform with payment processing, SMS notifications, and delivery API integrations",
+      "features": [
+        "WayForPay payments",
+        "TurboSMS integration",
+        "MedusaJS v2 backend",
+        "CI/CD with GitHub Actions"
+      ]
+    },
+    "recipeAi": {
+      "title": "Recipe AI Assistant",
+      "description": "Web application with an integrated AI assistant for personalized recipe recommendations",
+      "features": [
+        "AI-powered recommendations",
+        "Personalized suggestions",
+        "Modern React UI",
+        "AI API integration"
+      ]
+    },
     "biosafe": {
       "title": "Biosafe",
       "description": "Platform for medical diagnostics and online consultations with doctors",
@@ -114,6 +151,6 @@
   },
   "footer": {
     "home": "Home",
-    "copyright": "© 2025 Horbachova. All rights reserved."
+    "rights": "All rights reserved."
   }
 }

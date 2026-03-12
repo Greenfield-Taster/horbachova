@@ -12,29 +12,33 @@
   "about": {
     "title": "Задіяні технології",
     "subtitle": "цифрові рішення",
+    "languages": {
+      "title": "Мови",
+      "skills": ["JavaScript", "TypeScript"]
+    },
     "frontend": {
-      "title": "Frontend розробка",
-      "subtitle": "сучасні та інтуїтивні інтерфейси",
-      "skills": [
-        "React",
-        "JavaScript",
-        "TypeScript",
-        "SCSS",
-        "GSAP",
-        "адаптивний дизайн"
-      ]
+      "title": "Frontend",
+      "skills": ["React 19", "Vue.js", "Tailwind CSS", "SCSS", "Material UI", "Radix UI", "Framer Motion", "GSAP", "Three.js"]
     },
     "backend": {
-      "title": "Backend розробка",
-      "subtitle": "швидкі та надійні серверні рішення",
-      "skills": [
-        "Node.js",
-        "Express",
-        "PostgreSQL",
-        "Redis",
-        "REST API",
-        "мікросервіси"
-      ]
+      "title": "Backend",
+      "skills": ["Node.js", "Express.js", "MedusaJS"]
+    },
+    "databases": {
+      "title": "Бази даних",
+      "skills": ["PostgreSQL", "MongoDB", "MySQL", "SQLite", "Firebase"]
+    },
+    "tools": {
+      "title": "Інструменти та DevOps",
+      "skills": ["Git", "GitHub Actions", "Docker", "Vite", "Webpack", "Postman", "ESLint"]
+    },
+    "cloud": {
+      "title": "Хмарні сервіси",
+      "skills": ["Azure", "Google Cloud", "Firebase", "Cloudflare", "Netlify"]
+    },
+    "design": {
+      "title": "Дизайн",
+      "skills": ["Figma", "Adobe Photoshop", "Adobe Illustrator"]
     }
   },
   "experience": {
@@ -81,6 +85,39 @@
   "projects": {
     "title": "Проекти",
     "subtitle": "будуємо майбутнє",
+    "viewOnGithub": "GitHub",
+    "viewOnNpm": "npm",
+    "inProgress": "В розробці",
+    "launchkit": {
+      "title": "LaunchKit",
+      "description": "Open-source npm CLI інструменти для створення e-commerce та лендінг проектів з 170+ авто-генерованими SCSS дизайн-токенами",
+      "features": [
+        "Генератор e-commerce",
+        "Генератор лендінгів",
+        "Авто дизайн-токени",
+        "Авторизація, кошик, i18n"
+      ]
+    },
+    "mattressShop": {
+      "title": "Mattress Shop",
+      "description": "Full-stack e-commerce платформа з обробкою платежів, SMS-повідомленнями та інтеграцією API доставки",
+      "features": [
+        "Платежі WayForPay",
+        "Інтеграція TurboSMS",
+        "MedusaJS v2 backend",
+        "CI/CD з GitHub Actions"
+      ]
+    },
+    "recipeAi": {
+      "title": "Recipe AI Assistant",
+      "description": "Веб-додаток з інтегрованим AI-асистентом для персоналізованих рекомендацій рецептів",
+      "features": [
+        "AI рекомендації",
+        "Персоналізовані пропозиції",
+        "Сучасний React UI",
+        "Інтеграція AI API"
+      ]
+    },
     "biosafe": {
       "title": "Biosafe",
       "description": "Платформа для медичної діагностики та онлайн консультацій з лікарями",
@@ -114,6 +151,6 @@
   },
   "footer": {
     "home": "Головна",
-    "copyright": "© 2025 Horbachova. Всі права захищені."
+    "rights": "Всі права захищені."
   }
 }
