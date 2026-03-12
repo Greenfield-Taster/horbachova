@@ -51,52 +51,32 @@ const About = () => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const cardsRef = useRef(null);
+  const gridRef = useRef(null);
+
+  const categories = [
+    { id: "frontend", icon: "🎨", color: "#06B6D4" },
+    { id: "languages", icon: "💻", color: "#F59E0B" },
+    { id: "design", icon: "✏️", color: "#EC4899" },
+    { id: "backend", icon: "⚡", color: "#10B981" },
+    { id: "tools", icon: "🔧", color: "#EF4444" },
+    { id: "databases", icon: "🗄️", color: "#8B5CF6" },
+    { id: "cloud", icon: "☁️", color: "#3B82F6" },
+  ];
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Начальное состояние карточек
-      gsap.set(".about-card", {
-        rotateX: 15,
-        rotateY: 0,
-        z: -100,
+      gsap.set(".bento-grid", {
         opacity: 0,
-        scale: 0.8,
+        y: 60,
       });
 
-      // Начальное состояние заголовка
       gsap.set(".about-title", {
         opacity: 0,
         y: 50,
         rotateX: 90,
       });
 
-      // Анимация карточек при скролле с реверсом
-      ScrollTrigger.create({
-        trigger: cardsRef.current,
-        start: "top 80%",
-        end: "bottom 20%",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          
-          // Ограничиваем рост карточек до 25% прогресса
-          const maxProgress = Math.min(progress, 0.25);
-          const scaleProgress = maxProgress / 0.25; // Нормализуем до 0-1
-          
-          gsap.to(".about-card", {
-            duration: 0.3,
-            rotateX: progress < 0.2 ? 15 * (1 - progress * 5) : 0,
-            z: progress < 0.2 ? -100 * (1 - progress * 5) : 0,
-            opacity: progress < 0.08 ? 0 : Math.min(1, progress * 3),
-            scale: progress < 0.25 ? 0.8 + 0.2 * scaleProgress : 1,
-            stagger: 0.1,
-            overwrite: "auto",
-          });
-        },
-      });
-
-      // Анимация заголовка при скролле с реверсом
+      // Title animation
       ScrollTrigger.create({
         trigger: titleRef.current,
         start: "top 85%",
@@ -114,17 +94,24 @@ const About = () => {
         },
       });
 
-      // Плавающая анимация карточек
-      gsap.to(".about-card", {
-        duration: 6,
-        rotateY: "+=3",
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        stagger: 0.5,
+      // Entire grid appears together
+      ScrollTrigger.create({
+        trigger: gridRef.current,
+        start: "top 88%",
+        end: "top 50%",
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          gsap.to(".bento-grid", {
+            duration: 0.4,
+            opacity: progress < 0.05 ? 0 : Math.min(1, progress * 2),
+            y: 60 * (1 - Math.min(1, progress * 2)),
+            overwrite: "auto",
+          });
+        },
       });
 
-      // Анимация частиц
+      // Particles
       gsap.to(".code-particle", {
         duration: 20,
         y: "-=30px",
@@ -141,26 +128,8 @@ const About = () => {
     return () => ctx.revert();
   }, []);
 
-  const skills = [
-    {
-      title: t('about.frontend.title'),
-      subtitle: t('about.frontend.subtitle'),
-      description: t('about.frontend.skills', { returnObjects: true }),
-      icon: "🎨",
-      gradient: "frontend",
-    },
-    {
-      title: t('about.backend.title'),
-      subtitle: t('about.backend.subtitle'),
-      description: t('about.backend.skills', { returnObjects: true }),
-      icon: "⚡",
-      gradient: "backend",
-    },
-  ];
-
   return (
     <section id="about" className="about" ref={sectionRef}>
-      {/* Код частицы в фоне */}
       <div className="code-particles">
         {Array.from({ length: 25 }, (_, i) => (
           <CodeParticle key={i} index={i} />
@@ -169,27 +138,32 @@ const About = () => {
 
       <div className="about__container">
         <h2 className="about-title" ref={titleRef}>
-          <span className="about-title__main">{t('about.title')}</span>
-          <span className="about-title__sub">{t('about.subtitle')}</span>
+          <span className="about-title__main">{t("about.title")}</span>
+          <span className="about-title__sub">{t("about.subtitle")}</span>
         </h2>
 
-        <div className="about-grid" ref={cardsRef}>
-          {skills.map((skill) => (
+        <div className="bento-grid" ref={gridRef}>
+          {categories.map((cat) => (
             <div
-              key={skill.title}
-              className="about-card"
-              style={{ "--gradient": skill.gradient }}
+              key={cat.id}
+              className={`bento-item bento-item--${cat.id}`}
+              style={{ "--accent": cat.color }}
             >
-              <div className="about-card__inner">
-                <div className="about-card__icon">{skill.icon}</div>
-                <h3 className="about-card__title">{skill.title}</h3>
-                <p className="about-card__subtitle">{skill.subtitle}</p>
-                <div className="about-card__description">
-                  {skill.description.map((desc, descIndex) => (
-                    <span key={descIndex} className="description-tag">
-                      {desc}
-                    </span>
-                  ))}
+              <div className="bento-item__inner">
+                <div className="bento-item__header">
+                  <span className="bento-item__icon">{cat.icon}</span>
+                  <h3 className="bento-item__title">
+                    {t(`about.${cat.id}.title`)}
+                  </h3>
+                </div>
+                <div className="bento-item__tags">
+                  {t(`about.${cat.id}.skills`, { returnObjects: true }).map(
+                    (skill, i) => (
+                      <span key={i} className="bento-tag">
+                        {skill}
+                      </span>
+                    )
+                  )}
                 </div>
               </div>
             </div>

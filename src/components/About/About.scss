@@ -1,21 +1,5 @@
 @use "../../styles/variables" as v;
 
-/* Флюидные токены секции */
-:root {
-  --space-0: 0;
-  --space-1: clamp(0.5rem, 0.6vw, 0.75rem);
-  --space-2: clamp(0.75rem, 1vw, 1rem);
-  --space-3: clamp(1rem, 1.2vw, 1.25rem);
-  --space-4: clamp(1.25rem, 1.8vw, 1.75rem);
-  --space-5: clamp(1.75rem, 2.4vw, 2.5rem);
-  --radius: clamp(16px, 2vw, 28px);
-
-  --title-sub: clamp(0.9rem, 1.6vw, 1.1rem);
-  --card-title: clamp(1.1rem, 2.2vw, 1.6rem);
-  --card-sub: clamp(0.9rem, 1.6vw, 1.1rem);
-  --mono: 0.9rem;
-}
-
 .about {
   min-height: 100svh;
   background: linear-gradient(
@@ -30,20 +14,20 @@
   display: grid;
   place-items: center;
   padding-block: clamp(2rem, 6vw, 6rem);
-  padding-inline: var(--space-4);
+  padding-inline: clamp(1rem, 3vw, 2rem);
 }
 
 .about__container {
   inline-size: min(100%, 1280px);
   margin-inline: auto;
   display: grid;
-  gap: var(--space-5);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-/* Заголовок */
+/* Title */
 .about-title {
   text-align: center;
-  margin: var(--space-3) 0 var(--space-4);
+  margin: clamp(0.5rem, 1.5vw, 1rem) 0 clamp(1rem, 2vw, 1.5rem);
 
   &__main {
     display: block;
@@ -65,104 +49,132 @@
   }
 }
 
-/* Сетка карточек: 1 → 2 → 3 колонки без каскада медиазапросов */
-.about-grid {
+/* Bento Grid */
+.bento-grid {
   display: grid;
-  gap: clamp(1rem, 3vw, 2rem);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-  justify-items: stretch;
-  align-items: stretch;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "frontend frontend languages design"
+    "frontend frontend backend   design"
+    "tools    tools    databases cloud";
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
 
-  /* На очень широких — не растягиваем выше комфортной ширины */
-  container-type: inline-size;
+  @media (max-width: v.$breakpoint-lg) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+      "frontend frontend languages"
+      "frontend frontend backend"
+      "design   databases cloud"
+      "tools    tools     tools";
+  }
+
+  @media (max-width: v.$breakpoint-md) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "frontend  frontend"
+      "languages backend"
+      "design    databases"
+      "cloud     tools";
+  }
+
+  @media (max-width: v.$breakpoint-sm) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "frontend"
+      "languages"
+      "backend"
+      "design"
+      "databases"
+      "tools"
+      "cloud";
+  }
 }
 
-/* Карточка — без фикс-высот, контент сам задаёт размер */
-.about-card {
-  position: relative;
-  inline-size: 100%;
-  block-size: auto;
-  perspective: 1000px;
+/* Bento Item */
+.bento-item {
   transition: transform v.$transition-normal;
 
   &:hover {
-    transform: translateY(-6px) scale(1.02);
+    transform: translateY(-4px);
   }
 
+  &--frontend  { grid-area: frontend; }
+  &--languages { grid-area: languages; }
+  &--design    { grid-area: design; }
+  &--backend   { grid-area: backend; }
+  &--tools     { grid-area: tools; }
+  &--databases { grid-area: databases; }
+  &--cloud     { grid-area: cloud; }
+
   &__inner {
+    height: 100%;
     background: color-mix(in srgb, v.$foreground 80%, transparent);
     backdrop-filter: blur(20px);
-    border-radius: var(--radius);
-    padding: clamp(1rem, 2.4vw, 2rem);
-    border: 1px solid rgba(v.$primary-content, 0.35);
+    border-radius: clamp(12px, 2vw, 20px);
+    padding: clamp(1rem, 2vw, 1.5rem);
+    border: 1px solid rgba(v.$primary-content, 0.2);
     transition: border-color v.$transition-normal,
-      box-shadow v.$transition-normal, background v.$transition-normal;
-    display: grid;
-    align-content: start;
-    gap: var(--space-2);
-    min-block-size: 14rem; /* базовая высота для пустых/коротких кейсов */
+      box-shadow v.$transition-normal;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.75rem, 1.5vw, 1rem);
 
     &:hover {
-      border-color: rgba(v.$primary-content, 0.6);
-      box-shadow: 0 20px 40px rgba(v.$primary-content, 0.22),
-        0 10px 24px rgba(v.$primary-content, 0.12),
-        inset 0 1px 0 rgba(v.$copy, 0.12);
-      background: color-mix(in srgb, v.$foreground 90%, transparent);
+      border-color: var(--accent, rgba(v.$primary-content, 0.5));
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3),
+        0 0 20px color-mix(in srgb, var(--accent) 15%, transparent);
     }
   }
 
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+  }
+
   &__icon {
-    font-size: clamp(2rem, 4vw, 3rem);
-    filter: drop-shadow(0 0 16px rgba(v.$primary-content, 0.3));
+    font-size: clamp(1.5rem, 3vw, 2rem);
     line-height: 1;
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 40%, transparent));
   }
 
   &__title {
-    font-size: var(--card-title);
+    font-size: clamp(0.95rem, 1.8vw, 1.2rem);
     font-weight: 600;
     color: v.$copy;
     letter-spacing: 0.02em;
-    line-height: 1.2;
   }
 
-  &__subtitle {
-    font-size: var(--card-sub);
-    color: v.$primary-content;
-    font-weight: 400;
-    line-height: 1.5;
-    opacity: 0.9;
-  }
-
-  &__description {
-    margin-top: auto;
+  &__tags {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-1);
-    user-select: none;
+    gap: clamp(0.3rem, 0.6vw, 0.5rem);
   }
 }
 
-/* Теги внутри карточек */
-.description-tag {
-  font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+/* Tags */
+.bento-tag {
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
   color: v.$copy;
-  background: rgba(v.$primary-content, 0.18);
-  padding: 0.4em 0.7em;
-  border-radius: 12px;
-  border: 1px solid rgba(v.$primary-content, 0.38);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  padding: 0.35em 0.65em;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   font-family: v.$font-mono;
   font-weight: 500;
   transition: transform v.$transition-fast, box-shadow v.$transition-fast,
     background v.$transition-fast;
+  user-select: none;
 
   &:hover {
-    background: rgba(v.$primary-content, 0.3);
+    background: color-mix(in srgb, var(--accent) 25%, transparent);
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(v.$primary-content, 0.25);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 25%, transparent);
   }
 }
 
-/* Частицы — ограничиваем плотность на малых экранах без JS */
+/* Particles */
 .code-particles {
   position: absolute;
   inset: 0;
@@ -196,19 +208,11 @@
   }
 }
 
-/* Анимации: уважаем prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  .about-card,
-  .about-card__inner,
+  .bento-item,
+  .bento-item__inner,
   .code-particle {
     animation: none !important;
     transition: none !important;
-  }
-}
-
-/* Опционально: лёгкая тень при наведении курсора только на десктопах */
-@media (hover: hover) and (pointer: fine) {
-  .about-card__inner:hover {
-    transform: translateZ(0);
   }
 }
