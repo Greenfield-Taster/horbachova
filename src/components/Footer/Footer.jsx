@@ -33,7 +33,7 @@ const Footer = () => {
         </nav>
 
         <p className="footer-copyright">
-          {t('footer.copyright')}
+          © {new Date().getFullYear()} Horbachova. {t('footer.rights')}
         </p>
       </div>
     </footer>
