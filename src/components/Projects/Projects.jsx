@@ -6,91 +6,37 @@ import "./Projects.scss";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FloatingCode = ({ index }) => {
-  const codeSnippets = [
-    "npm install",
-    "git commit",
-    "const api =",
-    "useEffect()",
-    "async/await",
-    "useState()",
-    "middleware",
-    "JWT token",
-    "PostgreSQL",
-    "WebSocket",
-    "REST API",
-    "Redux store",
-    "SCSS vars",
-    "responsive",
-    "NODE_ENV",
-    "express()",
-  ];
-
-  const snippet = codeSnippets[index % codeSnippets.length];
-  const randomX = Math.random() * 100;
-  const randomY = Math.random() * 100;
-  const randomDelay = Math.random() * 4;
-  const randomDuration = 15 + Math.random() * 10;
-
+const ProjectCard = ({ project }) => {
   return (
-    <div
-      className="floating-code"
-      style={{
-        "--delay": `${randomDelay}s`,
-        "--duration": `${randomDuration}s`,
-        left: `${randomX}%`,
-        top: `${randomY}%`,
-      }}
-    >
-      {snippet}
-    </div>
-  );
-};
-
-const ProjectCard = ({ project, index }) => {
-  const cardRef = useRef(null);
-
-  return (
-    <div
-      ref={cardRef}
-      className={`project-card project-card--${project.type}`}
-      data-index={index}
-    >
+    <div className={`project-card project-card--${project.type}`}>
       <div className="project-card__inner">
         <div className="project-card__glow"></div>
 
         <div className="project-card__header">
           <div className="project-card__icon">{project.icon}</div>
-          <div className="project-card__type">{project.type}</div>
+          <div className="project-card__badges">
+            <span className="project-card__type">{project.type}</span>
+            {project.status && (
+              <span
+                className={`project-card__status project-card__status--${project.status === "inProgress" ? "progress" : "live"}`}
+              >
+                {project.statusLabel}
+              </span>
+            )}
+          </div>
         </div>
 
         <h3 className="project-card__title">{project.title}</h3>
         <p className="project-card__description">{project.description}</p>
 
         <div className="project-card__tech">
-          <div className="tech-section">
-            <span className="tech-label">Frontend:</span>
-            <div className="tech-tags">
-              {project.frontend.map((tech, i) => (
-                <span key={i} className="tech-tag tech-tag--frontend">
-                  {tech}
-                </span>
-              ))}
-            </div>
+          <div className="tech-tags">
+            {project.tech.map((tech, i) => (
+              <span key={i} className="tech-tag">
+                {tech}
+              </span>
+            ))}
           </div>
-
-          {project.backend && (
-            <div className="tech-section">
-              <span className="tech-label">Backend:</span>
-              <div className="tech-tags">
-                {project.backend.map((tech, i) => (
-                  <span key={i} className="tech-tag tech-tag--backend">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         <div className="project-card__features">
@@ -101,6 +47,34 @@ const ProjectCard = ({ project, index }) => {
             </div>
           ))}
         </div>
+
+        {project.links && (
+          <div className="project-card__links">
+            {project.links.map((link, i) => (
+              <a
+                key={i}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="project-link"
+              >
+                {link.label}
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -110,58 +84,221 @@ const Projects = () => {
   const { t } = useTranslation();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const cardsContainerRef = useRef(null);
+  const trackRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const posRef = useRef(0);
+  const isPausedRef = useRef(false);
+  const animFrameRef = useRef(null);
 
   const projects = [
     {
-      title: t('projects.biosafe.title'),
-      type: "healthcare",
-      description: t('projects.biosafe.description'),
-      icon: "🏥",
-      frontend: ["React.js", "CSS3", "Responsive Design"],
-      features: t('projects.biosafe.features', { returnObjects: true }),
-      status: "Production",
+      title: t("projects.launchkit.title"),
+      type: "open-source",
+      description: t("projects.launchkit.description"),
+      icon: "📦",
+      tech: [
+        "React 19",
+        "Vite",
+        "Material UI",
+        "SCSS",
+        "Framer Motion",
+        "npm",
+      ],
+      features: t("projects.launchkit.features", { returnObjects: true }),
+      links: [
+        {
+          label: t("projects.viewOnNpm"),
+          url: "https://www.npmjs.com/package/@greenfield-taster/launchkit-shop",
+        },
+        {
+          label: t("projects.viewOnGithub"),
+          url: "https://github.com/Greenfield-Taster/LaunchKit-Shop",
+        },
+      ],
     },
     {
-      title: t('projects.cryptobit.title'),
-      type: "fintech",
-      description: t('projects.cryptobit.description'),
-      icon: "₿",
-      frontend: ["React.js", "Redux", "SCSS"],
-      backend: ["Node.js", "Express.js", "WebSocket", "PostgreSQL"],
-      features: t('projects.cryptobit.features', { returnObjects: true }),
-      status: "Production",
+      title: t("projects.mattressShop.title"),
+      type: "e-commerce",
+      description: t("projects.mattressShop.description"),
+      icon: "🛒",
+      tech: [
+        "React 19",
+        "TypeScript",
+        "MedusaJS",
+        "PostgreSQL",
+        "Node.js",
+        "GitHub Actions",
+      ],
+      features: t("projects.mattressShop.features", { returnObjects: true }),
+      links: [
+        {
+          label: t("projects.viewOnGithub"),
+          url: "https://github.com/Greenfield-Taster/mattress-shop",
+        },
+      ],
     },
     {
-      title: t('projects.teleadmin.title'),
-      type: "automation",
-      description: t('projects.teleadmin.description'),
+      title: t("projects.recipeAi.title"),
+      type: "ai",
+      description: t("projects.recipeAi.description"),
       icon: "🤖",
-      frontend: ["Telegram Bot API", "Node.js"],
-      backend: ["Node.js", "Express.js", "MongoDB"],
-      features: t('projects.teleadmin.features', { returnObjects: true }),
-      status: "Active",
+      tech: ["React", "TypeScript", "AI APIs"],
+      features: t("projects.recipeAi.features", { returnObjects: true }),
+      status: "inProgress",
+      statusLabel: t("projects.inProgress"),
+      links: [
+        {
+          label: t("projects.viewOnGithub"),
+          url: "https://github.com/Greenfield-Taster/recipe-ai-assistant",
+        },
+      ],
+    },
+    {
+      title: t("projects.biosafe.title"),
+      type: "healthcare",
+      description: t("projects.biosafe.description"),
+      icon: "🏥",
+      tech: ["React.js", "CSS3", "Responsive Design"],
+      features: t("projects.biosafe.features", { returnObjects: true }),
+      links: [
+        {
+          label: t("projects.viewOnGithub"),
+          url: "https://github.com/Greenfield-Taster/biosafe",
+        },
+      ],
+    },
+    {
+      title: t("projects.cryptobit.title"),
+      type: "fintech",
+      description: t("projects.cryptobit.description"),
+      icon: "₿",
+      tech: [
+        "React.js",
+        "Redux",
+        "SCSS",
+        "Node.js",
+        "Express.js",
+        "WebSocket",
+        "PostgreSQL",
+      ],
+      features: t("projects.cryptobit.features", { returnObjects: true }),
+      links: [
+        {
+          label: t("projects.viewOnGithub"),
+          url: "https://github.com/Greenfield-Taster/cryptobit",
+        },
+      ],
+    },
+    {
+      title: t("projects.teleadmin.title"),
+      type: "automation",
+      description: t("projects.teleadmin.description"),
+      icon: "🤖",
+      tech: ["Telegram Bot API", "Node.js", "Express.js", "MongoDB"],
+      features: t("projects.teleadmin.features", { returnObjects: true }),
+      links: [
+        {
+          label: t("projects.viewOnGithub"),
+          url: "https://github.com/Greenfield-Taster/cryptobit-telegram-bot",
+        },
+      ],
     },
   ];
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      // Начальные состояния
-      gsap.set(".project-card", {
-        rotateY: -45,
-        rotateX: 25,
-        z: -200,
-        opacity: 0,
-        scale: 0.7,
-      });
+  // Doubled for infinite loop
+  const doubledProjects = [...projects, ...projects];
 
+  const scrollByCard = (direction) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.querySelector(".project-card");
+    if (!card) return;
+
+    const gap = parseFloat(getComputedStyle(track).gap) || 24;
+    const cardWidth = card.offsetWidth + gap;
+    const halfWidth = track.scrollWidth / 2;
+
+    isPausedRef.current = true;
+
+    const anim = { value: 0 };
+    const startPos = posRef.current;
+
+    gsap.to(anim, {
+      value: direction * cardWidth,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onUpdate: () => {
+        let p = startPos + anim.value;
+        if (p >= halfWidth) p -= halfWidth;
+        if (p < 0) p += halfWidth;
+        posRef.current = p;
+        track.style.transform = `translateX(-${p}px)`;
+      },
+      onComplete: () => {
+        isPausedRef.current = false;
+      },
+    });
+  };
+
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const speed = 0.5;
+
+    const animate = () => {
+      if (!isPausedRef.current) {
+        posRef.current += speed;
+        const halfWidth = track.scrollWidth / 2;
+        if (halfWidth > 0 && posRef.current >= halfWidth) {
+          posRef.current -= halfWidth;
+        }
+        track.style.transform = `translateX(-${posRef.current}px)`;
+      }
+      animFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animFrameRef.current = requestAnimationFrame(animate);
+
+    // Pause on hover (wrapper, not track, to keep hover area stable)
+    const wrapper = wrapperRef.current;
+    const handleEnter = () => {
+      isPausedRef.current = true;
+    };
+    const handleLeave = () => {
+      isPausedRef.current = false;
+    };
+    const handleTouchStart = () => {
+      isPausedRef.current = true;
+    };
+    const handleTouchEnd = () => {
+      setTimeout(() => {
+        isPausedRef.current = false;
+      }, 2000);
+    };
+
+    if (wrapper) {
+      wrapper.addEventListener("mouseenter", handleEnter);
+      wrapper.addEventListener("mouseleave", handleLeave);
+      wrapper.addEventListener("touchstart", handleTouchStart, {
+        passive: true,
+      });
+      wrapper.addEventListener("touchend", handleTouchEnd, { passive: true });
+    }
+
+    // GSAP animations
+    const ctx = gsap.context(() => {
       gsap.set(".projects-title", {
         opacity: 0,
         y: 100,
         rotateX: 90,
       });
 
-      // Анимация заголовка
+      gsap.set(".projects-carousel-wrapper", {
+        opacity: 0,
+        y: 40,
+      });
+
       ScrollTrigger.create({
         trigger: titleRef.current,
         start: "top 85%",
@@ -179,118 +316,93 @@ const Projects = () => {
         },
       });
 
-      // Анимация карточек с чередующимся появлением
-      const cards = gsap.utils.toArray(".project-card");
-
-      cards.forEach((card, index) => {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 90%",
-          end: "bottom 30%", // Увеличиваем зону анимации
-          scrub: 1, // Уменьшаем scrub для более быстрой реакции
-          onUpdate: (self) => {
-            const progress = self.progress;
-
-            // Каждая карточка появляется с небольшой задержкой
-            const startProgress = index * 0.05; // Уменьшаем задержку между карточками
-            const adjustedProgress = Math.max(
-              0,
-              (progress - startProgress) / (1 - startProgress)
-            );
-
-            gsap.to(card, {
-              duration: 0.3, // Быстрее анимация
-              rotateY:
-                adjustedProgress < 0.2 ? -45 * (1 - adjustedProgress * 5) : 0, // Быстрее поворот
-              rotateX:
-                adjustedProgress < 0.2 ? 25 * (1 - adjustedProgress * 5) : 0,
-              z: adjustedProgress < 0.2 ? -200 * (1 - adjustedProgress * 5) : 0,
-              opacity:
-                adjustedProgress < 0.05 ? 0 : Math.min(1, adjustedProgress * 3), // Быстрее появление
-              scale:
-                adjustedProgress < 0.25
-                  ? 0.7 + 0.3 * (adjustedProgress / 0.25)
-                  : 1,
-              overwrite: "auto",
-            });
-          },
-        });
-      });
-
-      // Плавающая анимация карточек
-      gsap.to(".project-card", {
-        duration: 8,
-        rotateY: "+=2",
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        stagger: 0.7,
-      });
-
-      // Пульсация свечения
-      gsap.to(".project-card__glow", {
-        duration: 3,
-        opacity: 0.8,
-        scale: 1.1,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        stagger: 0.5,
-      });
-
-      // Анимация плавающего кода
-      gsap.to(".floating-code", {
-        duration: 25,
-        y: "-=50px",
-        rotation: "+=360",
-        repeat: -1,
-        ease: "none",
-        stagger: {
-          each: 0.2,
-          from: "random",
+      // Carousel entrance
+      ScrollTrigger.create({
+        trigger: wrapperRef.current,
+        start: "top 90%",
+        end: "top 55%",
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          gsap.to(".projects-carousel-wrapper", {
+            duration: 0.4,
+            opacity: progress < 0.05 ? 0 : Math.min(1, progress * 2.5),
+            y: 40 * (1 - Math.min(1, progress * 2)),
+            overwrite: "auto",
+          });
         },
-      });
-
-      // Анимация технологических тегов при наведении
-      cards.forEach((card) => {
-        const techTags = card.querySelectorAll(".tech-tag");
-        const tl = gsap.timeline({ paused: true });
-
-        tl.to(techTags, {
-          duration: 0.3,
-          scale: 1.1,
-          y: -3,
-          stagger: 0.05,
-          ease: "back.out(1.7)",
-        });
-
-        card.addEventListener("mouseenter", () => tl.play());
-        card.addEventListener("mouseleave", () => tl.reverse());
       });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      cancelAnimationFrame(animFrameRef.current);
+      ctx.revert();
+      if (wrapper) {
+        wrapper.removeEventListener("mouseenter", handleEnter);
+        wrapper.removeEventListener("mouseleave", handleLeave);
+        wrapper.removeEventListener("touchstart", handleTouchStart);
+        wrapper.removeEventListener("touchend", handleTouchEnd);
+      }
+    };
   }, []);
 
   return (
     <section id="projects" className="projects" ref={sectionRef}>
-      {/* Плавающий код в фоне */}
-      <div className="floating-code-container">
-        {Array.from({ length: 30 }, (_, i) => (
-          <FloatingCode key={i} index={i} />
-        ))}
-      </div>
-
       <div className="projects__container">
         <h2 className="projects-title" ref={titleRef}>
-          <span className="projects-title__main">{t('projects.title')}</span>
-          <span className="projects-title__sub">{t('projects.subtitle')}</span>
+          <span className="projects-title__main">{t("projects.title")}</span>
+          <span className="projects-title__sub">{t("projects.subtitle")}</span>
         </h2>
 
-        <div className="projects-grid" ref={cardsContainerRef}>
-          {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
-          ))}
+        <div className="projects-carousel-wrapper" ref={wrapperRef}>
+          <button
+            className="carousel-arrow carousel-arrow--left"
+            onClick={() => scrollByCard(-1)}
+            aria-label="Previous project"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          <div className="projects-carousel">
+            <div className="projects-track" ref={trackRef}>
+              {doubledProjects.map((project, i) => (
+                <ProjectCard
+                  key={`${project.title}-${i}`}
+                  project={project}
+                />
+              ))}
+            </div>
+          </div>
+
+          <button
+            className="carousel-arrow carousel-arrow--right"
+            onClick={() => scrollByCard(1)}
+            aria-label="Next project"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
         </div>
       </div>
     </section>

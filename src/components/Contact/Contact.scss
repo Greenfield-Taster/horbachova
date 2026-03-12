@@ -1,12 +1,12 @@
 @use "../../styles/variables" as v;
 
 .contact {
-  min-height: 100vh;
+  min-height: 80vh;
   background: v.$background;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 0 4rem;
+  padding: 4rem 0 3rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -94,7 +94,7 @@
 // Responsive
 @media (max-width: v.$breakpoint-md) {
   .contact {
-    padding: 5rem 0;
+    padding: 3.5rem 0;
 
     &__container {
       padding: 0 1.5rem;
@@ -117,7 +117,7 @@
 
 @media (max-width: v.$breakpoint-sm) {
   .contact {
-    padding: 4rem 0;
+    padding: 3rem 0;
 
     &__container {
       padding: 0 1rem;
@@ -142,7 +142,7 @@
 
 @media (max-width: v.$breakpoint-xs) {
   .contact {
-    padding: 3rem 0;
+    padding: 2.5rem 0;
   }
 
   .contact-title {
