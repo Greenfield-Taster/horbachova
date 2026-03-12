@@ -89,6 +89,8 @@ const Projects = () => {
   const posRef = useRef(0);
   const isPausedRef = useRef(false);
   const animFrameRef = useRef(null);
+  const resumeTimerRef = useRef(null);
+  const touchRef = useRef({ startX: 0, startPos: 0, moved: false });
 
   const projects = [
     {
@@ -268,19 +270,52 @@ const Projects = () => {
     const handleLeave = () => {
       isPausedRef.current = false;
     };
-    const handleTouchStart = () => {
-      isPausedRef.current = true;
-    };
-    const handleTouchEnd = () => {
-      setTimeout(() => {
+    const scheduleResume = (delay = 3000) => {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = setTimeout(() => {
         isPausedRef.current = false;
-      }, 2000);
+      }, delay);
+    };
+
+    const handleTouchStart = (e) => {
+      isPausedRef.current = true;
+      clearTimeout(resumeTimerRef.current);
+      touchRef.current = {
+        startX: e.touches[0].clientX,
+        startPos: posRef.current,
+        moved: false,
+      };
+    };
+
+    const handleTouchMove = (e) => {
+      const dx = touchRef.current.startX - e.touches[0].clientX;
+      if (Math.abs(dx) > 5) touchRef.current.moved = true;
+
+      const halfWidth = track.scrollWidth / 2;
+      let p = touchRef.current.startPos + dx;
+      if (p >= halfWidth) p -= halfWidth;
+      if (p < 0) p += halfWidth;
+      posRef.current = p;
+      track.style.transform = `translateX(-${p}px)`;
+    };
+
+    const handleTouchEnd = () => {
+      if (!touchRef.current.moved) {
+        // Tap — toggle pause, resume after 4s
+        scheduleResume(4000);
+      } else {
+        // Swipe — resume after 2s
+        scheduleResume(2000);
+      }
     };
 
     if (wrapper) {
       wrapper.addEventListener("mouseenter", handleEnter);
       wrapper.addEventListener("mouseleave", handleLeave);
       wrapper.addEventListener("touchstart", handleTouchStart, {
+        passive: true,
+      });
+      wrapper.addEventListener("touchmove", handleTouchMove, {
         passive: true,
       });
       wrapper.addEventListener("touchend", handleTouchEnd, { passive: true });
@@ -337,10 +372,12 @@ const Projects = () => {
     return () => {
       cancelAnimationFrame(animFrameRef.current);
       ctx.revert();
+      clearTimeout(resumeTimerRef.current);
       if (wrapper) {
         wrapper.removeEventListener("mouseenter", handleEnter);
         wrapper.removeEventListener("mouseleave", handleLeave);
         wrapper.removeEventListener("touchstart", handleTouchStart);
+        wrapper.removeEventListener("touchmove", handleTouchMove);
         wrapper.removeEventListener("touchend", handleTouchEnd);
       }
     };
